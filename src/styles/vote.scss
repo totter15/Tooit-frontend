@@ -1,0 +1,276 @@
+@import './index.scss';
+
+$width: 1920;
+$padding: 200 / $width * 100%;
+$vote-info-width: 490 / $width * 100%; //position:fixed라 전체 viewport에 대한 %
+$vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
+
+header {
+  height: 70px;
+  border: 1px solid gray;
+}
+
+.vote {
+  padding-top: 32px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  &__wrapper {
+    width: 100%;
+    padding: 0 $padding;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.vote-info {
+  width: $vote-info-width;
+  position: fixed;
+  left: $padding;
+}
+
+.vote-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  &__back,
+  &__more {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid lightgray;
+  }
+}
+
+.vote-description {
+  margin-bottom: 40px;
+
+  &__title {
+    font-family: 'Roboto';
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 130%;
+    color: #242424;
+    margin-bottom: 20px;
+  }
+  &__subInfo {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  &__writer {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: $text-2;
+    margin-right: 24px;
+  }
+  &__date {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-size: 1.125rem;
+    letter-spacing: -0.6;
+    color: $text-3;
+  }
+  &__description {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 150%;
+    color: $text-2;
+  }
+}
+.sub-title {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: $point-text-2;
+}
+
+@mixin box {
+  background-color: $card-3;
+  border: 1px solid $card-2;
+  padding: 12px 40px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.deadline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include box;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  .sub-title {
+    margin-right: 16px;
+  }
+  &__date {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: $text-3;
+  }
+  &__dday {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: $main-blue;
+  }
+}
+
+.sticker-box {
+  @include box;
+  padding: 20px 40px;
+  .sub-title {
+    margin-bottom: 16px;
+  }
+
+  .sticker-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 7%;
+    margin-bottom: 30px;
+    &__sticker {
+      width: 55px;
+      height: 55px;
+      border-radius: 28px;
+      background-color: gray;
+      display: flex;
+    }
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    padding: 16px 26px;
+    background-color: $card-2;
+    border: 1px solid $card-1;
+    border-radius: 10px;
+  }
+  &__button-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    margin-right: 24px;
+  }
+  &__button-text {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    color: $text-3;
+  }
+}
+
+.vote-result {
+  @include box;
+  padding: 20px 40px;
+  background-color: $main-blue;
+
+  .sub-title {
+    color: white;
+    margin-bottom: 18px;
+  }
+
+  &__graph {
+    display: flex;
+    border: 2px solid $blue-3-graph;
+    border-radius: 10px;
+  }
+
+  &__graph-item {
+    padding: 12px;
+  }
+  &__graph-item:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &__graph-item:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  &__graph-item:nth-child(1) {
+    background-color: $blue-4;
+  }
+  &__graph-item:nth-child(2) {
+    background-color: $blue-3;
+  }
+  &__graph-item:nth-child(3) {
+    background-color: $blue-2;
+    color: white;
+  }
+  &__graph-item:nth-child(4) {
+    background-color: $blue-1;
+    color: white;
+  }
+}
+
+.button-box {
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $card-1;
+    border-radius: 36px;
+    background-color: $card-2;
+  }
+}
+
+.vote-list {
+  width: $vote-list-width;
+
+  &__item {
+    margin-bottom: 32px;
+  }
+
+  &__item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    box-sizing: border-box;
+    background-color: $card-3;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    border: 1px solid #f1f1f1;
+  }
+
+  &__item-title {
+    display: flex;
+    align-items: center;
+    color: $main-blue;
+    font-weight: 600;
+  }
+
+  &__item-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background-color: $main-blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 12px;
+  }
+
+  &__item-img {
+    width: 100%;
+    background-color: $card-1;
+    padding-bottom: 100%;
+    border-radius: 20px;
+  }
+}
