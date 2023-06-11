@@ -1,13 +1,85 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import '../styles/vote.scss';
+import VoteModal from '../components/vote/VoteModal';
+import VoteListItem from '../components/vote/VoteListItem';
+import ReVoteModal from '../components/vote/ReVoteModal';
+
+export interface VotedSticker {
+  id: number | null;
+  x: string;
+  y: string;
+  nickname?: string;
+  comment?: string;
+}
+export type VotedStickers = VotedSticker[] | [];
 
 function Vote() {
+  const windowWidth: number = window.innerWidth;
+  const padding = 400 / 1920;
+  const voteItemWidth: number =
+    (870 / 1520) * (windowWidth - windowWidth * padding);
+
   const stickers: number[] = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
   ];
-
   const graph: number[] = [8, 19, 9, 4];
   const graphTotal: number = graph.reduce((arr, cur) => arr + cur, 0);
+
+  const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
+  const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
+  const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
+  const [votedStickers, setVotedStickers] = useState<VotedStickers>([]);
+
+  function stickerVoteHandler(item: number) {
+    setSelectedSticker(item);
+  }
+
+  const stickerLocateHandler = useCallback(
+    (e: any) => {
+      if (!selectedSticker) return;
+
+      setVotedStickers([
+        ...votedStickers,
+        {
+          id: selectedSticker,
+          x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
+          y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
+        },
+      ]);
+      setVoteModalVisible(true);
+    },
+    [votedStickers, selectedSticker],
+  );
+
+  const stickerMessageHandler = useCallback(
+    (nickname: string, comment: string) => {
+      setVotedStickers(
+        votedStickers.map((sticker) =>
+          sticker.id === selectedSticker
+            ? { ...sticker, nickname, comment }
+            : sticker,
+        ),
+      );
+
+      setVoteModalVisible(false);
+      setSelectedSticker(null);
+    },
+    [votedStickers],
+  );
+
+  const stickerHandler = useCallback(() => {
+    setVoteModalVisible(false);
+    setSelectedSticker(null);
+  }, []);
+
+  const revoteCancelHandler = useCallback(() => {
+    setRevoteModalVisible(false);
+  }, []);
+
+  const revoteHandler = useCallback(() => {
+    // TODO : revote
+    setRevoteModalVisible(false);
+  }, []);
 
   return (
     <>
@@ -17,7 +89,9 @@ function Vote() {
           <section className="vote-info">
             <section className="vote-header">
               <div className="vote-header__back">back</div>
-              <div className="vote-header__more">more</div>
+              <div className="vote-header__more">
+                <img src="menu.png" alt="menu" />
+              </div>
             </section>
 
             {/* VOTE-DESCRIPTION */}
@@ -45,15 +119,25 @@ function Vote() {
             <section className="sticker-box">
               <h3 className="sub-title">스티커</h3>
               <div className="sticker-list">
-                {stickers.map(() => (
-                  <div className="sticker-list__sticker">.</div>
+                {stickers.map((item) => (
+                  <button
+                    onClick={() => stickerVoteHandler(item)}
+                    type="button"
+                    className={`sticker-list__sticker ${
+                      selectedSticker === item && 'selected'
+                    }`}
+                  >
+                    {item}
+                  </button>
                 ))}
               </div>
               <div className="sticker-box__button">
-                <div className="sticker-box__button-icon">+</div>
-                <div className="sticker-box__button-text">
-                  PNG 스티커 만들기
+                <div className="sticker-box__button-icon">
+                  <img src="add_plus.png" alt="plus" />
                 </div>
+                <button type="button" className="sticker-box__button-text">
+                  PNG 스티커 만들기
+                </button>
               </div>
             </section>
 
@@ -74,36 +158,36 @@ function Vote() {
 
             {/* BUTTON */}
             <section className="button-box">
-              <div className="button-box__share-button">공유하기</div>
-              <div className="button-box__revote-button">다시투표</div>
+              <button type="button">
+                <img src="share.png" alt="share" />
+              </button>
+              {/* TODO : 투표한 경우 다시투표 버튼 보이게 */}
+              <button type="button" onClick={() => setRevoteModalVisible(true)}>
+                다시투표
+              </button>
             </section>
           </section>
 
           {/* VOTE-LIST */}
           <ul className="vote-list">
-            <li className="vote-list__item">
-              <div className="vote-list__item-header">
-                <div className="vote-list__item-title">
-                  <div className="vote-list__item-number">1</div>새우 껍질
-                  주새우
-                </div>
-                <div>save</div>
-              </div>
-              <div className="vote-list__item-img">.</div>
-            </li>
-            <li className="vote-list__item">
-              <div className="vote-list__item-header">
-                <div className="vote-list__item-title">
-                  <div className="vote-list__item-number">1</div>새우 껍질
-                  주새우
-                </div>
-                <div>save</div>
-              </div>
-              <div className="vote-list__item-img">.</div>
-            </li>
+            <VoteListItem
+              stickerLocateHandler={stickerLocateHandler}
+              votedStickers={votedStickers}
+            />
           </ul>
         </div>
       </main>
+
+      <VoteModal
+        visible={voteModalVisible}
+        stickerMessageHandler={stickerMessageHandler}
+        stickerHandler={stickerHandler}
+      />
+      <ReVoteModal
+        visible={revoteModalVisible}
+        revoteCancelHandler={revoteCancelHandler}
+        revoteHandler={revoteHandler}
+      />
     </>
   );
 }

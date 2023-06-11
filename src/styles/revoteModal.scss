@@ -1,0 +1,80 @@
+@import './index.scss';
+
+.revote-modal {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+  &__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+
+  &__message-box {
+    position: absolute;
+    width: 518px;
+    background-color: white;
+    border-radius: 10px;
+  }
+  &__message {
+    box-sizing: border-box;
+    padding: 80px 82px;
+    text-align: center;
+    font-family: 'Pretendard';
+    font-size: 1.125rem;
+    line-height: 150%;
+    font-weight: 500;
+    color: $text-1;
+  }
+  &__button-box {
+    display: flex;
+    & > button {
+      width: 50%;
+      text-align: center;
+      padding: 20px 0px;
+      font-family: 'Pretendard';
+      font-weight: 500;
+      &:first-child {
+        border-bottom-left-radius: 10px;
+        background-color: $card-3;
+        color: $text-1;
+      }
+      &:last-child {
+        border-bottom-right-radius: 10px;
+        background-color: $main-blue;
+        color: white;
+      }
+    }
+  }
+
+  &.visible {
+    display: flex;
+    .revote-modal__background {
+      animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
