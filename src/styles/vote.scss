@@ -12,16 +12,8 @@ header {
 
 .vote {
   padding-top: 32px;
-  margin: 0 auto;
   display: flex;
-  justify-content: center;
-
-  &__wrapper {
-    width: 100%;
-    padding: 0 $padding;
-    display: flex;
-    justify-content: flex-end;
-  }
+  justify-content: flex-end;
 }
 
 .vote-info {

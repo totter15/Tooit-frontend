@@ -5,6 +5,7 @@ import VoteListItem from '../components/vote/VoteListItem';
 import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
+import Wrapper from '../components/vote/Wrapper';
 
 export interface VotedSticker {
   id: number | null;
@@ -118,8 +119,8 @@ function Vote() {
   return (
     <>
       <header>header</header>
-      <main className="vote">
-        <div className="vote__wrapper">
+      <Wrapper>
+        <main className="vote">
           <section className="vote-info">
             <section className="vote-header">
               <div className="vote-header__back">back</div>
@@ -245,8 +246,8 @@ function Vote() {
               votedStickers={votedStickers}
             />
           </ul>
-        </div>
-      </main>
+        </main>
+      </Wrapper>
 
       <VoteModal
         visible={voteModalVisible}
