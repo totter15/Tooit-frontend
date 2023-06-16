@@ -1,0 +1,73 @@
+@import './index.scss';
+
+.edit-modal {
+  &.visible {
+    display: flex;
+    .edit-modal__background {
+      animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+  }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+  &__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  &__box {
+    font-family: 'Pretendard';
+    width: 550;
+    box-sizing: border-box;
+    background-color: white;
+    position: absolute;
+    border-radius: 10px;
+  }
+  &__input-box {
+    padding: 45px 40px 70px 40px;
+  }
+
+  &__button-box {
+    display: flex;
+    font-size: 1rem;
+    & > button {
+      cursor: pointer;
+      width: 50%;
+      padding: 20px 0;
+      &:first-child {
+        background-color: $card-3;
+        color: $main-blue;
+        border-bottom-left-radius: 10px;
+      }
+      &:last-child {
+        background-color: $main-blue;
+        color: white;
+        border-bottom-right-radius: 10px;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}

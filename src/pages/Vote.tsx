@@ -3,6 +3,8 @@ import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
 import VoteListItem from '../components/vote/VoteListItem';
 import ReVoteModal from '../components/vote/ReVoteModal';
+import VoteDeleteModal from '../components/vote/VoteDeleteModal';
+import VoteEditModal from '../components/VoteEditModal';
 
 export interface VotedSticker {
   id: number | null;
@@ -27,8 +29,23 @@ function Vote() {
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
+  const [menuVisible, setMenuVisible] = useState<boolean>(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
   const [votedStickers, setVotedStickers] = useState<VotedStickers>([]);
+
+  function shareToKaKaotalk() {
+    window.Kakao.Share.sendCustom({
+      templateId: 94915,
+      templateArgs: {
+        send_user: 'TOOIT',
+        vote_title: '오늘 머먹지?',
+        vote_id: 10,
+      },
+    });
+  }
 
   function stickerVoteHandler(item: number) {
     setSelectedSticker(item);
@@ -81,6 +98,23 @@ function Vote() {
     setRevoteModalVisible(false);
   }, []);
 
+  const deleteHandler = useCallback(() => {
+    // TODO : delete vote
+    setDeleteModalVisible(false);
+  }, []);
+
+  const deleteCancelHandler = useCallback(() => {
+    setDeleteModalVisible(false);
+  }, []);
+
+  const editHandler = useCallback(() => {
+    setEditModalVisible(false);
+  }, []);
+
+  const editCancelHandler = useCallback(() => {
+    setEditModalVisible(false);
+  }, []);
+
   return (
     <>
       <header>header</header>
@@ -89,20 +123,52 @@ function Vote() {
           <section className="vote-info">
             <section className="vote-header">
               <div className="vote-header__back">back</div>
-              <div className="vote-header__more">
+              <button
+                type="button"
+                className="vote-header__more"
+                onFocus={() => setMenuVisible(true)}
+                onBlur={() => setMenuVisible(false)}
+              >
                 <img src="menu.png" alt="menu" />
-              </div>
+                <div
+                  className={`vote-header__menu-box ${
+                    menuVisible && 'visible'
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onMouseDown={() => setDeleteModalVisible(true)}
+                  >
+                    삭제
+                  </button>
+                  <div />
+                  <button
+                    type="button"
+                    onMouseDown={() => setEditModalVisible(true)}
+                  >
+                    수정
+                  </button>
+                </div>
+              </button>
             </section>
 
             {/* VOTE-DESCRIPTION */}
             <div className="vote-description">
-              <h1 className="vote-description__title">안녕하세요</h1>
+              <h1 className="vote-description__title">
+                안녕하세요
+                <br />
+                어쩌구저쩌구
+              </h1>
               <span className="vote-description__subInfo">
                 <h3 className="vote-description__writer">by 익명</h3>
                 <h4 className="vote-description__date">2023.05.17</h4>
               </span>
               <p className="vote-description__description">
-                일이삼사오육칠팔구십 어쩌구저쩌구 두줄이고 세줄이 될 수도 있고
+                일이삼사오육칠팔구십 어쩌구저쩌구
+                <br />
+                두줄이고
+                <br />
+                세줄이 될 수도 있고
               </p>
             </div>
 
@@ -158,7 +224,7 @@ function Vote() {
 
             {/* BUTTON */}
             <section className="button-box">
-              <button type="button">
+              <button type="button" onClick={shareToKaKaotalk}>
                 <img src="share.png" alt="share" />
               </button>
               {/* TODO : 투표한 경우 다시투표 버튼 보이게 */}
@@ -170,6 +236,10 @@ function Vote() {
 
           {/* VOTE-LIST */}
           <ul className="vote-list">
+            <VoteListItem
+              stickerLocateHandler={stickerLocateHandler}
+              votedStickers={votedStickers}
+            />
             <VoteListItem
               stickerLocateHandler={stickerLocateHandler}
               votedStickers={votedStickers}
@@ -187,6 +257,16 @@ function Vote() {
         visible={revoteModalVisible}
         revoteCancelHandler={revoteCancelHandler}
         revoteHandler={revoteHandler}
+      />
+      <VoteDeleteModal
+        visible={deleteModalVisible}
+        deleteHandler={deleteHandler}
+        cancelHandler={deleteCancelHandler}
+      />
+      <VoteEditModal
+        visible={editModalVisible}
+        editHandler={editHandler}
+        cancelHandler={editCancelHandler}
       />
     </>
   );
