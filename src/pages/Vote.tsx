@@ -118,7 +118,6 @@ function Vote() {
 
   return (
     <>
-      <header>header</header>
       <Wrapper>
         <main className="vote">
           <section className="vote-info">

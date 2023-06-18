@@ -129,3 +129,6 @@ textarea {
   border: none;
   background: none;
 }
+button {
+  cursor: pointer;
+}

@@ -13,6 +13,10 @@ function VoteListItem({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [focusSticker, setFocusSticker] = useState<VotedSticker | null>(null);
 
+  function saveHandler() {
+    // TODO : 투표 이미지 저장 기능
+  }
+
   return (
     <li className="vote-list__item">
       <div
@@ -24,7 +28,7 @@ function VoteListItem({
         <div className="vote-list__item-title">
           <div className="vote-list__item-number">1</div>새우 껍질 주새우
         </div>
-        <button type="button">
+        <button type="button" onClick={saveHandler}>
           <img src="save.png" alt="save" />
         </button>
       </div>
@@ -47,6 +51,7 @@ function VoteListItem({
             onFocus={() => setFocusSticker(sticker)}
           >
             {sticker.id}
+            {/* TODO : comment가 잘리지 않게 잘릴것 같으면 position조정 */}
             {focusSticker?.id === sticker.id && (
               <div
                 className={`vote-list__item-sticker-description ${

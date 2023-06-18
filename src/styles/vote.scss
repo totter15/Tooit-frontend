@@ -5,11 +5,6 @@ $padding: 200 / $width * 100%;
 $vote-info-width: 490 / $width * 100%; //position:fixed라 전체 viewport에 대한 %
 $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 
-header {
-  height: 70px;
-  border-bottom: 1px solid gray;
-}
-
 .vote {
   padding-top: 32px;
   display: flex;
