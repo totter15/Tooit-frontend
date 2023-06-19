@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import Wrapper from '../components/vote/Wrapper';
+import Wrapper from '../components/Wrapper';
 import '../styles/my.scss';
 import MessageModal from '../components/MessageModal';
+import CommentModal from '../components/my/CommentModal';
 
 const votes = [1, 2, 3, 4, 5];
 
@@ -11,6 +12,8 @@ function My() {
 
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [closeModalVisible, setCloseModalVisible] = useState<boolean>(false);
+  const [commentModalVisible, setCommentModalVisible] =
+    useState<boolean>(false);
 
   function selectHandler(id: number) {
     const items = selected.includes(id)
@@ -27,6 +30,11 @@ function My() {
   const closeVoteHandler = useCallback(() => {
     // TODO : 투표 마감 기능
     setCloseModalVisible(false);
+  }, []);
+
+  const submitCommentHandler = useCallback(() => {
+    // TODO : 코멘트 입력 기능
+    setCommentModalVisible(false);
   }, []);
 
   return (
@@ -126,11 +134,15 @@ function My() {
                     </div>
                   </div>
                   <div className="item-detail__type-box">
-                    <div className="d-day">D-30</div>
+                    {/* <div className="d-day">D-30</div> */}
                     {/* <div className="review-done">소감 작성 완료</div> */}
-                    {/* <button type="button" className="review">
-                    소감 작성
-                  </button> */}
+                    <button
+                      type="button"
+                      className="review"
+                      onClick={() => setCommentModalVisible(true)}
+                    >
+                      소감 작성
+                    </button>
                   </div>
                   <div className="item-detail__line" />
                 </div>
@@ -155,6 +167,11 @@ function My() {
         buttonColor="#52588B"
         cancelHandler={() => setCloseModalVisible(false)}
         buttonHandler={closeVoteHandler}
+      />
+      <CommentModal
+        visible={commentModalVisible}
+        cancelHandler={() => setCommentModalVisible(false)}
+        submitHandler={submitCommentHandler}
       />
     </>
   );

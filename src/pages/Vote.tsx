@@ -5,7 +5,7 @@ import VoteListItem from '../components/vote/VoteListItem';
 import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
-import Wrapper from '../components/vote/Wrapper';
+import Wrapper from '../components/Wrapper';
 
 export interface VotedSticker {
   id: number | null;
