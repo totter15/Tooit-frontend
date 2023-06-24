@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Vote from './pages/Vote';
 import My from './pages/My';
 import Header from './components/Header';
+import Account from './pages/Account';
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +21,10 @@ function App() {
     {
       path: '/my',
       element: <My />,
+    },
+    {
+      path: '/account',
+      element: <Account />,
     },
   ]);
 

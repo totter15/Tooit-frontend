@@ -1,0 +1,119 @@
+@import './index.scss';
+
+.account {
+  text-align: center;
+  margin-top: 60px;
+
+  &__title {
+    @include title;
+    color: $main-blue;
+    margin-bottom: 120px;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+  }
+
+  &__profile {
+    position: relative;
+
+    width: 155px;
+    height: 155px;
+    border-radius: 20px;
+    background-color: $blue-4;
+    margin-right: 49px;
+  }
+
+  &__profile-none {
+    img {
+      width: 35px;
+      height: 35px;
+      margin-bottom: 8px;
+    }
+    div {
+      @include contents;
+      color: white;
+    }
+  }
+
+  &__profile-has {
+    padding: 0 25px;
+
+    img {
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      border-radius: 20px;
+    }
+    button {
+      font-family: Pretendard;
+      font-size: 0.875rem;
+      color: white;
+      width: 100%;
+      border: 1px solid white;
+      padding: 10px 0;
+      border-radius: 20px;
+      font-weight: 500;
+      &:first-child {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  &__nickname {
+    text-align: left;
+    width: 470px;
+
+    > label {
+      font-size: 1.125rem;
+      font-family: 'Pretendard';
+      color: $black;
+    }
+    div {
+      position: relative;
+
+      > input {
+        font-family: 'Pretendard';
+        font-size: 1.25rem;
+        margin-top: 18px;
+        width: 100%;
+        border: 1px solid $light-2;
+        padding: 6px 12px;
+        outline: none;
+        border-radius: 3.2px;
+      }
+      > div {
+        position: absolute;
+        bottom: 7px;
+        right: 7px;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  &__message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__save-message {
+    margin-right: 30px;
+    font-size: 1rem;
+    opacity: 0.5;
+  }
+
+  &__my-button {
+    text-decoration-line: none;
+    font-family: 'Pretendard';
+    font-size: 1rem;
+    color: $text-1;
+    padding: 15px 28px;
+    background-color: $card-1;
+    border-radius: 20px;
+  }
+}

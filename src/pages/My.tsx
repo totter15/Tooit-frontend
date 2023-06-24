@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import '../styles/my.scss';
 import MessageModal from '../components/MessageModal';
@@ -49,9 +50,9 @@ function My() {
             <div>
               <div className="my__profile-email">akdsjfh</div>
               <div className="my__profile-name">일이삼사오육칠팔구십 님</div>
-              <button className="my__profile-button" type="button">
+              <Link to="/account" className="my__profile-button">
                 내 정보 관리
-              </button>
+              </Link>
             </div>
           </section>
           <section className="vote-control-box">

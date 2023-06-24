@@ -6,6 +6,7 @@
   justify-content: space-between;
 
   &__profile-box {
+    position: relative;
     box-sizing: border-box;
     padding: 40px 40px 48px 40px;
     background-color: $card-3;
@@ -36,6 +37,9 @@
   &__profile-button {
     @include contents;
     color: $text-2;
+    text-decoration-line: none;
+    position: absolute;
+    bottom: 48px;
   }
 
   .vote-control-box {
