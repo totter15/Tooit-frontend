@@ -61,7 +61,7 @@ function My() {
                 type="button"
                 className={`${category === 'made' && 'select'}`}
               >
-                내가 만든 투표
+                내가 제작한 투표
               </button>
               <button
                 onClick={() => setCategory('vote')}

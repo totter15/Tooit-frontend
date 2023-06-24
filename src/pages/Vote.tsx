@@ -22,9 +22,7 @@ function Vote() {
   const voteItemWidth: number =
     (870 / 1520) * (windowWidth - windowWidth * padding);
 
-  const stickers: number[] = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-  ];
+  const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const graph: number[] = [8, 19, 9, 4];
   const graphTotal: number = graph.reduce((arr, cur) => arr + cur, 0);
 
