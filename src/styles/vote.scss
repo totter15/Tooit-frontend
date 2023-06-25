@@ -6,6 +6,7 @@ $vote-info-width: 490 / $width * 100%; //position:fixed라 전체 viewport에 �
 $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 
 .vote {
+  padding-right: 4%;
   padding-top: 32px;
   display: flex;
   justify-content: flex-end;
@@ -14,19 +15,19 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 .vote-info {
   width: $vote-info-width;
   position: fixed;
-  left: $padding;
+  left: 10%;
 }
 
 .vote-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   position: relative;
   &__back,
   &__more {
     cursor: pointer;
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,7 +62,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 }
 
 .vote-description {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
   &__title {
     font-family: 'Roboto';
@@ -69,30 +70,30 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     font-weight: 600;
     line-height: 130%;
     color: #242424;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   &__subInfo {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   &__writer {
     font-family: 'Pretendard';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     color: $text-2;
     margin-right: 24px;
   }
   &__date {
     font-family: 'Pretendard';
     font-weight: 400;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     letter-spacing: -0.6;
     color: $text-3;
   }
   &__description {
     font-family: 'Pretendard';
     font-weight: 500;
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 150%;
     color: $text-2;
   }
@@ -100,15 +101,15 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 .sub-title {
   font-family: 'Pretendard';
   font-weight: 700;
-  font-size: 1.125rem;
-  color: $point-text-2;
+  font-size: 1rem;
+  color: $text-1;
 }
 
 @mixin box {
   background-color: $card-3;
   border: 1px solid $card-2;
-  padding: 12px 40px;
-  border-radius: 20px;
+  padding: 14px 40px;
+  border-radius: 10px;
   margin-bottom: 12px;
 }
 
@@ -153,8 +154,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     gap: 20px 7%;
     margin-bottom: 30px;
     &__sticker {
-      width: 55px;
-      height: 55px;
       border-radius: 28px;
       border: 1px solid lightgray;
       display: flex;
@@ -173,7 +172,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     padding: 16px 26px;
     background-color: $card-2;
     border: 1px solid $card-1;
-    border-radius: 10px;
+    border-radius: 8px;
   }
   &__button-icon {
     width: 20px;
@@ -184,7 +183,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     margin-right: 24px;
   }
   &__button-text {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-family: 'Pretendard';
     font-weight: 500;
     color: $text-3;
@@ -202,6 +201,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 
   &__graph {
+    font-size: 0.875rem;
     display: flex;
     border: 2px solid $blue-3-graph;
     border-radius: 10px;
@@ -266,8 +266,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 }
 
 .vote-list {
-  width: $vote-list-width;
-
   &__item {
     margin-bottom: 32px;
   }
@@ -276,10 +274,10 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     display: flex;
     justify-content: space-between;
     font-family: 'Pretendard';
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     align-items: center;
-    padding: 12px 24px;
+    padding: 12px 30px;
     box-sizing: border-box;
     background-color: $card-3;
     border-radius: 20px;
@@ -298,9 +296,9 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 
   &__item-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
     background-color: $main-blue;
     display: flex;
     align-items: center;
@@ -310,9 +308,11 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 
   &__item-img {
-    width: 100%;
+    width: 80vh;
+    height: 80vh;
+    max-width: 870px;
+    max-height: 870px;
     background-color: $card-1;
-    padding-bottom: 100%;
     border-radius: 20px;
     overflow: hidden;
   }
@@ -347,7 +347,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       box-sizing: border-box;
       position: absolute;
       top: $sticker-width * 10;
-      width: 360px;
+      width: 300px;
       height: auto;
       background-color: white;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
@@ -358,11 +358,12 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       padding: 16px;
       border-radius: 10px;
       word-break: break-all;
+      font-size: 1rem;
     }
     &-nickname {
       font-family: 'Pretendard';
       font-weight: 500;
-      font-size: 0.875rem;
+      font-size: 1rem;
 
       display: flex;
       justify-content: flex-end;

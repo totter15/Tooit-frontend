@@ -21,6 +21,7 @@ function Vote() {
   const padding = 400 / 1920;
   const voteItemWidth: number =
     (870 / 1520) * (windowWidth - windowWidth * padding);
+  const stickerWidth: number = (55 / 1920) * windowWidth;
 
   const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const graph: number[] = [8, 19, 9, 4];
@@ -165,8 +166,6 @@ function Vote() {
                 일이삼사오육칠팔구십 어쩌구저쩌구
                 <br />
                 두줄이고
-                <br />
-                세줄이 될 수도 있고
               </p>
             </div>
 
@@ -185,6 +184,10 @@ function Vote() {
               <div className="sticker-list">
                 {stickers.map((item) => (
                   <button
+                    style={{
+                      width: stickerWidth,
+                      height: stickerWidth,
+                    }}
                     onClick={() => stickerVoteHandler(item)}
                     type="button"
                     className={`sticker-list__sticker ${
@@ -234,10 +237,6 @@ function Vote() {
 
           {/* VOTE-LIST */}
           <ul className="vote-list">
-            <VoteListItem
-              stickerLocateHandler={stickerLocateHandler}
-              votedStickers={votedStickers}
-            />
             <VoteListItem
               stickerLocateHandler={stickerLocateHandler}
               votedStickers={votedStickers}
