@@ -19,12 +19,7 @@ function VoteListItem({
 
   return (
     <li className="vote-list__item">
-      <div
-        onFocus={(e) => console.log(e)}
-        onMouseOver={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        className="vote-list__item-header"
-      >
+      <div onFocus={(e) => console.log(e)} className="vote-list__item-header">
         <div className="vote-list__item-title">
           <div className="vote-list__item-number">1</div>새우 껍질 주새우
         </div>
@@ -54,6 +49,10 @@ function VoteListItem({
             {/* TODO : comment가 잘리지 않게 잘릴것 같으면 position조정 */}
             {focusSticker?.id === sticker.id && (
               <div
+                style={{
+                  left: parseInt(sticker.x, 10) < 25 ? 0 : 'auto',
+                  right: parseInt(sticker.y, 10) > 75 ? 0 : 'auto',
+                }}
                 className={`vote-list__item-sticker-description ${
                   !sticker.nickname && 'no-comment'
                 }`}
@@ -68,6 +67,14 @@ function VoteListItem({
             )}
           </button>
         ))}
+        <button
+          onBlur={() => setIsHover(!isHover)}
+          onClick={() => setIsHover(true)}
+          type="button"
+          className="vote-list__item-info-button"
+        >
+          <img alt="info" />
+        </button>
         <div
           className={`vote-list__item-description-background ${
             isHover && 'visible'
