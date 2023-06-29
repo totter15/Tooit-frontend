@@ -18,7 +18,7 @@ function Header() {
           투표 만들기
         </button>
         <button className="loginUser" onClick={loginUserBtnHandler}>
-          <img alt="Person" src="too_it_icon/png/Person.png" />{' '}
+          <img alt="Person" src="too_it_icon/png/Person.png" />
         </button>
       </div>
     </header>
