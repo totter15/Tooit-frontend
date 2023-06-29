@@ -13,25 +13,26 @@ export default function SimpleSlider() {
     slidesToScroll: 1,
     autoplay: true,
   };
+
   return (
     <Slider {...settings}>
       <div className="carousel">
-        <div className="TitleImage">
+        <div className="carousel_image">
           <img alt="랜딩페이지" src="img\sampleImage1.png" />
         </div>
       </div>
       <div className="carousel">
-        <div className="TitleImage">
+        <div className="carousel_image">
           <img alt="랜딩페이지" src="img\sampleImage1.png" />
         </div>
       </div>
       <div className="carousel">
-        <div className="TitleImage">
+        <div className="carousel_image">
           <img alt="랜딩페이지" src="img\sampleImage1.png" />
         </div>
       </div>
       <div className="carousel">
-        <div className="TitleImage">
+        <div className="carousel_image">
           <img alt="랜딩페이지" src="img\sampleImage1.png" />
         </div>
       </div>
