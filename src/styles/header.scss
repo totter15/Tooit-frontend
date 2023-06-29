@@ -1,0 +1,44 @@
+@import './index.scss';
+
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80vw;
+  margin: 0 auto;
+}
+
+.header_title {
+  font-size: 28.15px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: $bold;
+  color: $main-blue;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btnMakeVote {
+  background-color: black;
+  color: white;
+  font-family: 'Pretendard';
+  font-style: normal;
+  height: 36px;
+  width: 133px;
+  font-size: 16px;
+  font-weight: $semi-bold;
+  border-radius: 20px;
+}
+
+.loginUser {
+  background-color: transparent;
+  border: none;
+  height: 32px;
+  width: 32px;
+  margin-left: 10px;
+}
