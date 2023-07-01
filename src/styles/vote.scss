@@ -318,12 +318,8 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 
   &__item-sticker {
-    $sticker-width: $vote-list-width * 0.2;
-
     cursor: pointer;
     transform: translate(-50%, -50%);
-    width: $sticker-width;
-    height: $sticker-width;
     border-radius: 50%;
     background-color: lightgray;
     display: flex;
@@ -347,8 +343,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       padding: 16px;
       box-sizing: border-box;
       position: absolute;
-      top: $sticker-width * 10;
-      left: 0;
       width: 300px;
       height: auto;
       background-color: white;

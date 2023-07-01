@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VotedStickers, VotedSticker } from '../../pages/Vote';
+import Sticker from './Sticker';
 
 interface VoteListItemProps {
   stickerLocateHandler: (e: any) => void;
@@ -12,10 +13,26 @@ function VoteListItem({
 }: VoteListItemProps) {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [focusSticker, setFocusSticker] = useState<VotedSticker | null>(null);
+  const [stickerSize, setStickerSize] = useState<string>('10.4vh');
 
   function saveHandler() {
     // TODO : 투표 이미지 저장 기능
   }
+
+  function getStickerSize() {
+    const number = votedStickers.length;
+
+    if (number < 20) return '10.4vh';
+    if (number >= 20 && number < 50) return '8.8vh';
+    if (number >= 50 && number < 100) return '7.2vh';
+    if (number >= 100) return '4.8vh';
+
+    return '10.4vh';
+  }
+
+  useEffect(() => {
+    setStickerSize(getStickerSize());
+  }, [votedStickers]);
 
   return (
     <li className="vote-list__item">
@@ -34,38 +51,12 @@ function VoteListItem({
         className="vote-list__item-img"
       >
         {votedStickers.map((sticker) => (
-          <button
-            type="button"
-            style={{
-              position: 'absolute',
-              top: sticker.y,
-              left: sticker.x,
-            }}
-            className="vote-list__item-sticker"
-            onBlur={() => setFocusSticker(null)}
-            onFocus={() => setFocusSticker(sticker)}
-          >
-            {sticker.id}
-            {/* TODO : comment가 잘리지 않게 잘릴것 같으면 position조정 */}
-            {focusSticker?.id === sticker.id && (
-              <div
-                style={{
-                  left: parseInt(sticker.x, 10) < 25 ? 0 : 'auto',
-                  right: parseInt(sticker.y, 10) > 75 ? 0 : 'auto',
-                }}
-                className={`vote-list__item-sticker-description ${
-                  !sticker.nickname && 'no-comment'
-                }`}
-              >
-                <div className={`vote-list__item-sticker-comment `}>
-                  {sticker.comment}
-                </div>
-                <div className="vote-list__item-sticker-nickname">
-                  by <div>{sticker.nickname}</div>
-                </div>
-              </div>
-            )}
-          </button>
+          <Sticker
+            sticker={sticker}
+            isFocused={sticker.id === focusSticker?.id}
+            stickerFocusHandler={(focus) => setFocusSticker(focus)}
+            stickerSize={stickerSize}
+          />
         ))}
         <button
           onBlur={() => setIsHover(!isHover)}
