@@ -5,6 +5,7 @@ interface ModalProps {
   visible: boolean;
   stickerMessageHandler: (nickname: string, comment: string) => void;
   stickerHandler: () => void;
+  backHandler: () => void;
 }
 
 interface InputProps {
@@ -16,6 +17,7 @@ function VoteModal({
   visible,
   stickerMessageHandler,
   stickerHandler,
+  backHandler,
 }: ModalProps) {
   const [input, setInput] = useState<InputProps>({ nickname: '', comment: '' });
 
@@ -38,7 +40,11 @@ function VoteModal({
       <div className="vote-modal__background" />
       <div className="vote-input-box">
         <form className="vote-input-box__form">
-          <button className="vote-input-box__back-btn" type="button">
+          <button
+            className="vote-input-box__back-btn"
+            type="button"
+            onClick={backHandler}
+          >
             back
           </button>
           <div className="vote-input-box__title-box">
@@ -59,6 +65,7 @@ function VoteModal({
             onChange={onChangeInputHandler}
             className="vote-input-box__comment"
             placeholder="투표에 대한 코멘트를 써주세요."
+            maxLength={60}
           />
         </form>
 

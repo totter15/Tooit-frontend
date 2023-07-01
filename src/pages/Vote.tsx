@@ -47,8 +47,8 @@ function Vote() {
     });
   }
 
-  function stickerVoteHandler(item: number) {
-    setSelectedSticker(item);
+  function stickerVoteHandler(id: number) {
+    setSelectedSticker(id);
   }
 
   const stickerLocateHandler = useCallback(
@@ -113,6 +113,14 @@ function Vote() {
 
   const editCancelHandler = useCallback(() => {
     setEditModalVisible(false);
+  }, []);
+
+  const voteCancelHandler = useCallback(() => {
+    setVoteModalVisible(false);
+    setVotedStickers(
+      votedStickers.filter((sticker) => sticker.id === selectedSticker),
+    );
+    setSelectedSticker(null);
   }, []);
 
   return (
@@ -249,6 +257,7 @@ function Vote() {
         visible={voteModalVisible}
         stickerMessageHandler={stickerMessageHandler}
         stickerHandler={stickerHandler}
+        backHandler={voteCancelHandler}
       />
       <ReVoteModal
         visible={revoteModalVisible}
