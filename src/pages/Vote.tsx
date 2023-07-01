@@ -18,9 +18,8 @@ export type VotedStickers = VotedSticker[] | [];
 
 function Vote() {
   const windowWidth: number = window.innerWidth;
-  const padding = 400 / 1920;
-  const voteItemWidth: number =
-    (870 / 1520) * (windowWidth - windowWidth * padding);
+  const windowHeight: number = window.innerHeight;
+  const voteItemWidth: number = windowHeight * 0.8;
   const stickerWidth: number = (55 / 1920) * windowWidth;
 
   const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
