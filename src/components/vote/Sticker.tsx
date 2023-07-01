@@ -92,6 +92,7 @@ function Sticker({
       className="vote-list__item-sticker"
       onBlur={() => stickerFocusHandler(null)}
       onFocus={() => stickerFocusHandler(sticker)}
+      onClick={(e) => e.stopPropagation()}
     >
       {sticker.id}
       {isFocused && (
