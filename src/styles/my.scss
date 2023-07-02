@@ -1,0 +1,230 @@
+@import './index.scss';
+
+.my {
+  padding-top: 100px;
+  display: flex;
+  justify-content: space-between;
+
+  &__profile-box {
+    position: relative;
+    box-sizing: border-box;
+    padding: 40px 40px 48px 40px;
+    background-color: $card-3;
+    border: 1px solid $card-2;
+    width: 442px;
+    display: flex;
+    border-radius: 20px;
+    align-self: flex-start;
+    margin-right: 40px;
+  }
+  &__profile-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 20px;
+    background-color: $card-1;
+    margin-right: 21px;
+  }
+  &__profile-email {
+    @include contents;
+    color: $point-text-2;
+    margin-bottom: 5px;
+  }
+  &__profile-name {
+    @include sub-title;
+    color: $text-1;
+    margin-bottom: 21px;
+  }
+  &__profile-button {
+    @include contents;
+    color: $text-2;
+    text-decoration-line: none;
+    position: absolute;
+    bottom: 48px;
+  }
+
+  .vote-control-box {
+    input {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-color: $blue-3;
+      margin: 0;
+      accent-color: $blue-3;
+    }
+    width: 63%;
+    &__button-box {
+      display: flex;
+      margin-bottom: 50px;
+      width: 360px;
+      border: 1px solid $blue-3;
+      border-radius: 10px;
+
+      button {
+        @include sub-title;
+        font-size: 1rem;
+        color: $blue-3;
+        padding: 11px 0;
+        width: 50%;
+        &:first-child {
+          border-right: 1px solid $blue-3;
+        }
+        &.select {
+          background-color: #b4b9f780;
+        }
+      }
+    }
+
+    &__vote-control {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 30px;
+      border-bottom: 1px solid $text-2;
+    }
+    &__control-button {
+      &.active > button {
+        &:first-child {
+          color: $text-1;
+        }
+        &:last-child {
+          color: #f24822;
+        }
+      }
+
+      > button {
+        @include sub-title;
+        color: $text-2;
+
+        &:first-child {
+          margin-right: 60px;
+        }
+      }
+    }
+
+    &__list-item {
+      position: relative;
+      &.select {
+        background-color: #f4f5fe;
+      }
+      display: flex;
+      padding: 30px 0;
+      > input {
+        margin-right: 45px;
+      }
+
+      .item-detail {
+        flex: 1;
+        &__thumbnail {
+          width: 80px;
+          height: 80px;
+          border-radius: 10px;
+          background-color: $card-3;
+          margin-right: 25px;
+        }
+        &__title {
+          @include sub-title;
+          color: $text-1;
+          margin-bottom: 5px;
+        }
+        &__description {
+          @include contents;
+          color: $point-text-2;
+          margin-bottom: 17px;
+        }
+        &__result {
+          @include contents;
+          color: $text-3;
+          display: flex;
+          div:first-child {
+            margin-right: 23px;
+            color: $text-2;
+          }
+        }
+        &__type-box {
+          width: 120px;
+          display: flex;
+          justify-content: center;
+        }
+        &__line {
+          bottom: 0;
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background-color: $text-3;
+          opacity: 0.2;
+        }
+      }
+      .d-day {
+        @include sub-title;
+        color: $main-blue;
+        padding: 8px 20px;
+        background-color: $blue-4;
+        border: 1px solid #a9adde;
+        border-radius: 20px;
+        align-self: center;
+      }
+      .review-done {
+        @include contents;
+        color: $text-3;
+        align-self: center;
+      }
+      .review {
+        @include sub-title;
+        color: $main-blue;
+        border: 1px solid $main-blue;
+        padding: 8px 20px;
+        border-radius: 20px;
+        align-self: center;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .my {
+    padding-top: 30px;
+    flex-direction: column;
+
+    &__profile-box {
+      width: 100%;
+      padding: 20px 19px 20px 15px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    &__profile-button {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    .vote-control-box {
+      width: 100%;
+
+      &__button-box {
+        width: 100%;
+        margin-bottom: 40px;
+      }
+
+      &__vote-control {
+        padding-bottom: 20px;
+        padding-left: 7.25px;
+
+        button:first-child {
+          margin-right: 30px;
+        }
+      }
+
+      &__list-item {
+        padding: 20px 0px;
+        input {
+          position: absolute;
+          left: 7.25px;
+          top: 27.25px;
+        }
+        .item-detail {
+          &__type-box {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

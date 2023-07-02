@@ -1,0 +1,100 @@
+@import './index.scss';
+
+.comment-modal {
+  &.visible {
+    display: flex;
+    .comment-modal__background {
+      animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+  }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  &__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  &__box {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: #242424;
+    position: absolute;
+    background-color: white;
+    width: 616px;
+    border-radius: 10px;
+
+    &-content {
+      position: relative;
+      padding: 30px 40px 32px;
+      h1 {
+        @include sub-title;
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      textarea {
+        height: 183px;
+        border: 1px solid #f1f1f1;
+        width: 100%;
+        border-radius: 10px;
+        padding: 11px 18px;
+        box-sizing: border-box;
+        resize: none;
+        font-family: 'Pretendard';
+        font-weight: 500;
+        font-size: 0.875rem;
+        outline: none;
+      }
+    }
+  }
+  &__comment-length {
+    position: absolute;
+    right: 55px;
+    bottom: 42px;
+    @include contents;
+    color: $text-3;
+  }
+  &__button-box {
+    & > button {
+      font-family: 'Pretendard';
+      font-weight: 500;
+      width: 50%;
+      padding: 20px 0;
+      font-size: 1rem;
+      &:first-child {
+        color: $main-blue;
+        background-color: $card-3;
+        border-bottom-left-radius: 10px;
+      }
+      &:last-child {
+        color: white;
+        background-color: $main-blue;
+        border-bottom-right-radius: 10px;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
