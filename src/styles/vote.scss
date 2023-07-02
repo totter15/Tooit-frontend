@@ -1,0 +1,412 @@
+@import './index.scss';
+
+$width: 1920;
+$padding: 200 / $width * 100%;
+$vote-info-width: 490 / $width * 100%; //position:fixed라 전체 viewport에 대한 %
+$vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
+
+.vote {
+  padding-right: 4%;
+  padding-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.vote-info {
+  width: $vote-info-width;
+  position: fixed;
+  left: 10%;
+}
+
+.vote-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+  &__back,
+  &__more {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__menu-box {
+    &.visible {
+      display: flex;
+    }
+    display: none;
+    position: absolute;
+    align-items: center;
+    top: 100%;
+    right: 0;
+    border: 1px solid $card-2;
+    width: 192px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.04);
+    & > button {
+      font-family: 'Pretendard';
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: #6f7087;
+      width: 50%;
+      padding: 16px 0;
+    }
+    & > div {
+      height: 27px;
+      width: 1px;
+      background-color: $card-2;
+    }
+  }
+}
+
+.vote-description {
+  margin-bottom: 30px;
+
+  &__title {
+    font-family: 'Roboto';
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 130%;
+    color: #242424;
+    margin-bottom: 16px;
+  }
+  &__subInfo {
+    display: flex;
+    margin-bottom: 16px;
+  }
+  &__writer {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: $text-2;
+    margin-right: 24px;
+  }
+  &__date {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-size: 0.875rem;
+    letter-spacing: -0.6;
+    color: $text-3;
+  }
+  &__description {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 150%;
+    color: $text-2;
+  }
+}
+.sub-title {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-size: 1rem;
+  color: $text-1;
+}
+
+@mixin box {
+  background-color: $card-3;
+  border: 1px solid $card-2;
+  padding: 14px 40px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.deadline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include box;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  .sub-title {
+    margin-right: 16px;
+  }
+  &__date {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: $text-3;
+  }
+  &__dday {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: $main-blue;
+  }
+}
+
+.sticker-box {
+  @include box;
+  padding: 20px 40px;
+  .sub-title {
+    margin-bottom: 16px;
+  }
+
+  .sticker-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 7%;
+    margin-bottom: 30px;
+    &__sticker {
+      border-radius: 28px;
+      border: 1px solid lightgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.selected {
+        background-color: $blue-4;
+        opacity: 0.5;
+      }
+    }
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    padding: 16px 26px;
+    background-color: $card-2;
+    border: 1px solid $card-1;
+    border-radius: 8px;
+  }
+  &__button-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 24px;
+  }
+  &__button-text {
+    font-size: 0.875rem;
+    font-family: 'Pretendard';
+    font-weight: 500;
+    color: $text-3;
+  }
+}
+
+.vote-result {
+  @include box;
+  padding: 20px 40px;
+  background-color: $main-blue;
+
+  .sub-title {
+    color: white;
+    margin-bottom: 18px;
+  }
+
+  &__graph {
+    font-size: 0.875rem;
+    display: flex;
+    border: 2px solid $blue-3-graph;
+    border-radius: 10px;
+  }
+
+  &__graph-item {
+    padding: 12px;
+  }
+  &__graph-item:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &__graph-item:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  &__graph-item:nth-child(1) {
+    background-color: $blue-4;
+  }
+  &__graph-item:nth-child(2) {
+    background-color: $blue-3;
+  }
+  &__graph-item:nth-child(3) {
+    background-color: $blue-2;
+    color: white;
+  }
+  &__graph-item:nth-child(4) {
+    background-color: $blue-1;
+    color: white;
+  }
+}
+
+.button-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    cursor: pointer;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $card-1;
+    border-radius: 36px;
+    background-color: $card-2;
+    &:last-child {
+      width: auto;
+      height: 60px;
+      font-family: 'Pretendard';
+      line-height: 150%;
+      color: $point-text-2;
+      font-weight: 700;
+      font-size: 1.125rem;
+      padding: 16px 32px;
+      box-sizing: border-box;
+      border-radius: 20px;
+    }
+  }
+}
+
+.vote-list {
+  &__item {
+    margin-bottom: 32px;
+  }
+
+  &__item-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Pretendard';
+    font-size: 1rem;
+    font-weight: 600;
+    align-items: center;
+    padding: 12px 30px;
+    box-sizing: border-box;
+    background-color: $card-3;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    border: 1px solid #f1f1f1;
+    &:hover {
+      border-color: $blue-4;
+    }
+  }
+
+  &__item-title {
+    display: flex;
+    align-items: center;
+    color: $main-blue;
+    font-weight: 600;
+  }
+
+  &__item-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: $main-blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 12px;
+  }
+
+  &__item-img {
+    width: 80vh;
+    height: 80vh;
+    max-width: 870px;
+    max-height: 870px;
+    background-color: $card-1;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  &__item-sticker {
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-description {
+      z-index: 10;
+      &.no-comment {
+        border-radius: 10px;
+        width: auto;
+        max-width: 180px;
+        .vote-list__item-sticker-comment {
+          display: none;
+        }
+        .vote-list__item-sticker-nickname {
+          margin: 0;
+        }
+      }
+
+      padding: 16px;
+      box-sizing: border-box;
+      position: absolute;
+      width: 300px;
+      height: auto;
+      background-color: white;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+    }
+    &-comment {
+      background-color: $card-2;
+      padding: 16px;
+      border-radius: 10px;
+      word-break: break-all;
+      font-size: 1rem;
+    }
+    &-nickname {
+      font-family: 'Pretendard';
+      font-weight: 500;
+      font-size: 1rem;
+
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+      color: $point-text-2;
+      > div {
+        margin-left: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $main-blue;
+      }
+    }
+  }
+
+  &__item-info-button {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    background-color: #b5b5b5;
+    z-index: 1;
+  }
+
+  &__item-description-background {
+    &.visible {
+      display: flex;
+    }
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.6;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__item-description {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 150%;
+    text-align: center;
+    width: 36%;
+    color: white;
+  }
+}

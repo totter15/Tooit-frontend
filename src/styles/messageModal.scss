@@ -1,0 +1,73 @@
+@import './index.scss';
+
+.messageModal {
+  &.visible {
+    display: flex;
+    .messageModal__background {
+      animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+  }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+  &__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  &__box {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: $text-1;
+    position: absolute;
+    background-color: white;
+    width: 518px;
+    border-radius: 10px;
+    filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.08));
+  }
+  &__message {
+    text-align: center;
+    padding: 80px 0;
+  }
+  &__button-box {
+    & > button {
+      width: 50%;
+      padding: 20px 0;
+      font-size: 1rem;
+      &:first-child {
+        background-color: $card-3;
+        border-bottom-left-radius: 10px;
+      }
+      &:last-child {
+        color: white;
+        background-color: $red;
+        border-bottom-right-radius: 10px;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
