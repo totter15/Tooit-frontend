@@ -64,7 +64,7 @@ function VoteListItem({
           type="button"
           className="vote-list__item-info-button"
         >
-          <img alt="info" />
+          <img alt="info" src="vote_item_info.png" />
         </button>
         <div
           className={`vote-list__item-description-background ${
