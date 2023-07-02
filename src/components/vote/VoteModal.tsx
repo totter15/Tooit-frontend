@@ -45,6 +45,12 @@ function VoteModal({
     }
   }
 
+  function modalBackHandler() {
+    backHandler();
+    setInput({ nickname: '', comment: '' });
+    setIsAnonymouse(false);
+  }
+
   return (
     <div className={`vote-modal ${visible && 'visible'}`}>
       <div className="vote-modal__background" />
@@ -53,7 +59,7 @@ function VoteModal({
           <button
             className="vote-input-box__back-btn"
             type="button"
-            onClick={backHandler}
+            onClick={modalBackHandler}
           >
             <img alt="back" src="arrow_back.png" />
           </button>
@@ -73,7 +79,12 @@ function VoteModal({
             />
             <div className="vote-input-box__nickname-checkbox">
               <span>익명</span>
-              <input type="checkbox" id="check" onChange={anonymouseHandler} />
+              <input
+                type="checkbox"
+                id="check"
+                onChange={anonymouseHandler}
+                checked={isAnonymous}
+              />
               <label htmlFor="check" />
             </div>
           </div>
