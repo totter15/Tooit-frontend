@@ -56,7 +56,6 @@
       height: 32px;
       margin-bottom: 20px;
       padding: 0;
-      border: 1px solid lightgray;
       background-color: white;
     }
     &__title-box {
@@ -92,6 +91,9 @@
       color: #9ba1b4;
     }
 
+    &__input {
+      position: relative;
+    }
     &__nickname,
     &__comment {
       display: block;
@@ -101,14 +103,61 @@
       border: 1px solid $card-2;
       border-radius: 10px;
       outline-style: none;
+      font-size: 0.875rem;
+      font-family: 'Pretendard';
+      font-weight: 500;
+      &::placeholder {
+        color: #bbb;
+      }
     }
     &__nickname {
       margin-bottom: 12px;
+      &:disabled {
+        color: #bbb;
+        font-weight: 500;
+      }
+    }
+    &__nickname-checkbox {
+      position: absolute;
+      top: 9px;
+      right: 16px;
+      font-family: 'Pretendard';
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6a6a6a;
+      display: flex;
+      align-items: center;
+      span {
+        margin-right: 7px;
+      }
+      input {
+        display: none;
+      }
+      input + label {
+        cursor: pointer;
+        background-image: url('../../public/checkbox_circle_off.png');
+        background-size: contain;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        position: relative;
+      }
+      input:checked + label {
+        background-image: url('../../public/checkbox_circle_on.png');
+      }
     }
     &__comment {
       height: 180px;
       margin-bottom: 32px;
       resize: none;
+    }
+    &__comment-length {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-family: 'Pretendard';
+      font-size: 0.875rem;
+      color: $text-3;
     }
 
     &__button-box {
