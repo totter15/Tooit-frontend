@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
 import VoteListItem from '../components/vote/VoteListItem';
@@ -11,12 +11,14 @@ export interface VotedSticker {
   id: number | null;
   x: string;
   y: string;
+  img?: string;
   nickname?: string;
   comment?: string;
 }
 export type VotedStickers = VotedSticker[] | [];
 
 function Vote() {
+  const fileRef = useRef<HTMLInputElement>(null);
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
   const voteItemWidth: number = windowHeight * 0.8;
@@ -35,6 +37,11 @@ function Vote() {
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
   const [votedStickers, setVotedStickers] = useState<VotedStickers>([]);
 
+  const [uploadSticker, setUploadSticker] = useState<{
+    file: File;
+    imagePreviewUrl: string;
+  } | null>(null);
+
   function shareToKaKaotalk() {
     window.Kakao.Share.sendCustom({
       templateId: 94915,
@@ -52,7 +59,7 @@ function Vote() {
 
   const stickerLocateHandler = useCallback(
     (e: any) => {
-      if (!selectedSticker) return;
+      if (!selectedSticker && !uploadSticker) return;
 
       setVotedStickers([
         ...votedStickers,
@@ -60,11 +67,14 @@ function Vote() {
           id: selectedSticker,
           x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
           y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
+          img: uploadSticker ? uploadSticker?.imagePreviewUrl : '',
+          nickname: '익명',
         },
       ]);
       setVoteModalVisible(true);
+      setUploadSticker(null);
     },
-    [votedStickers, selectedSticker],
+    [votedStickers, selectedSticker, uploadSticker],
   );
 
   const stickerMessageHandler = useCallback(
@@ -79,6 +89,7 @@ function Vote() {
 
       setVoteModalVisible(false);
       setSelectedSticker(null);
+      setUploadSticker(null);
     },
     [votedStickers],
   );
@@ -121,6 +132,25 @@ function Vote() {
     );
     setSelectedSticker(null);
   }, []);
+
+  const fileHandler = () => {
+    if (fileRef) {
+      setSelectedSticker(null);
+      fileRef.current?.click();
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imagePreviewUrl: string = reader.result as string;
+        setUploadSticker({ file, imagePreviewUrl });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <>
@@ -205,14 +235,46 @@ function Vote() {
                   </button>
                 ))}
               </div>
-              <div className="sticker-box__button">
-                <div className="sticker-box__button-icon">
-                  <img src="add_plus.png" alt="plus" />
+              {uploadSticker ? (
+                <div className="sticker-box__upload-sticker-box">
+                  <img
+                    className="sticker-box__upload-sticker"
+                    src={uploadSticker?.imagePreviewUrl}
+                    alt="upload_sticker"
+                  />
+                  <span className="sticker-box__sticker-name">
+                    {uploadSticker?.file.name}
+                  </span>
+                  <button
+                    type="button"
+                    className="sticker-box__delete-button"
+                    onClick={() => setUploadSticker(null)}
+                  >
+                    <img alt="delete_sicker" src="delete_sticker.png" />
+                  </button>
                 </div>
-                <button type="button" className="sticker-box__button-text">
+              ) : (
+                <button
+                  type="button"
+                  className="sticker-box__button"
+                  onClick={fileHandler}
+                >
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    ref={fileRef}
+                    onChange={handleChange}
+                    accept="image/png"
+                    style={{ display: 'none' }}
+                  />
+                  <img
+                    className="sticker-box__button-icon"
+                    src="add_plus.png"
+                    alt="plus"
+                  />
                   PNG 스티커 만들기
                 </button>
-              </div>
+              )}
             </section>
 
             {/* VOTE-RESULT */}

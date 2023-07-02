@@ -14,7 +14,7 @@ function Sticker({
   stickerFocusHandler,
   stickerSize,
 }: StickerProps) {
-  const { x, y, nickname, comment } = sticker;
+  const { x, y, nickname, comment, img } = sticker;
 
   const [descriptionHeight, setDescriptionHeight] = useState<
     number | undefined
@@ -92,7 +92,9 @@ function Sticker({
       className="vote-list__item-sticker"
       onBlur={() => stickerFocusHandler(null)}
       onFocus={() => stickerFocusHandler(sticker)}
+      onClick={(e) => e.stopPropagation()}
     >
+      <img alt="sticker" src={img} />
       {sticker.id}
       {isFocused && (
         <div

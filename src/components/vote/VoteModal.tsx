@@ -20,6 +20,7 @@ function VoteModal({
   backHandler,
 }: ModalProps) {
   const [input, setInput] = useState<InputProps>({ nickname: '', comment: '' });
+  const [isAnonymous, setIsAnonymouse] = useState<boolean>(false);
 
   function voteHandler() {
     stickerHandler();
@@ -35,6 +36,21 @@ function VoteModal({
     setInput({ ...input, [e.target.name]: e.target.value });
   }
 
+  function anonymouseHandler(e: any) {
+    setIsAnonymouse(e.target.checked);
+    if (e.target.checked) {
+      setInput({ ...input, nickname: '익명' });
+    } else {
+      setInput({ ...input, nickname: '' });
+    }
+  }
+
+  function modalBackHandler() {
+    backHandler();
+    setInput({ nickname: '', comment: '' });
+    setIsAnonymouse(false);
+  }
+
   return (
     <div className={`vote-modal ${visible && 'visible'}`}>
       <div className="vote-modal__background" />
@@ -43,30 +59,48 @@ function VoteModal({
           <button
             className="vote-input-box__back-btn"
             type="button"
-            onClick={backHandler}
+            onClick={modalBackHandler}
           >
-            back
+            <img alt="back" src="arrow_back.png" />
           </button>
           <div className="vote-input-box__title-box">
             <div className="vote-input-box__number">1</div>
             <div className="vote-input-box__vote-title">새우 껍질 주새우</div>
             <div className="vote-input-box__select">선택</div>
           </div>
-          <input
-            name="nickname"
-            value={input.nickname}
-            onChange={onChangeInputHandler}
-            className="vote-input-box__nickname"
-            placeholder="닉네임을 입력해 주세요."
-          />
-          <textarea
-            name="comment"
-            value={input.comment}
-            onChange={onChangeInputHandler}
-            className="vote-input-box__comment"
-            placeholder="투표에 대한 코멘트를 써주세요."
-            maxLength={60}
-          />
+          <div className="vote-input-box__input">
+            <input
+              name="nickname"
+              value={input.nickname}
+              onChange={onChangeInputHandler}
+              className="vote-input-box__nickname"
+              placeholder="닉네임을 입력해 주세요."
+              disabled={isAnonymous}
+            />
+            <div className="vote-input-box__nickname-checkbox">
+              <span>익명</span>
+              <input
+                type="checkbox"
+                id="check"
+                onChange={anonymouseHandler}
+                checked={isAnonymous}
+              />
+              <label htmlFor="check" />
+            </div>
+          </div>
+          <div className="vote-input-box__input">
+            <textarea
+              name="comment"
+              value={input.comment}
+              onChange={onChangeInputHandler}
+              className="vote-input-box__comment"
+              placeholder="투표에 대한 코멘트를 써주세요."
+              maxLength={60}
+            />
+            <span className="vote-input-box__comment-length">
+              {input.comment.length}/60
+            </span>
+          </div>
         </form>
 
         <div className="vote-input-box__button-box">
