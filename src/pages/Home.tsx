@@ -40,7 +40,7 @@ function Home() {
         <div className="vote_rows">
           <div className="cards_row">
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -59,7 +59,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -78,7 +78,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -97,7 +97,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -118,7 +118,7 @@ function Home() {
           </div>
           <div className="cards_row">
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -137,7 +137,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -156,7 +156,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />
@@ -175,7 +175,7 @@ function Home() {
               </Link>
             </div>
             <div className="vote_card">
-              <Link to="/about">
+              <Link to="/vote">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />

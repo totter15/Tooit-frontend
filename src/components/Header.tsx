@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/header.scss';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const logoutBtnHandler = () => {
@@ -17,7 +18,9 @@ function Header() {
 
   return (
     <header>
-      <div className="header_title">Too it!</div>
+      <a href="/home">
+        <div className="header_title">Too it!</div>
+      </a>
       <div className="buttons">
         <button className="btnLogout" onClick={logoutBtnHandler}>
           로그아웃

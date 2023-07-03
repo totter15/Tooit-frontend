@@ -2,6 +2,7 @@ import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import Start from './pages/Start';
+import MakeVote from './pages/MakeVote';
 import Header from './components/Header';
 
 function App() {
@@ -14,6 +15,11 @@ function App() {
     {
       path: '/home',
       element: <Home />,
+      errorElement: <div>404 Not Found</div>,
+    },
+    {
+      path: '/makeVote',
+      element: <MakeVote />,
       errorElement: <div>404 Not Found</div>,
     },
   ]);
