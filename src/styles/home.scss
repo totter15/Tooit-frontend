@@ -4,26 +4,26 @@
 .vote_container {
   width: 70vw;
   margin: 0 auto;
+
+  &button {
+    border: 0;
+    background-color: transparent;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-size: 20px;
+    color: $point-text-2;
+    font-weight: $medium;
+
+    &.select {
+      color: $main-blue;
+      font-weight: $bold;
+    }
+  }
 }
 
 .vote_btn_container {
   display: flex;
   margin: 30px;
-}
-
-button {
-  border: 0;
-  background-color: transparent;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-size: 20px;
-  color: $point-text-2;
-  font-weight: $medium;
-
-  &.select {
-    color: $main-blue;
-    font-weight: $bold;
-  }
 }
 
 .new {
