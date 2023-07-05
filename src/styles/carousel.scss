@@ -1,0 +1,14 @@
+@import './index.scss';
+
+.carousel {
+  height: 400px;
+  width: 100vw;
+  background-color: $blue-1;
+}
+
+.carousel_image {
+  height: 400px;
+  width: 600px;
+  background-color: white;
+  margin: auto;
+}

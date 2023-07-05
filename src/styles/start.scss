@@ -1,0 +1,57 @@
+@import './index.scss';
+
+.start_container {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start_elements {
+  height: 500px;
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.start_title {
+  color: $main-blue;
+  font-weight: $bold;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-size: 90px;
+}
+
+.start_text_medium {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-size: 32px;
+  font-weight: $medium;
+  color: black;
+  margin-bottom: -70px;
+}
+
+.start_text_regular {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-size: 16px;
+  font-weight: $regular;
+  color: #191f28;
+}
+
+.start_snsBtns {
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
+
+  & > button {
+    background-color: #b4b9f7;
+    height: 113px;
+    width: 113px;
+    border-radius: 15px;
+    border: none;
+  }
+}
