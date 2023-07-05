@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import '../styles/header.scss';
-
-function Header() {
-  return <header>header</header>;
-=======
 import React, { useState } from 'react';
 import '../styles/header.scss';
 import { Link } from 'react-router-dom';
@@ -41,6 +34,5 @@ function Header() {
       </div>
     </header>
   );
->>>>>>> feature/home
 }
 export default Header;

@@ -2,16 +2,12 @@ import React from 'react';
 import './App.scss';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
-<<<<<<< HEAD
 import Vote from './pages/Vote';
 import My from './pages/My';
 import Header from './components/Header';
 import Account from './pages/Account';
-=======
 import Start from './pages/Start';
 import MakeVote from './pages/MakeVote';
-import Header from './components/Header';
->>>>>>> feature/home
 
 function App() {
   const router = createBrowserRouter([
@@ -23,10 +19,12 @@ function App() {
     {
       path: '/home',
       element: <Home />,
-      errorElement: <div>404 Not Found</div>,
     },
     {
-<<<<<<< HEAD
+      path: '/makeVote',
+      element: <MakeVote />,
+    },
+    {
       path: '/vote',
       element: <Vote />,
     },
@@ -37,11 +35,6 @@ function App() {
     {
       path: '/account',
       element: <Account />,
-=======
-      path: '/makeVote',
-      element: <MakeVote />,
-      errorElement: <div>404 Not Found</div>,
->>>>>>> feature/home
     },
   ]);
 
