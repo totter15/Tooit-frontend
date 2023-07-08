@@ -70,3 +70,21 @@
     background: rgba(0, 0, 0, 0);
   }
 }
+
+@include mobile {
+  .delete-modal {
+    &__box {
+      width: 90%;
+      font-size: 0.875rem;
+    }
+    &__box-text {
+      padding: 60px 0;
+    }
+    &__button-box {
+      button {
+        font-size: 0.875rem;
+        padding: 18px;
+      }
+    }
+  }
+}
