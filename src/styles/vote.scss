@@ -592,11 +592,14 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       }
     }
   }
-  .deadline {
+
+  .deadline-share {
     order: -1;
+    margin-bottom: 17px;
+  }
+  .deadline {
     background-color: white;
     padding: 8px 16px;
-    margin-bottom: 17px;
     border-radius: 8px;
     .sub-title {
       color: $text-2;
@@ -609,6 +612,16 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     &__dday {
       font-size: 1rem;
       font-weight: 800;
+    }
+  }
+
+  .share-btn {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -700,11 +713,16 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   .vote-result.mobile {
     @include box;
     @include vote-result;
+    background-color: $main-blue;
     display: block;
     padding: 16px;
     padding-bottom: 22px;
     margin-top: 16px;
+    .vote-result__graph {
+      border: 2px solid $blue-3-graph;
+    }
     .sub-title {
+      color: white;
       font-size: 0.875rem;
       margin-bottom: 10px;
       font-weight: 600;

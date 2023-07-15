@@ -41,7 +41,9 @@ function VoteListItem({
       <div onFocus={(e) => console.log(e)} className="vote-list__item-header">
         <div className="vote-list__item-title">
           <div className="vote-list__item-number">1</div>새우 껍질 주새우
-          <span className="vote-list__item-percent">4표 (20%)</span>
+          {!isTablet && (
+            <span className="vote-list__item-percent">4표 (20%)</span>
+          )}
         </div>
         <button type="button" onClick={saveHandler}>
           <img src="save.png" alt="save" />

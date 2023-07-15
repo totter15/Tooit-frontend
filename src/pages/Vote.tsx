@@ -23,7 +23,7 @@ function Vote() {
   const fileRef = useRef<HTMLInputElement>(null);
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
-  const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.8;
+  const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
   const stickerWidth: number = (55 / 1920) * windowWidth;
 
   const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
