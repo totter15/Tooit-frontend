@@ -78,3 +78,23 @@
     background: rgba(0, 0, 0, 0);
   }
 }
+
+@include mobile {
+  .revote-modal {
+    &__message-box {
+      width: 90%;
+      font-size: 0.875rem;
+    }
+    &__message {
+      word-break: keep-all;
+      font-size: 0.875rem;
+      padding: 60px 32px;
+    }
+    &__button-box {
+      button {
+        font-size: 0.875rem;
+        padding: 18px;
+      }
+    }
+  }
+}

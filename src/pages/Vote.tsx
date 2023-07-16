@@ -6,6 +6,7 @@ import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
 import Wrapper from '../components/Wrapper';
+import useResponsive from '../hooks/useResponsive';
 
 export interface VotedSticker {
   id: number | null;
@@ -18,14 +19,15 @@ export interface VotedSticker {
 export type VotedStickers = VotedSticker[] | [];
 
 function Vote() {
+  const { isTablet } = useResponsive();
   const fileRef = useRef<HTMLInputElement>(null);
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
-  const voteItemWidth: number = windowHeight * 0.8;
+  const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
   const stickerWidth: number = (55 / 1920) * windowWidth;
 
   const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const graph: number[] = [8, 19, 9, 4];
+  const graph: number[] = [1, 2, 3, 4];
   const graphTotal: number = graph.reduce((arr, cur) => arr + cur, 0);
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
@@ -33,6 +35,7 @@ function Vote() {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [isVoted, setIsVoted] = useState<boolean>(false);
 
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
   const [votedStickers, setVotedStickers] = useState<VotedStickers>([]);
@@ -73,6 +76,7 @@ function Vote() {
       ]);
       setVoteModalVisible(true);
       setUploadSticker(null);
+      setIsVoted(true);
     },
     [votedStickers, selectedSticker, uploadSticker],
   );
@@ -105,6 +109,7 @@ function Vote() {
 
   const revoteHandler = useCallback(() => {
     // TODO : revote
+    setIsVoted(false);
     setRevoteModalVisible(false);
   }, []);
 
@@ -158,7 +163,9 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <section className="vote-header">
-              <div className="vote-header__back">back</div>
+              <div className="vote-header__back">
+                <img src="arrow_back.png" alt="back" />
+              </div>
               <button
                 type="button"
                 className="vote-header__more"
@@ -207,35 +214,67 @@ function Vote() {
             </div>
 
             {/* DEADLINE */}
-            <section className="deadline">
-              <div>
-                <h3 className="sub-title">마감일</h3>
-                <div className="deadline__date">2023.05.20</div>
-              </div>
-              <div className="deadline__dday">D-6</div>
-            </section>
+            <div className="deadline-share">
+              <section className="deadline">
+                <div>
+                  <h3 className="sub-title">마감일</h3>
+                  <div className="deadline__date">2023.05.20</div>
+                </div>
+                <div className="deadline__dday">D-6</div>
+              </section>
+              <button
+                className="share-btn"
+                type="button"
+                onClick={shareToKaKaotalk}
+              >
+                <img src="share.png" alt="share" />
+              </button>
+            </div>
 
             {/* STICKERS */}
             <section className="sticker-box">
-              <h3 className="sub-title">스티커</h3>
-              <div className="sticker-list">
-                {stickers.map((item) => (
-                  <button
-                    style={{
-                      width: stickerWidth,
-                      height: stickerWidth,
-                    }}
-                    onClick={() => stickerVoteHandler(item)}
-                    type="button"
-                    className={`sticker-list__sticker ${
-                      selectedSticker === item && 'selected'
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-              {uploadSticker ? (
+              <h3 className="sub-title">{isVoted ? '내 투표' : '스티커'}</h3>
+              {isVoted ? (
+                <section className="voted-sticker-info">
+                  <img alt="voted-sticker" />
+                  <div className="voted-sticker-info__info">
+                    <div className="voted-sticker-info__info-title">
+                      <div>1</div>
+                      <span>투표한 아이템 이름</span>
+                    </div>
+                    <p>
+                      일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
+                    </p>
+                  </div>
+                </section>
+              ) : (
+                <div className="sticker-list">
+                  {stickers.map((item) => (
+                    <button
+                      style={{
+                        width: stickerWidth,
+                        height: stickerWidth,
+                      }}
+                      onClick={() => stickerVoteHandler(item)}
+                      type="button"
+                      className={`sticker-list__sticker ${
+                        selectedSticker === item && 'selected'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {isVoted ? (
+                <button
+                  type="button"
+                  className="sticker-box__button done"
+                  onClick={() => setRevoteModalVisible(true)}
+                >
+                  다시 투표
+                </button>
+              ) : uploadSticker ? (
                 <div className="sticker-box__upload-sticker-box">
                   <img
                     className="sticker-box__upload-sticker"
@@ -279,28 +318,16 @@ function Vote() {
 
             {/* VOTE-RESULT */}
             <section className="vote-result">
-              <div className="sub-title">투표 현황</div>
               <ul className="vote-result__graph">
                 {graph.map((item) => (
                   <li
                     style={{ width: `${(item / graphTotal) * 100}%` }}
                     className="vote-result__graph-item"
                   >
-                    {item}
+                    <div>{item}</div>
                   </li>
                 ))}
               </ul>
-            </section>
-
-            {/* BUTTON */}
-            <section className="button-box">
-              <button type="button" onClick={shareToKaKaotalk}>
-                <img src="share.png" alt="share" />
-              </button>
-              {/* TODO : 투표한 경우 다시투표 버튼 보이게 */}
-              <button type="button" onClick={() => setRevoteModalVisible(true)}>
-                다시투표
-              </button>
             </section>
           </section>
 
@@ -311,6 +338,90 @@ function Vote() {
               votedStickers={votedStickers}
             />
           </ul>
+
+          {/* MOBILE */}
+          <section className="vote-result mobile">
+            <div className="sub-title">투표 현황</div>
+            <ul className="vote-result__graph">
+              {graph.map((item) => (
+                <li
+                  style={{ width: `${(item / graphTotal) * 100}%` }}
+                  className="vote-result__graph-item"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section className="sticker-box-mobile">
+            {isVoted ? (
+              <section className="voted-sticker-info">
+                <img alt="voted-sticker" />
+                <div className="voted-sticker-info__info">
+                  <div className="voted-sticker-info__info-title">
+                    <div>1</div>
+                    <span>아이템 adsfadsf adsfadskfndksnadfkls</span>
+                  </div>
+                  <p>
+                    일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setRevoteModalVisible(true)}
+                >
+                  다시 투표
+                </button>
+              </section>
+            ) : uploadSticker ? (
+              <section className="sticker-box-mobile__upload-sticker-box">
+                <img
+                  className="sticker-box-mobile__upload-sticker"
+                  alt="upload-sticker"
+                  src={uploadSticker?.imagePreviewUrl}
+                />
+                <span className="sticker-box-mobile__sticker-name">
+                  {uploadSticker?.file.name}
+                </span>
+                <button
+                  onClick={() => setUploadSticker(null)}
+                  type="button"
+                  className="sticker-box-mobile__delete-button"
+                >
+                  <img alt="close" src="delete_sticker.png" />
+                </button>
+              </section>
+            ) : (
+              <ul className="sticker-box-mobile__sticker-list">
+                <button
+                  type="button"
+                  className="sticker-box-mobile__add-button"
+                  onClick={fileHandler}
+                >
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    ref={fileRef}
+                    onChange={handleChange}
+                    accept="image/png"
+                    style={{ display: 'none' }}
+                  />
+                  <img src="add_sticker_mobile.png" alt="add_sticker" />
+                </button>
+                {stickers.map((sticker) => (
+                  <button
+                    onClick={() => stickerVoteHandler(sticker)}
+                    type="button"
+                    className={`sticker-box-mobile__sticker ${
+                      selectedSticker === sticker && 'selected'
+                    }`}
+                  >
+                    {sticker}
+                  </button>
+                ))}
+              </ul>
+            )}
+          </section>
         </main>
       </Wrapper>
 
