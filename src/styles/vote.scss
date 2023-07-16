@@ -31,6 +31,10 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     display: flex;
     align-items: center;
     justify-content: center;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   &__menu-box {
     &.visible {
@@ -69,7 +73,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     font-size: 2rem;
     font-weight: 600;
     line-height: 130%;
-    color: #242424;
+    color: $text-1;
     margin-bottom: 16px;
   }
   &__subInfo {
@@ -110,12 +114,18 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   border: 1px solid $card-2;
   padding: 14px 40px;
   border-radius: 10px;
-  margin-bottom: 12px;
+}
+
+.deadline-share {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .deadline {
   display: flex;
   justify-content: space-between;
+  flex: 1;
   align-items: center;
   @include box;
 
@@ -141,17 +151,80 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 }
 
+.share-btn {
+  width: 50px;
+  height: 50px;
+  background-color: $blue-4;
+  margin-left: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 26px;
+    height: 26px;
+  }
+}
+
 .sticker-box {
   @include box;
+  margin-bottom: 30px;
   padding: 20px 40px;
   .sub-title {
     margin-bottom: 16px;
   }
 
+  .voted-sticker-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    font-family: 'Pretendard';
+    font-size: 0.875rem;
+    line-height: 150%;
+
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: gray;
+      margin-right: 20px;
+    }
+    &__info-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      > div {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: $main-blue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: 'Roboto';
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-right: 8px;
+      }
+      > span {
+        color: $text-1;
+        font-weight: 600;
+      }
+    }
+    &__info {
+      flex: 1;
+      > p {
+        color: $text-2;
+        font-weight: 500;
+      }
+    }
+  }
+
   .sticker-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 7%;
+    gap: 20px 6%;
     margin-bottom: 30px;
     &__sticker {
       border-radius: 28px;
@@ -179,6 +252,11 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     font-family: 'Pretendard';
     font-weight: 500;
     color: $text-3;
+    &.done {
+      justify-content: center;
+      color: $main-blue;
+      font-weight: 600;
+    }
   }
   &__button-icon {
     width: 20px;
@@ -223,25 +301,26 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   }
 }
 
-.vote-result {
-  @include box;
-  padding: 20px 40px;
-  background-color: $main-blue;
-
-  .sub-title {
-    color: white;
-    margin-bottom: 18px;
-  }
-
+@mixin vote-result {
   &__graph {
     font-size: 0.875rem;
     display: flex;
-    border: 2px solid $blue-3-graph;
     border-radius: 10px;
+    font-family: 'Roboto';
   }
 
   &__graph-item {
-    padding: 12px;
+    padding: 6px 8px;
+    font-weight: 600;
+    > div {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      background-color: $main-blue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
   &__graph-item:first-child {
     border-top-left-radius: 8px;
@@ -254,18 +333,34 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 
   &__graph-item:nth-child(1) {
     background-color: $blue-4;
+    color: white;
   }
   &__graph-item:nth-child(2) {
     background-color: $blue-3;
+    color: white;
   }
   &__graph-item:nth-child(3) {
     background-color: $blue-2;
     color: white;
+    > div {
+      background-color: $blue-3-graph;
+    }
   }
   &__graph-item:nth-child(4) {
     background-color: $blue-1;
     color: white;
+    > div {
+      background-color: $blue-3-graph;
+    }
   }
+}
+
+.vote-result {
+  @include vote-result;
+}
+
+.vote-result.mobile {
+  display: none;
 }
 
 .button-box {
@@ -306,26 +401,35 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
   &__item-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-family: 'Pretendard';
     font-size: 1rem;
     font-weight: 600;
-    align-items: center;
     padding: 12px 30px;
     box-sizing: border-box;
     background-color: $card-3;
     border-radius: 20px;
     margin-bottom: 8px;
     border: 1px solid #f1f1f1;
-    &:hover {
-      border-color: $blue-4;
+
+    button {
+      width: 40px;
+      height: 40px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
   &__item-title {
     display: flex;
     align-items: center;
-    color: $main-blue;
+    color: $text-1;
     font-weight: 600;
+    margin-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__item-number {
@@ -340,9 +444,15 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     margin-right: 12px;
   }
 
+  &__item-percent {
+    margin-left: 12px;
+    color: $text-2;
+    font-weight: 500;
+  }
+
   &__item-img {
-    width: 80vh;
-    height: 80vh;
+    width: 70vh;
+    height: 70vh;
     max-width: 870px;
     max-height: 870px;
     background-color: $card-1;
@@ -352,6 +462,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
 
   &__item-sticker {
     cursor: pointer;
+    position: absolute;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     background-color: lightgray;
@@ -366,6 +477,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     }
 
     &-description {
+      transform: translate(-50%, 0);
       z-index: 10;
       &.no-comment {
         border-radius: 10px;
@@ -450,5 +562,341 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     text-align: center;
     width: 36%;
     color: white;
+  }
+}
+
+.sticker-box-mobile {
+  display: none;
+}
+
+@include tablet {
+  .vote {
+    flex-direction: column;
+    padding: 0;
+    padding-bottom: 160px;
+  }
+  .vote-info {
+    width: 100%;
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .vote-header {
+    margin-top: 12px;
+    order: -1;
+    &__menu-box {
+      width: 146px;
+      background-color: white;
+      & > button {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .deadline-share {
+    order: -1;
+    margin-bottom: 17px;
+  }
+  .deadline {
+    background-color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    .sub-title {
+      color: $text-2;
+      margin-right: 12px;
+      font-size: 0.875rem;
+    }
+    &__date {
+      font-size: 0.875rem;
+    }
+    &__dday {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+  }
+
+  .share-btn {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .vote-description {
+    margin-bottom: 24px;
+    &__title {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    &__subInfo {
+      margin-bottom: 12px;
+    }
+    &__description {
+      font-weight: 400;
+    }
+  }
+
+  .sticker-box {
+    display: none;
+  }
+
+  .button-box {
+    display: none;
+  }
+
+  .vote-list {
+    &__item {
+      margin-bottom: 0;
+      width: 100vw;
+      transform: translateX(-20px);
+    }
+    &__item-header {
+      font-size: 0.875rem;
+      padding: 12px 24px 12px 20px;
+      border-radius: 0;
+      margin-bottom: 0;
+
+      button {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    &__item-title {
+      color: $text-1;
+      margin-right: 8px;
+    }
+    &__item-number {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+    }
+    &__item-img {
+      width: 100vw;
+      height: 100vw;
+      border-radius: 0;
+      max-width: none;
+    }
+
+    &__item-info-button {
+      width: 32px;
+      height: 32px;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    &__item-description {
+      font-size: 1rem;
+      width: 70%;
+    }
+
+    &__item-sticker {
+      &-description {
+        &.no-comment {
+          min-width: 80px;
+        }
+      }
+      &-nickname {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .vote-result {
+    display: none;
+  }
+
+  .vote-result.mobile {
+    @include box;
+    @include vote-result;
+    background-color: $main-blue;
+    display: block;
+    padding: 16px;
+    padding-bottom: 22px;
+    margin-top: 16px;
+    .vote-result__graph {
+      border: 2px solid $blue-3-graph;
+    }
+    .sub-title {
+      color: white;
+      font-size: 0.875rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .vote-result__graph {
+      border-radius: 8px;
+    }
+    .vote-result__graph-item {
+      padding: 10px;
+    }
+    .vote-result__graph-item:first-child {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+    .vote-result__graph-item:last-child {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+  }
+
+  .sticker-box-mobile {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px 20px 15px 20px;
+    box-sizing: border-box;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    background-color: $card-3;
+    border: 1px solid $card-2;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &__sticker-list {
+      display: flex;
+      flex: 1;
+      gap: 14px;
+
+      > button {
+        flex: 0 0 auto;
+      }
+    }
+    &__add-button {
+      width: 52px;
+      height: 52px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &__sticker {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background-color: $card-1;
+      &.selected {
+        background-color: $blue-4;
+        opacity: 0.5;
+      }
+    }
+
+    .voted-sticker-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-family: 'Pretendard';
+      font-size: 0.875rem;
+      line-height: 150%;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: gray;
+        margin-right: 12px;
+      }
+      &__info-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        > div {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: $main-blue;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-family: 'Roboto';
+          font-weight: 600;
+          font-size: 0.875rem;
+          margin-right: 8px;
+        }
+        > span {
+          flex: 1;
+          color: $text-1;
+          font-weight: 600;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      &__info {
+        flex: 1;
+        min-width: 0;
+        > p {
+          color: $text-2;
+          font-weight: 500;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      > button {
+        margin-left: 12px;
+        height: 52px;
+        width: 124px;
+        background-color: $card-2;
+        border: 1px solid $card-1;
+        border-radius: 8px;
+        font-family: 'Pretendard';
+        color: $point-text-2;
+        font-weight: 600;
+      }
+    }
+
+    &__upload-sticker-box {
+      display: flex;
+      align-items: center;
+      padding: 8px 20px 8px 16px;
+      background-color: $card-2;
+      border: 1px solid $card-1;
+      border-radius: 8px;
+    }
+
+    &__upload-sticker {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+    &__sticker-name {
+      font-family: 'Pretendard';
+      color: $point-text-2;
+      font-size: 0.875rem;
+      flex: 1;
+      white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &__delete-button {
+      width: 16px;
+      height: 16px;
+      > img {
+        width: 100%;
+        height: 100%;
+      }
+      margin-left: 12px;
+    }
+  }
+}
+
+@include mobile {
+  .vote-list {
+    &__item-sticker-description {
+      width: 90vw;
+    }
   }
 }
