@@ -788,6 +788,73 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
         opacity: 0.5;
       }
     }
+
+    .voted-sticker-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-family: 'Pretendard';
+      font-size: 0.875rem;
+      line-height: 150%;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: gray;
+        margin-right: 12px;
+      }
+      &__info-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        > div {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: $main-blue;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-family: 'Roboto';
+          font-weight: 600;
+          font-size: 0.875rem;
+          margin-right: 8px;
+        }
+        > span {
+          flex: 1;
+          color: $text-1;
+          font-weight: 600;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      &__info {
+        flex: 1;
+        min-width: 0;
+        > p {
+          color: $text-2;
+          font-weight: 500;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      > button {
+        margin-left: 12px;
+        height: 52px;
+        width: 124px;
+        background-color: $card-2;
+        border: 1px solid $card-1;
+        border-radius: 8px;
+        font-family: 'Pretendard';
+        color: $point-text-2;
+        font-weight: 600;
+      }
+    }
   }
 }
 

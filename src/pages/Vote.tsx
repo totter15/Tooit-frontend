@@ -109,6 +109,7 @@ function Vote() {
 
   const revoteHandler = useCallback(() => {
     // TODO : revote
+    setIsVoted(false);
     setRevoteModalVisible(false);
   }, []);
 
@@ -353,22 +354,46 @@ function Vote() {
             </ul>
           </section>
           <section className="sticker-box-mobile">
-            <div className="sticker-box-mobile__sticker-list">
-              <button type="button" className="sticker-box-mobile__add-button">
-                <img src="add_sticker_mobile.png" alt="add_sticker" />
-              </button>
-              {stickers.map((sticker) => (
+            {isVoted ? (
+              <section className="voted-sticker-info">
+                <img alt="voted-sticker" />
+                <div className="voted-sticker-info__info">
+                  <div className="voted-sticker-info__info-title">
+                    <div>1</div>
+                    <span>아이템 adsfadsf adsfadskfndksnadfkls</span>
+                  </div>
+                  <p>
+                    일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
+                  </p>
+                </div>
                 <button
-                  onClick={() => stickerVoteHandler(sticker)}
                   type="button"
-                  className={`sticker-box-mobile__sticker ${
-                    selectedSticker === sticker && 'selected'
-                  }`}
+                  onClick={() => setRevoteModalVisible(true)}
                 >
-                  {sticker}
+                  다시 투표
                 </button>
-              ))}
-            </div>
+              </section>
+            ) : (
+              <ul className="sticker-box-mobile__sticker-list">
+                <button
+                  type="button"
+                  className="sticker-box-mobile__add-button"
+                >
+                  <img src="add_sticker_mobile.png" alt="add_sticker" />
+                </button>
+                {stickers.map((sticker) => (
+                  <button
+                    onClick={() => stickerVoteHandler(sticker)}
+                    type="button"
+                    className={`sticker-box-mobile__sticker ${
+                      selectedSticker === sticker && 'selected'
+                    }`}
+                  >
+                    {sticker}
+                  </button>
+                ))}
+              </ul>
+            )}
           </section>
         </main>
       </Wrapper>
