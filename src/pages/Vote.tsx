@@ -373,12 +373,39 @@ function Vote() {
                   다시 투표
                 </button>
               </section>
+            ) : uploadSticker ? (
+              <section className="sticker-box-mobile__upload-sticker-box">
+                <img
+                  className="sticker-box-mobile__upload-sticker"
+                  alt="upload-sticker"
+                  src={uploadSticker?.imagePreviewUrl}
+                />
+                <span className="sticker-box-mobile__sticker-name">
+                  {uploadSticker?.file.name}
+                </span>
+                <button
+                  onClick={() => setUploadSticker(null)}
+                  type="button"
+                  className="sticker-box-mobile__delete-button"
+                >
+                  <img alt="close" src="delete_sticker.png" />
+                </button>
+              </section>
             ) : (
               <ul className="sticker-box-mobile__sticker-list">
                 <button
                   type="button"
                   className="sticker-box-mobile__add-button"
+                  onClick={fileHandler}
                 >
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    ref={fileRef}
+                    onChange={handleChange}
+                    accept="image/png"
+                    style={{ display: 'none' }}
+                  />
                   <img src="add_sticker_mobile.png" alt="add_sticker" />
                 </button>
                 {stickers.map((sticker) => (
