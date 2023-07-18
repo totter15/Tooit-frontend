@@ -79,7 +79,10 @@ function Sticker({
         className="vote-list__item-sticker"
         onBlur={() => stickerFocusHandler(null)}
         onFocus={() => stickerFocusHandler(sticker)}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          stickerFocusHandler(sticker);
+        }}
       >
         <img alt="sticker" src={img} />
         {sticker.id}
