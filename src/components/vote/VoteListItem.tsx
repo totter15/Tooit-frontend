@@ -65,7 +65,7 @@ function VoteListItem({
         ))}
         <button
           onBlur={() => setIsHover(!isHover)}
-          onClick={() => setIsHover(true)}
+          onClick={() => setIsHover(!isHover)}
           type="button"
           className="vote-list__item-info-button"
         >

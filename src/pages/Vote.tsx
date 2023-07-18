@@ -7,6 +7,7 @@ import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
 import Wrapper from '../components/Wrapper';
 import useResponsive from '../hooks/useResponsive';
+import { Link } from 'react-router-dom';
 
 export interface VotedSticker {
   id: number | null;
@@ -163,13 +164,13 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <section className="vote-header">
-              <div className="vote-header__back">
+              <Link to={'/home'} className="vote-header__back">
                 <img src="arrow_back.png" alt="back" />
-              </div>
+              </Link>
               <button
                 type="button"
                 className="vote-header__more"
-                onFocus={() => setMenuVisible(true)}
+                onClick={() => setMenuVisible(true)}
                 onBlur={() => setMenuVisible(false)}
               >
                 <img src="menu.png" alt="menu" />
