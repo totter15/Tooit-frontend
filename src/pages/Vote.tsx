@@ -158,6 +158,11 @@ function Vote() {
     }
   };
 
+  const otherOneTouch = () => {
+    (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
+    console.log('blur');
+  };
+
   return (
     <>
       <Wrapper>
@@ -197,7 +202,7 @@ function Vote() {
             </section>
 
             {/* VOTE-DESCRIPTION */}
-            <div className="vote-description">
+            <div className="vote-description" onClick={otherOneTouch}>
               <h1 className="vote-description__title">
                 안녕하세요
                 <br />
