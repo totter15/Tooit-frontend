@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import dateFormat from '../utils/dateFormat';
 import VoteList from '../components/vote/VoteList';
 import { VotedStickersType } from '../interfaces/VoteInterface';
+import VoteGraph from '../components/vote/VoteGraph';
+import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 
 function Vote() {
   const { isTablet } = useResponsive();
@@ -21,8 +23,6 @@ function Vote() {
   const stickerWidth: number = (55 / 1920) * windowWidth;
 
   const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const graph: number[] = [1, 2, 3, 4];
-  const graphTotal: number = graph.reduce((arr, cur) => arr + cur, 0);
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
@@ -91,17 +91,7 @@ function Vote() {
     dday: 3,
   };
 
-  const {
-    title,
-    content,
-    startDate,
-    endDate,
-    createDate,
-    userId,
-    nickname,
-    items,
-    dday,
-  } = mock;
+  const { title, content, startDate, endDate, nickname, items, dday } = mock;
   const startDateFormat = dateFormat(startDate);
   const endDateFormat = dateFormat(endDate);
 
@@ -361,19 +351,7 @@ function Vote() {
               )}
             </section>
 
-            {/* VOTE-RESULT */}
-            <section className="vote-result">
-              <ul className="vote-result__graph">
-                {graph.map((item) => (
-                  <li
-                    style={{ width: `${(item / graphTotal) * 100}%` }}
-                    className="vote-result__graph-item"
-                  >
-                    <div>{item}</div>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            <VoteGraph />
           </section>
 
           {/* VOTE-LIST */}
@@ -384,19 +362,8 @@ function Vote() {
           />
 
           {/* MOBILE */}
-          <section className="vote-result mobile">
-            <div className="sub-title">투표 현황</div>
-            <ul className="vote-result__graph">
-              {graph.map((item) => (
-                <li
-                  style={{ width: `${(item / graphTotal) * 100}%` }}
-                  className="vote-result__graph-item"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
+          <MobileVoteGraph />
+
           <section className="sticker-box-mobile">
             {isVoted ? (
               <section className="voted-sticker-info">
