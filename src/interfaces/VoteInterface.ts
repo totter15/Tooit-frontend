@@ -33,6 +33,13 @@ export interface VotedStickerType {
 
 export type VotedStickersType = VotedStickerType[] | [];
 
+export interface StickerBoxProps {
+  isVoted: boolean;
+  stickerVoteHandler: (id: number, url: string) => void;
+  revoteHandler: () => void;
+  selectedSticker: { id: number; url: string } | null;
+}
+
 export interface VoteListProps {
   items: VoteItemType[];
   stickerLocateHandler: React.MouseEventHandler<HTMLButtonElement>;

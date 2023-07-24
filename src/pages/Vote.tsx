@@ -13,16 +13,14 @@ import VoteList from '../components/vote/VoteList';
 import { VotedStickersType } from '../interfaces/VoteInterface';
 import VoteGraph from '../components/vote/VoteGraph';
 import MobileVoteGraph from '../components/vote/MobileVoteGraph';
+import StickerBox from '../components/vote/StickerBox';
+import MobileStickerBox from '../components/vote/MobileStickerBox';
 
 function Vote() {
   const { isTablet } = useResponsive();
-  const fileRef = useRef<HTMLInputElement>(null);
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
   const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
-  const stickerWidth: number = (55 / 1920) * windowWidth;
-
-  const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
@@ -31,7 +29,10 @@ function Vote() {
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [isVoted, setIsVoted] = useState<boolean>(false);
 
-  const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
+  const [selectedSticker, setSelectedSticker] = useState<{
+    id: number;
+    url: string;
+  } | null>(null);
   const [votedStickers, setVotedStickers] = useState<VotedStickersType>([]);
 
   const [uploadSticker, setUploadSticker] = useState<{
@@ -95,44 +96,46 @@ function Vote() {
   const startDateFormat = dateFormat(startDate);
   const endDateFormat = dateFormat(endDate);
 
-  function stickerVoteHandler(id: number) {
-    setSelectedSticker(id);
+  function stickerVoteHandler(id: number, url: string) {
+    setSelectedSticker({ id, url });
   }
 
   const stickerLocateHandler = useCallback(
     (e: any) => {
-      if (!selectedSticker && !uploadSticker) return;
-
-      setVotedStickers([
-        ...votedStickers,
-        {
-          id: selectedSticker,
-          x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
-          y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
-          img: uploadSticker ? uploadSticker?.imagePreviewUrl : '',
-          nickname: '익명',
-        },
-      ]);
-      setVoteModalVisible(true);
-      setUploadSticker(null);
-      setIsVoted(true);
+      if (selectedSticker) {
+        setVotedStickers([
+          ...votedStickers,
+          {
+            id: selectedSticker.id,
+            x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
+            y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
+            img: selectedSticker.url,
+            nickname: '익명',
+          },
+        ]);
+        setVoteModalVisible(true);
+        setUploadSticker(null);
+        setIsVoted(true);
+      }
     },
     [votedStickers, selectedSticker, uploadSticker],
   );
 
   const stickerMessageHandler = useCallback(
     (nickname: string, comment: string) => {
-      setVotedStickers(
-        votedStickers.map((sticker) =>
-          sticker.id === selectedSticker
-            ? { ...sticker, nickname, comment }
-            : sticker,
-        ),
-      );
+      if (selectedSticker) {
+        setVotedStickers(
+          votedStickers.map((sticker) =>
+            sticker.id === selectedSticker.id
+              ? { ...sticker, nickname, comment }
+              : sticker,
+          ),
+        );
 
-      setVoteModalVisible(false);
-      setSelectedSticker(null);
-      setUploadSticker(null);
+        setVoteModalVisible(false);
+        setSelectedSticker(null);
+        setUploadSticker(null);
+      }
     },
     [votedStickers],
   );
@@ -172,29 +175,10 @@ function Vote() {
   const voteCancelHandler = useCallback(() => {
     setVoteModalVisible(false);
     setVotedStickers(
-      votedStickers.filter((sticker) => sticker.id === selectedSticker),
+      votedStickers.filter((sticker) => sticker.id === selectedSticker?.id),
     );
     setSelectedSticker(null);
   }, []);
-
-  const fileHandler = () => {
-    if (fileRef) {
-      setSelectedSticker(null);
-      fileRef.current?.click();
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imagePreviewUrl: string = reader.result as string;
-        setUploadSticker({ file, imagePreviewUrl });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const otherOneTouch = () => {
     (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
@@ -266,95 +250,15 @@ function Vote() {
               </button>
             </div>
 
-            {/* STICKERS */}
-            <section className="sticker-box">
-              <h3 className="sub-title">{isVoted ? '내 투표' : '스티커'}</h3>
-              {isVoted ? (
-                <section className="voted-sticker-info">
-                  <img alt="voted-sticker" />
-                  <div className="voted-sticker-info__info">
-                    <div className="voted-sticker-info__info-title">
-                      <div>1</div>
-                      <span>투표한 아이템 이름</span>
-                    </div>
-                    <p>
-                      일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
-                    </p>
-                  </div>
-                </section>
-              ) : (
-                <div className="sticker-list">
-                  {stickers.map((item) => (
-                    <button
-                      style={{
-                        width: stickerWidth,
-                        height: stickerWidth,
-                      }}
-                      onClick={() => stickerVoteHandler(item)}
-                      type="button"
-                      className={`sticker-list__sticker ${
-                        selectedSticker === item && 'selected'
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              )}
-              {isVoted ? (
-                <button
-                  type="button"
-                  className="sticker-box__button done"
-                  onClick={() => setRevoteModalVisible(true)}
-                >
-                  다시 투표
-                </button>
-              ) : uploadSticker ? (
-                <div className="sticker-box__upload-sticker-box">
-                  <img
-                    className="sticker-box__upload-sticker"
-                    src={uploadSticker?.imagePreviewUrl}
-                    alt="upload_sticker"
-                  />
-                  <span className="sticker-box__sticker-name">
-                    {uploadSticker?.file.name}
-                  </span>
-                  <button
-                    type="button"
-                    className="sticker-box__delete-button"
-                    onClick={() => setUploadSticker(null)}
-                  >
-                    <img alt="delete_sicker" src="delete_sticker.png" />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  className="sticker-box__button"
-                  onClick={fileHandler}
-                >
-                  <input
-                    type="file"
-                    id="fileUpload"
-                    ref={fileRef}
-                    onChange={handleChange}
-                    accept="image/png"
-                    style={{ display: 'none' }}
-                  />
-                  <img
-                    className="sticker-box__button-icon"
-                    src="add_plus.png"
-                    alt="plus"
-                  />
-                  PNG 스티커 만들기
-                </button>
-              )}
-            </section>
-
+            <StickerBox
+              isVoted={isVoted}
+              stickerVoteHandler={stickerVoteHandler}
+              selectedSticker={selectedSticker}
+              revoteHandler={() => setRevoteModalVisible(true)}
+            />
             <VoteGraph />
           </section>
 
-          {/* VOTE-LIST */}
           <VoteList
             items={items}
             stickerLocateHandler={stickerLocateHandler}
@@ -363,76 +267,12 @@ function Vote() {
 
           {/* MOBILE */}
           <MobileVoteGraph />
-
-          <section className="sticker-box-mobile">
-            {isVoted ? (
-              <section className="voted-sticker-info">
-                <img alt="voted-sticker" />
-                <div className="voted-sticker-info__info">
-                  <div className="voted-sticker-info__info-title">
-                    <div>1</div>
-                    <span>아이템 adsfadsf adsfadskfndksnadfkls</span>
-                  </div>
-                  <p>
-                    일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setRevoteModalVisible(true)}
-                >
-                  다시 투표
-                </button>
-              </section>
-            ) : uploadSticker ? (
-              <section className="sticker-box-mobile__upload-sticker-box">
-                <img
-                  className="sticker-box-mobile__upload-sticker"
-                  alt="upload-sticker"
-                  src={uploadSticker?.imagePreviewUrl}
-                />
-                <span className="sticker-box-mobile__sticker-name">
-                  {uploadSticker?.file.name}
-                </span>
-                <button
-                  onClick={() => setUploadSticker(null)}
-                  type="button"
-                  className="sticker-box-mobile__delete-button"
-                >
-                  <img alt="close" src="delete_sticker.png" />
-                </button>
-              </section>
-            ) : (
-              <ul className="sticker-box-mobile__sticker-list">
-                <button
-                  type="button"
-                  className="sticker-box-mobile__add-button"
-                  onClick={fileHandler}
-                >
-                  <input
-                    type="file"
-                    id="fileUpload"
-                    ref={fileRef}
-                    onChange={handleChange}
-                    accept="image/png"
-                    style={{ display: 'none' }}
-                  />
-                  <img src="add_sticker_mobile.png" alt="add_sticker" />
-                </button>
-                {stickers.map((sticker) => (
-                  <button
-                    onClick={() => stickerVoteHandler(sticker)}
-                    type="button"
-                    className={`sticker-box-mobile__sticker ${
-                      selectedSticker === sticker && 'selected'
-                    }`}
-                  >
-                    {sticker}
-                  </button>
-                ))}
-              </ul>
-            )}
-          </section>
+          <MobileStickerBox
+            isVoted={isVoted}
+            stickerVoteHandler={stickerVoteHandler}
+            selectedSticker={selectedSticker}
+            revoteHandler={() => setRevoteModalVisible(true)}
+          />
         </main>
       </Wrapper>
 
