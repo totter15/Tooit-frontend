@@ -460,6 +460,11 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     overflow: hidden;
   }
 
+  &__item-img__img {
+    width: 100%;
+    height: 100%;
+  }
+
   &__item-sticker {
     cursor: pointer;
     position: absolute;

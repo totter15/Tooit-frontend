@@ -8,6 +8,8 @@ import VoteEditModal from '../components/VoteEditModal';
 import Wrapper from '../components/Wrapper';
 import useResponsive from '../hooks/useResponsive';
 import { Link } from 'react-router-dom';
+import dateFormat from '../utils/dateFormat';
+import VoteList from '../components/vote/VoteList';
 
 export interface VotedSticker {
   id: number | null;
@@ -56,6 +58,61 @@ function Vote() {
       },
     });
   }
+
+  const mock = {
+    id: 16,
+    title: '제일 귀여운 춘식이 짤 투표',
+    content: '여기서 제일 귀여운 춘식이 골라줘 프사할거임',
+    startDate: '2023-07-17 10:22',
+    endDate: '2023-07-20 22:11',
+    createDate: '2023-07-17 10:55',
+    userId: 2,
+    nickname: 'aff3411b25',
+    items: [
+      {
+        id: 46,
+        image:
+          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/e7eecfd8-65ab-4226-b564-8d403049cc68_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A81.png',
+        stickerCount: 0,
+        name: 'itemNameTest',
+        content: '춘식1',
+        voteId: 16,
+      },
+      {
+        id: 47,
+        image:
+          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/f1d24f40-7ca5-44a9-8468-4e85b673d513_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A82.jpeg',
+        stickerCount: 0,
+        name: 'itemNameTest',
+        content: '춘식2',
+        voteId: 16,
+      },
+      {
+        id: 48,
+        image:
+          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/e3a603ad-0bfe-4dbf-9643-ab2ba2e74682_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A83.jpeg',
+        stickerCount: 0,
+        name: 'itemNameTest',
+        content: '춘식3',
+        voteId: 16,
+      },
+    ],
+    dday: 3,
+  };
+
+  const {
+    title,
+    content,
+    startDate,
+    endDate,
+    createDate,
+    userId,
+    nickname,
+    items,
+    dday,
+  } = mock;
+  const startDateFormat = dateFormat(startDate);
+  const endDateFormat = dateFormat(endDate);
 
   function stickerVoteHandler(id: number) {
     setSelectedSticker(id);
@@ -160,7 +217,6 @@ function Vote() {
 
   const otherOneTouch = () => {
     (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
-    console.log('blur');
   };
 
   return (
@@ -203,20 +259,12 @@ function Vote() {
 
             {/* VOTE-DESCRIPTION */}
             <div className="vote-description" onClick={otherOneTouch}>
-              <h1 className="vote-description__title">
-                안녕하세요
-                <br />
-                어쩌구저쩌구
-              </h1>
+              <h1 className="vote-description__title">{title}</h1>
               <span className="vote-description__subInfo">
-                <h3 className="vote-description__writer">by 익명</h3>
-                <h4 className="vote-description__date">2023.05.17</h4>
+                <h3 className="vote-description__writer">by {nickname}</h3>
+                <h4 className="vote-description__date">{startDateFormat}</h4>
               </span>
-              <p className="vote-description__description">
-                일이삼사오육칠팔구십 어쩌구저쩌구
-                <br />
-                두줄이고
-              </p>
+              <p className="vote-description__description">{content}</p>
             </div>
 
             {/* DEADLINE */}
@@ -224,9 +272,9 @@ function Vote() {
               <section className="deadline">
                 <div>
                   <h3 className="sub-title">마감일</h3>
-                  <div className="deadline__date">2023.05.20</div>
+                  <div className="deadline__date">{endDateFormat}</div>
                 </div>
-                <div className="deadline__dday">D-6</div>
+                <div className="deadline__dday">D-{dday}</div>
               </section>
               <button
                 className="share-btn"
@@ -338,12 +386,11 @@ function Vote() {
           </section>
 
           {/* VOTE-LIST */}
-          <ul className="vote-list">
-            <VoteListItem
-              stickerLocateHandler={stickerLocateHandler}
-              votedStickers={votedStickers}
-            />
-          </ul>
+          <VoteList
+            items={items}
+            stickerLocateHandler={stickerLocateHandler}
+            votedStickers={votedStickers}
+          />
 
           {/* MOBILE */}
           <section className="vote-result mobile">
