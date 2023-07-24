@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { VotedSticker } from '../../pages/Vote';
 import useResponsive from '../../hooks/useResponsive';
-
-interface StickerProps {
-  sticker: VotedSticker;
-  isFocused: boolean;
-  stickerFocusHandler: (sticker: VotedSticker | null) => void;
-  stickerSize: string;
-}
+import { StickerProps } from '../../interfaces/VoteInterface';
 
 function Sticker({
   sticker,

@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 export interface VoteListType {
   id: number;
   title: string;
@@ -20,17 +22,32 @@ export interface VoteItemType {
   voteId: number;
 }
 
-export interface VoteListItemProps {
-  stickerLocateHandler: (e: MouseEvent) => void;
-  votedStickers: VotedSticker[];
-  item: VoteItemType;
-}
-
-export interface VotedSticker {
+export interface VotedStickerType {
   id: number | null;
   x: string;
   y: string;
   img?: string;
   nickname?: string;
   comment?: string;
+}
+
+export type VotedStickersType = VotedStickerType[] | [];
+
+export interface VoteListProps {
+  items: VoteItemType[];
+  stickerLocateHandler: React.MouseEventHandler<HTMLButtonElement>;
+  votedStickers: VotedStickersType;
+}
+
+export interface VoteListItemProps {
+  stickerLocateHandler: React.MouseEventHandler<HTMLButtonElement>;
+  votedStickers: VotedStickerType[];
+  item: VoteItemType;
+}
+
+export interface StickerProps {
+  sticker: VotedStickerType;
+  isFocused: boolean;
+  stickerFocusHandler: (sticker: VotedStickerType | null) => void;
+  stickerSize: string;
 }

@@ -10,16 +10,7 @@ import useResponsive from '../hooks/useResponsive';
 import { Link } from 'react-router-dom';
 import dateFormat from '../utils/dateFormat';
 import VoteList from '../components/vote/VoteList';
-
-export interface VotedSticker {
-  id: number | null;
-  x: string;
-  y: string;
-  img?: string;
-  nickname?: string;
-  comment?: string;
-}
-export type VotedStickers = VotedSticker[] | [];
+import { VotedStickersType } from '../interfaces/VoteInterface';
 
 function Vote() {
   const { isTablet } = useResponsive();
@@ -41,7 +32,7 @@ function Vote() {
   const [isVoted, setIsVoted] = useState<boolean>(false);
 
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
-  const [votedStickers, setVotedStickers] = useState<VotedStickers>([]);
+  const [votedStickers, setVotedStickers] = useState<VotedStickersType>([]);
 
   const [uploadSticker, setUploadSticker] = useState<{
     file: File;

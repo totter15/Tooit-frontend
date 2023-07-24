@@ -1,16 +1,11 @@
-import { VoteItemType } from '../../interfaces/VoteInterface';
-import { VotedStickers } from '../../pages/Vote';
+import { VoteListProps } from '../../interfaces/VoteInterface';
 import VoteListItem from './VoteListItem';
 
 function VoteList({
   items,
   stickerLocateHandler,
   votedStickers,
-}: {
-  items: VoteItemType[];
-  stickerLocateHandler: (e: React.MouseEvent) => void;
-  votedStickers: VotedStickers;
-}) {
+}: VoteListProps) {
   return (
     <ul className="vote-list">
       {items.map((item) => (

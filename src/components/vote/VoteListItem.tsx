@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { VotedStickers, VotedSticker } from '../../pages/Vote';
 import Sticker from './Sticker';
 import useResponsive from '../../hooks/useResponsive';
-import { VoteItemType } from '../../interfaces/VoteInterface';
-
-interface VoteListItemProps {
-  stickerLocateHandler: (e: any) => void;
-  votedStickers: VotedStickers;
-  item: VoteItemType;
-}
+import {
+  VotedStickerType,
+  VoteListItemProps,
+} from '../../interfaces/VoteInterface';
 
 function VoteListItem({
   stickerLocateHandler,
@@ -17,7 +13,9 @@ function VoteListItem({
 }: VoteListItemProps) {
   const { isTablet } = useResponsive();
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [focusSticker, setFocusSticker] = useState<VotedSticker | null>(null);
+  const [focusSticker, setFocusSticker] = useState<VotedStickerType | null>(
+    null,
+  );
   const [stickerSize, setStickerSize] = useState<string>('10.4vh');
   const { image, stickerCount, name, content } = item;
 
