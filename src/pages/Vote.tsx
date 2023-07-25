@@ -6,16 +6,15 @@ import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
 import Wrapper from '../components/Wrapper';
 import useResponsive from '../hooks/useResponsive';
-import { Link } from 'react-router-dom';
-import dateFormat from '../utils/dateFormat';
 import VoteList from '../components/vote/VoteList';
 import { VotedStickersType } from '../interfaces/VoteInterface';
 import VoteGraph from '../components/vote/VoteGraph';
 import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 import StickerBox from '../components/vote/StickerBox';
 import MobileStickerBox from '../components/vote/MobileStickerBox';
-import ShareModal from '../components/vote/ShareModal';
-import share from '../utils/share';
+import VoteInfoHeader from '../components/vote/VoteInfoHeader';
+import VoteDescription from '../components/vote/VoteDescription';
+import DeadlineShare from '../components/vote/DeadlineShare';
 
 function Vote() {
   const { isTablet } = useResponsive();
@@ -23,15 +22,11 @@ function Vote() {
   const windowHeight: number = window.innerHeight;
   const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
 
-  const { shareWeb } = share();
-
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
-  const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [isVoted, setIsVoted] = useState<boolean>(false);
-  const [shareModalVisible, setShareModalVisible] = useState<boolean>(false);
 
   const [selectedSticker, setSelectedSticker] = useState<{
     id: number;
@@ -85,9 +80,7 @@ function Vote() {
     dday: 3,
   };
 
-  const { title, content, startDate, endDate, nickname, items, dday } = mock;
-  const startDateFormat = dateFormat(startDate);
-  const endDateFormat = dateFormat(endDate);
+  const { items } = mock;
 
   function stickerVoteHandler(id: number, url: string) {
     setSelectedSticker({ id, url });
@@ -177,85 +170,18 @@ function Vote() {
     (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
   };
 
-  const shareHandler = () => {
-    if (isTablet) {
-      shareWeb({
-        title,
-        text: content,
-        url: 'url',
-        fallBackFn: () => setShareModalVisible((prev) => !prev),
-      });
-      return;
-    }
-    setShareModalVisible((prev) => !prev);
-  };
-
   return (
     <>
       <Wrapper>
         <main className="vote">
+          {/* VOTE INFO */}
           <section className="vote-info">
-            <section className="vote-header">
-              <Link to={'/home'} className="vote-header__back">
-                <img src="arrow_back.png" alt="back" />
-              </Link>
-              <button
-                type="button"
-                className="vote-header__more"
-                onClick={() => setMenuVisible(true)}
-                onBlur={() => setMenuVisible(false)}
-              >
-                <img src="menu.png" alt="menu" />
-                <div
-                  className={`vote-header__menu-box ${
-                    menuVisible && 'visible'
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onMouseDown={() => setDeleteModalVisible(true)}
-                  >
-                    삭제
-                  </button>
-                  <div />
-                  <button
-                    type="button"
-                    onMouseDown={() => setEditModalVisible(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </button>
-            </section>
-
-            {/* VOTE-DESCRIPTION */}
-            <div className="vote-description" onClick={otherOneTouch}>
-              <h1 className="vote-description__title">{title}</h1>
-              <span className="vote-description__subInfo">
-                <h3 className="vote-description__writer">by {nickname}</h3>
-                <h4 className="vote-description__date">{startDateFormat}</h4>
-              </span>
-              <p className="vote-description__description">{content}</p>
-            </div>
-
-            {/* DEADLINE */}
-            <div className="deadline-share">
-              <section className="deadline">
-                <div>
-                  <h3 className="sub-title">마감일</h3>
-                  <div className="deadline__date">{endDateFormat}</div>
-                </div>
-                <div className="deadline__dday">D-{dday}</div>
-              </section>
-              <button
-                className="share-btn"
-                type="button"
-                onClick={shareHandler}
-              >
-                <img src="share.png" alt="share" />
-              </button>
-            </div>
-            <ShareModal modalVisible={shareModalVisible} title={title} />
+            <VoteInfoHeader
+              editModalHandler={() => setEditModalVisible(true)}
+              deleteModalHandler={() => setDeleteModalVisible(true)}
+            />
+            <VoteDescription />
+            <DeadlineShare />
             <StickerBox
               isVoted={isVoted}
               stickerVoteHandler={stickerVoteHandler}
@@ -265,6 +191,7 @@ function Vote() {
             <VoteGraph />
           </section>
 
+          {/* VOTE LIST */}
           <VoteList
             items={items}
             stickerLocateHandler={stickerLocateHandler}
