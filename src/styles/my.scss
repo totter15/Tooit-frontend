@@ -8,38 +8,33 @@
   &__profile-box {
     position: relative;
     box-sizing: border-box;
-    padding: 40px 40px 48px 40px;
+    padding: 34px 40px;
     background-color: $card-3;
     border: 1px solid $card-2;
     width: 442px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     border-radius: 20px;
     align-self: flex-start;
     margin-right: 40px;
   }
-  &__profile-img {
-    width: 110px;
-    height: 110px;
-    border-radius: 20px;
-    background-color: $card-1;
-    margin-right: 21px;
-  }
   &__profile-email {
     @include contents;
     color: $point-text-2;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   &__profile-name {
     @include sub-title;
     color: $text-1;
-    margin-bottom: 21px;
   }
   &__profile-button {
     @include contents;
-    color: $text-2;
+    color: $main-blue;
+    padding: 10px 30px;
+    border: 1px solid $main-blue;
     text-decoration-line: none;
-    position: absolute;
-    bottom: 48px;
+    border-radius: 20px;
   }
 
   .vote-control-box {
@@ -189,10 +184,6 @@
       padding: 20px 19px 20px 15px;
       position: relative;
       margin-bottom: 30px;
-    }
-    &__profile-button {
-      position: absolute;
-      bottom: 20px;
     }
 
     .vote-control-box {
