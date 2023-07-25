@@ -22,10 +22,35 @@ function share() {
     });
   }
 
+  function shareWeb({
+    title,
+    text,
+    url,
+    fallBackFn,
+  }: {
+    title: string;
+    text: string;
+    url: string;
+    fallBackFn: () => void;
+  }) {
+    if (navigator.share) {
+      navigator
+        .share({
+          title,
+          text,
+          url,
+        })
+        .catch(console.error);
+    } else {
+      fallBackFn();
+    }
+  }
+
   return {
     shareKakao,
     shareTwitter,
     shareURL,
+    shareWeb,
   };
 }
 

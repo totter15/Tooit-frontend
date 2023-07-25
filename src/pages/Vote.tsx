@@ -15,12 +15,15 @@ import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 import StickerBox from '../components/vote/StickerBox';
 import MobileStickerBox from '../components/vote/MobileStickerBox';
 import ShareModal from '../components/vote/ShareModal';
+import share from '../utils/share';
 
 function Vote() {
   const { isTablet } = useResponsive();
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
   const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
+
+  const { shareWeb } = share();
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
@@ -174,6 +177,19 @@ function Vote() {
     (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
   };
 
+  const shareHandler = () => {
+    if (isTablet) {
+      shareWeb({
+        title,
+        text: content,
+        url: 'url',
+        fallBackFn: () => setShareModalVisible((prev) => !prev),
+      });
+      return;
+    }
+    setShareModalVisible((prev) => !prev);
+  };
+
   return (
     <>
       <Wrapper>
@@ -234,7 +250,7 @@ function Vote() {
               <button
                 className="share-btn"
                 type="button"
-                onClick={() => setShareModalVisible((prev) => !prev)}
+                onClick={shareHandler}
               >
                 <img src="share.png" alt="share" />
               </button>
