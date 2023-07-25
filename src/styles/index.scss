@@ -46,6 +46,15 @@ $light-2: #e9eaec;
   color: #000000;
 }
 
+@mixin app_caption {
+  font-family: 'Pretendard';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21.333px; /* 152.381% */
+  letter-spacing: 0.667px;
+}
+
 @mixin mobile {
   @media (max-width: 767px) {
     @content;

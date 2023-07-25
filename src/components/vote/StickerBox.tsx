@@ -1,5 +1,6 @@
 import useUploadSticker from '../../hooks/useUploadSticker';
 import { StickerBoxProps } from '../../interfaces/VoteInterface';
+import ShareModal from './ShareModal';
 
 function StickerBox({
   isVoted,

@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
-import VoteListItem from '../components/vote/VoteListItem';
 import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/VoteEditModal';
@@ -15,6 +14,7 @@ import VoteGraph from '../components/vote/VoteGraph';
 import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 import StickerBox from '../components/vote/StickerBox';
 import MobileStickerBox from '../components/vote/MobileStickerBox';
+import ShareModal from '../components/vote/ShareModal';
 
 function Vote() {
   const { isTablet } = useResponsive();
@@ -28,6 +28,7 @@ function Vote() {
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [isVoted, setIsVoted] = useState<boolean>(false);
+  const [shareModalVisible, setShareModalVisible] = useState<boolean>(false);
 
   const [selectedSticker, setSelectedSticker] = useState<{
     id: number;
@@ -39,17 +40,6 @@ function Vote() {
     file: File;
     imagePreviewUrl: string;
   } | null>(null);
-
-  function shareToKaKaotalk() {
-    window.Kakao.Share.sendCustom({
-      templateId: 94915,
-      templateArgs: {
-        send_user: 'TOOIT',
-        vote_title: '오늘 머먹지?',
-        vote_id: 10,
-      },
-    });
-  }
 
   const mock = {
     id: 16,
@@ -244,12 +234,12 @@ function Vote() {
               <button
                 className="share-btn"
                 type="button"
-                onClick={shareToKaKaotalk}
+                onClick={() => setShareModalVisible((prev) => !prev)}
               >
                 <img src="share.png" alt="share" />
               </button>
             </div>
-
+            <ShareModal modalVisible={shareModalVisible} title={title} />
             <StickerBox
               isVoted={isVoted}
               stickerVoteHandler={stickerVoteHandler}
