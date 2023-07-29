@@ -1,0 +1,64 @@
+@import './index.scss';
+
+.share-modal {
+  display: none;
+  &.visible {
+    display: flex;
+    animation: fadeInShare 0.3s forwards;
+  }
+  transform: translate(0, 100%);
+  position: absolute;
+  bottom: 52px;
+  align-items: center;
+  padding: 40px;
+  background-color: white;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  gap: 30px;
+
+  &__button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 8px;
+  }
+
+  &__text {
+    @include app_caption;
+  }
+
+  @keyframes fadeInShare {
+    0% {
+      background: rgba(255, 255, 255, 0);
+    }
+    100% {
+      background: rgb(255, 255, 255);
+    }
+  }
+}
+
+@include tablet {
+  .share-modal {
+    top: 75px;
+    bottom: auto;
+    right: 20px;
+    z-index: 10;
+    padding: 14px 20px 10px 20px;
+    gap: 24px;
+
+    &__icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 6px;
+    }
+
+    &__text {
+      font-size: 0.75rem;
+    }
+  }
+}
