@@ -43,17 +43,13 @@ function My() {
       <Wrapper>
         <main className="my">
           <section className="my__profile-box">
-            <div className="my__profile-img">
-              <img alt="profile" />
-            </div>
-
             <div>
               <div className="my__profile-email">akdsjfh</div>
               <div className="my__profile-name">일이삼사오육칠팔구십 님</div>
-              <Link to="/account" className="my__profile-button">
-                내 정보 관리
-              </Link>
             </div>
+            <Link to="/account" className="my__profile-button">
+              내 정보 관리
+            </Link>
           </section>
           <section className="vote-control-box">
             <div className="vote-control-box__button-box">
