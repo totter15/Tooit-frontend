@@ -64,7 +64,7 @@
     }
   }
 
-  &__nickname {
+  .nickname {
     text-align: left;
     width: 470px;
 
@@ -73,25 +73,25 @@
       font-family: 'Pretendard';
       color: $black;
     }
-    div {
+    &__input-box {
       position: relative;
-
-      > input {
-        font-family: 'Pretendard';
-        font-size: 1.25rem;
-        margin-top: 18px;
-        width: 100%;
-        border: 1px solid $light-2;
-        padding: 6px 12px;
-        outline: none;
-        border-radius: 3.2px;
-      }
-      > div {
-        position: absolute;
-        bottom: 7px;
-        right: 7px;
-        font-size: 1.25rem;
-      }
+    }
+    &__input {
+      font-family: 'Pretendard';
+      font-size: 1.25rem;
+      margin-top: 18px;
+      width: 100%;
+      border: 1px solid $light-2;
+      padding: 6px 12px;
+      outline: none;
+      border-radius: 3.2px;
+    }
+    &__count {
+      color: $text-3;
+      position: absolute;
+      bottom: 7px;
+      right: 7px;
+      font-size: 1.25rem;
     }
   }
 
@@ -115,5 +115,25 @@
     padding: 15px 28px;
     background-color: $card-1;
     border-radius: 20px;
+  }
+}
+
+@include tablet {
+  .account {
+    &__box {
+      margin-bottom: 50px;
+    }
+    .nickname {
+      &__input-box {
+        display: flex;
+      }
+    }
+    &__message-box {
+      flex-direction: column;
+    }
+    &__save-message {
+      margin: 0;
+      margin-bottom: 20px;
+    }
   }
 }
