@@ -228,16 +228,24 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     gap: 20px 6%;
     margin-bottom: 30px;
     &__sticker {
-      border-radius: 28px;
-      border: 1px solid lightgray;
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      &.selected {
-        background-color: $blue-4;
-        opacity: 0.5;
-      }
+    }
+    &__sticker--select {
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      padding: 7px;
+      border-radius: 50%;
+      background-color: $blue-4;
+      opacity: 0.5;
+    }
+    &__sticker-img {
+      height: 100%;
     }
   }
   &__button {

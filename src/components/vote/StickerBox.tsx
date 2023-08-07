@@ -1,6 +1,8 @@
 import useUploadSticker from '../../hooks/useUploadSticker';
 import { StickerBoxProps } from '../../interfaces/VoteInterface';
 import ShareModal from './ShareModal';
+import stickers from '../../statics/stickers.json';
+import Sticker from './Sticker';
 
 function StickerBox({
   isVoted,
@@ -14,7 +16,6 @@ function StickerBox({
   //스티커 업로드
 
   const windowWidth: number = window.innerWidth;
-  const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const stickerWidth: number = (55 / 1920) * windowWidth;
   const {
     fileRef,
@@ -43,19 +44,12 @@ function StickerBox({
       ) : (
         <div className="sticker-list">
           {stickers.map((item) => (
-            <button
-              style={{
-                width: stickerWidth,
-                height: stickerWidth,
-              }}
-              onClick={() => stickerVoteHandler(item, '')}
-              type="button"
-              className={`sticker-list__sticker ${
-                selectedSticker?.id === item && 'selected'
-              }`}
-            >
-              {item}
-            </button>
+            <Sticker
+              sticker={item}
+              size={stickerWidth}
+              voteHandler={() => stickerVoteHandler(item.id, item.src)}
+              isSelected={selectedSticker?.id === item.id}
+            />
           ))}
         </div>
       )}

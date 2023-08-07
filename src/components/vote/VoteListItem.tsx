@@ -1,5 +1,5 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react';
-import Sticker from './Sticker';
+import VotedSticker from './VotedSticker';
 import useResponsive from '../../hooks/useResponsive';
 import {
   VotedStickerType,
@@ -88,7 +88,7 @@ function VoteListItem({
           className="vote-list__item-img__img"
         />
         {votedStickers.map((sticker) => (
-          <Sticker
+          <VotedSticker
             sticker={sticker}
             isFocused={sticker.id === focusSticker?.id}
             stickerFocusHandler={(focus) => setFocusSticker(focus)}
