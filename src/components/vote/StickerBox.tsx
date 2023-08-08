@@ -3,6 +3,7 @@ import { StickerBoxProps } from '../../interfaces/VoteInterface';
 import ShareModal from './ShareModal';
 import stickers from '../../statics/stickers.json';
 import Sticker from './Sticker';
+import { useEffect } from 'react';
 
 function StickerBox({
   stickerVoteHandler,
@@ -25,6 +26,10 @@ function StickerBox({
     deleteUploadSticker,
   } = useUploadSticker();
   const { voteItemId, img, comment } = myVote ?? {};
+
+  useEffect(() => {
+    uploadSticker && stickerVoteHandler(11, uploadSticker.imagePreviewUrl);
+  }, [uploadSticker]);
 
   return (
     <section className="sticker-box">

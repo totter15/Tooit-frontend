@@ -188,7 +188,7 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       height: 60px;
       border-radius: 50%;
       margin-right: 20px;
-      object-fit: contain;
+      object-fit: cover;
     }
     &__info-title {
       display: flex;
@@ -485,8 +485,10 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     justify-content: center;
 
     img {
+      border-radius: 50%;
       width: 100%;
       height: 100%;
+      object-fit: cover;
     }
 
     &-description {
