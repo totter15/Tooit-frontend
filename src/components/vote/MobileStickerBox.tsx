@@ -1,13 +1,14 @@
 import useUploadSticker from '../../hooks/useUploadSticker';
 import { StickerBoxProps } from '../../interfaces/VoteInterface';
+import stickers from '../../statics/stickers.json';
+import { useEffect } from 'react';
 
 function MobileStickerBox({
-  isVoted,
   stickerVoteHandler,
   revoteHandler,
   selectedSticker,
+  myVote,
 }: StickerBoxProps) {
-  const stickers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const {
     fileRef,
     uploadSticker,
@@ -16,19 +17,23 @@ function MobileStickerBox({
     deleteUploadSticker,
   } = useUploadSticker();
 
+  useEffect(() => {
+    uploadSticker && stickerVoteHandler(11, uploadSticker.imagePreviewUrl);
+  }, [uploadSticker]);
+
+  const { comment, voteItemId, img } = myVote ?? {};
+
   return (
     <section className="sticker-box-mobile">
-      {isVoted ? (
+      {!!myVote ? (
         <section className="voted-sticker-info">
-          <img alt="voted-sticker" />
+          <img alt="voted-sticker" src={img} />
           <div className="voted-sticker-info__info">
             <div className="voted-sticker-info__info-title">
-              <div>1</div>
+              <div>{voteItemId}</div>
               <span>아이템 adsfadsf adsfadskfndksnadfkls</span>
             </div>
-            <p>
-              일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
-            </p>
+            <p>{comment}</p>
           </div>
           <button type="button" onClick={revoteHandler}>
             다시 투표
@@ -71,13 +76,18 @@ function MobileStickerBox({
           </button>
           {stickers.map((sticker) => (
             <button
-              onClick={() => stickerVoteHandler(sticker, 'url')}
+              onClick={() => stickerVoteHandler(sticker.id, sticker.src)}
               type="button"
-              className={`sticker-box-mobile__sticker ${
-                selectedSticker?.id === sticker && 'selected'
-              }`}
+              className={`sticker-box-mobile__sticker`}
             >
-              {sticker}
+              {selectedSticker?.id === sticker.id && (
+                <div className="sticker-box-mobile__sticker-select" />
+              )}
+              <img
+                className="sticker-box-mobile__sticker-img"
+                alt="sticker"
+                src={sticker.src}
+              />
             </button>
           ))}
         </ul>

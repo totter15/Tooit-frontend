@@ -29,25 +29,27 @@ export interface VotedStickerType {
   img?: string;
   nickname?: string;
   comment?: string;
+  voteItemId?: number;
 }
 
 export type VotedStickersType = VotedStickerType[] | [];
 
 export interface StickerBoxProps {
-  isVoted: boolean;
   stickerVoteHandler: (id: number, url: string) => void;
   revoteHandler: () => void;
   selectedSticker: { id: number; url: string } | null;
+  myVote: VotedStickerType | null;
 }
 
 export interface VoteListProps {
   items: VoteItemType[];
-  stickerLocateHandler: React.MouseEventHandler<HTMLButtonElement>;
+  stickerLocateHandler: (e: any, id: number) => void;
   votedStickers: VotedStickersType;
 }
 
 export interface VoteListItemProps {
-  stickerLocateHandler: React.MouseEventHandler<HTMLButtonElement>;
+  index: number;
+  stickerLocateHandler: (e: any, id: number) => void;
   votedStickers: VotedStickerType[];
   item: VoteItemType;
 }
