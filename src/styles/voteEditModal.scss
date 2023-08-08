@@ -23,7 +23,7 @@
   }
   &__box {
     font-family: 'Pretendard';
-    width: 550;
+    width: 550px;
     box-sizing: border-box;
     background-color: white;
     position: absolute;
@@ -31,6 +31,99 @@
   }
   &__input-box {
     padding: 45px 40px 70px 40px;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__input-label {
+    @include sub-title;
+    color: #52578b;
+    margin-bottom: 20px;
+  }
+
+  &__description-input-box {
+    display: flex;
+    position: relative;
+    padding: 11px 10px;
+    border: 1px solid $card-2;
+    border-radius: 10px;
+    margin-bottom: 50px;
+  }
+
+  &__description-input {
+    @include contents;
+    width: 90%;
+    outline: none;
+  }
+
+  &__description-input-count {
+    position: absolute;
+    @include contents;
+    color: $text-3;
+    right: 11px;
+    top: 10px;
+  }
+
+  &__end-date-label {
+    @include contents;
+    color: $text-2;
+    margin-bottom: 10px;
+  }
+
+  &__end-date-input-box {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+  }
+
+  &__end-date-input {
+    @include contents;
+    color: $text-1;
+    border: 1px solid $card-2;
+    border-radius: 10px;
+    width: 70px;
+    padding: 11px 0;
+    text-align: center;
+    margin-right: 12px;
+    outline: none;
+  }
+
+  &__end-date-li {
+    position: absolute;
+    bottom: -10px;
+    transform: translate(0%, 100%);
+    width: 70px;
+    height: 170px;
+    border-radius: 10px;
+    overflow: scroll;
+    border: 1px solid $card-2;
+    background-color: white;
+  }
+
+  &__end-date-li-item {
+    @include contents;
+    color: $text-1;
+    text-align: center;
+    padding: 11px;
+    width: 100%;
+    &.select {
+      background-color: #dadcfb;
+    }
+  }
+
+  &__end-time-input {
+    @include contents;
+    color: $text-1;
+    border: 1px solid $card-2;
+    border-radius: 10px;
+    width: 116px;
+    padding: 11px 0;
+    text-align: center;
+    outline: none;
   }
 
   &__button-box {
