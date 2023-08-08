@@ -187,8 +187,8 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background-color: gray;
       margin-right: 20px;
+      object-fit: contain;
     }
     &__info-title {
       display: flex;
@@ -245,7 +245,9 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       opacity: 0.5;
     }
     &__sticker-img {
+      width: 100%;
       height: 100%;
+      object-fit: contain;
     }
   }
   &__button {
@@ -478,8 +480,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     cursor: pointer;
     position: absolute;
     transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background-color: lightgray;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -487,7 +487,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
     img {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
     }
 
     &-description {
@@ -793,14 +792,27 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
       }
     }
     &__sticker {
+      position: relative;
+      z-index: 1;
       width: 52px;
       height: 52px;
+    }
+    &__sticker-select {
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      padding: 5px;
+      left: -5px;
+      top: -5px;
+      background-color: $blue-4;
+      opacity: 0.5;
       border-radius: 50%;
-      background-color: $card-1;
-      &.selected {
-        background-color: $blue-4;
-        opacity: 0.5;
-      }
+    }
+    &__sticker-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .voted-sticker-info {
@@ -816,7 +828,6 @@ $vote-list-width: 870 / 1520 * 100%; //wrapper에 대한 width %
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background-color: gray;
         margin-right: 12px;
       }
       &__info-title {

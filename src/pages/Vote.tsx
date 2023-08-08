@@ -7,7 +7,10 @@ import VoteEditModal from '../components/VoteEditModal';
 import Wrapper from '../components/Wrapper';
 import useResponsive from '../hooks/useResponsive';
 import VoteList from '../components/vote/VoteList';
-import { VotedStickersType } from '../interfaces/VoteInterface';
+import {
+  VotedStickerType,
+  VotedStickersType,
+} from '../interfaces/VoteInterface';
 import VoteGraph from '../components/vote/VoteGraph';
 import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 import StickerBox from '../components/vote/StickerBox';
@@ -15,8 +18,12 @@ import MobileStickerBox from '../components/vote/MobileStickerBox';
 import VoteInfoHeader from '../components/vote/VoteInfoHeader';
 import VoteDescription from '../components/vote/VoteDescription';
 import DeadlineShare from '../components/vote/DeadlineShare';
+import { useQuery } from 'react-query';
+import { getVote } from '../apis/vote';
 
 function Vote() {
+  // const { data: voteData } = useQuery('voteData', () => getVote(1));
+
   const { isTablet } = useResponsive();
   const windowWidth: number = window.innerWidth;
   const windowHeight: number = window.innerHeight;
@@ -26,7 +33,8 @@ function Vote() {
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
-  const [isVoted, setIsVoted] = useState<boolean>(false);
+
+  const [myVote, setMyVote] = useState<VotedStickerType | null>(null);
 
   const [selectedSticker, setSelectedSticker] = useState<{
     id: number;
@@ -87,21 +95,18 @@ function Vote() {
   }
 
   const stickerLocateHandler = useCallback(
-    (e: any) => {
+    (e: any, voteItemId: number) => {
       if (selectedSticker) {
-        setVotedStickers([
-          ...votedStickers,
-          {
-            id: selectedSticker.id,
-            x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
-            y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
-            img: selectedSticker.url,
-            nickname: '익명',
-          },
-        ]);
+        setMyVote({
+          voteItemId,
+          id: selectedSticker.id,
+          x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
+          y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
+          img: selectedSticker.url,
+          nickname: '익명',
+        });
         setVoteModalVisible(true);
         setUploadSticker(null);
-        setIsVoted(true);
       }
     },
     [votedStickers, selectedSticker, uploadSticker],
@@ -109,27 +114,25 @@ function Vote() {
 
   const stickerMessageHandler = useCallback(
     (nickname: string, comment: string) => {
-      if (selectedSticker) {
-        setVotedStickers(
-          votedStickers.map((sticker) =>
-            sticker.id === selectedSticker.id
-              ? { ...sticker, nickname, comment }
-              : sticker,
-          ),
-        );
+      if (myVote) {
+        const votedSticker = { ...myVote, nickname, comment };
+        setMyVote(votedSticker);
 
-        setVoteModalVisible(false);
-        setSelectedSticker(null);
-        setUploadSticker(null);
+        setVotedStickers([...votedStickers, votedSticker]);
       }
+
+      setVoteModalVisible(false);
+      setSelectedSticker(null);
+      setUploadSticker(null);
     },
-    [votedStickers],
+    [myVote],
   );
 
   const stickerHandler = useCallback(() => {
     setVoteModalVisible(false);
     setSelectedSticker(null);
-  }, []);
+    myVote && setVotedStickers([...votedStickers, myVote]);
+  }, [myVote]);
 
   const revoteCancelHandler = useCallback(() => {
     setRevoteModalVisible(false);
@@ -137,7 +140,7 @@ function Vote() {
 
   const revoteHandler = useCallback(() => {
     // TODO : revote
-    setIsVoted(false);
+    setMyVote(null);
     setRevoteModalVisible(false);
   }, []);
 
@@ -183,10 +186,10 @@ function Vote() {
             <VoteDescription />
             <DeadlineShare />
             <StickerBox
-              isVoted={isVoted}
               stickerVoteHandler={stickerVoteHandler}
               selectedSticker={selectedSticker}
               revoteHandler={() => setRevoteModalVisible(true)}
+              myVote={myVote}
             />
             <VoteGraph />
           </section>
@@ -201,10 +204,10 @@ function Vote() {
           {/* MOBILE */}
           <MobileVoteGraph />
           <MobileStickerBox
-            isVoted={isVoted}
             stickerVoteHandler={stickerVoteHandler}
             selectedSticker={selectedSticker}
             revoteHandler={() => setRevoteModalVisible(true)}
+            myVote={myVote}
           />
         </main>
       </Wrapper>

@@ -5,10 +5,10 @@ import stickers from '../../statics/stickers.json';
 import Sticker from './Sticker';
 
 function StickerBox({
-  isVoted,
   stickerVoteHandler,
   revoteHandler,
   selectedSticker,
+  myVote,
 }: StickerBoxProps) {
   //스티커만 선택
   //투표했는지에 따라 다른 컴포넌트 보여줌
@@ -24,21 +24,20 @@ function StickerBox({
     handleChange,
     deleteUploadSticker,
   } = useUploadSticker();
+  const { voteItemId, img, comment } = myVote ?? {};
 
   return (
     <section className="sticker-box">
-      <h3 className="sub-title">{isVoted ? '내 투표' : '스티커'}</h3>
-      {isVoted ? (
+      <h3 className="sub-title">{!!myVote ? '내 투표' : '스티커'}</h3>
+      {!!myVote ? (
         <section className="voted-sticker-info">
-          <img alt="voted-sticker" />
+          <img alt="voted-sticker" src={img} />
           <div className="voted-sticker-info__info">
             <div className="voted-sticker-info__info-title">
-              <div>1</div>
+              <div>{voteItemId}</div>
               <span>투표한 아이템 이름</span>
             </div>
-            <p>
-              일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십
-            </p>
+            <p>{comment}</p>
           </div>
         </section>
       ) : (
@@ -53,7 +52,7 @@ function StickerBox({
           ))}
         </div>
       )}
-      {isVoted ? (
+      {!!myVote ? (
         <button
           type="button"
           className="sticker-box__button done"

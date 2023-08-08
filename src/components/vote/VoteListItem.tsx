@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import { url } from 'inspector';
 
 function VoteListItem({
+  index,
   stickerLocateHandler,
   votedStickers,
   item,
@@ -60,7 +61,7 @@ function VoteListItem({
     <li className="vote-list__item">
       <div className="vote-list__item-header">
         <div className="vote-list__item-title">
-          <div className="vote-list__item-number">1</div>
+          <div className="vote-list__item-number">{index}</div>
           {name}
           {!isTablet && (
             <span className="vote-list__item-percent">
@@ -79,7 +80,7 @@ function VoteListItem({
           position: 'relative',
         }}
         type="button"
-        onClick={stickerLocateHandler}
+        onClick={(e) => stickerLocateHandler(e, index)}
         className="vote-list__item-img"
       >
         <img
@@ -87,14 +88,18 @@ function VoteListItem({
           alt="votedImage"
           className="vote-list__item-img__img"
         />
-        {votedStickers.map((sticker) => (
-          <VotedSticker
-            sticker={sticker}
-            isFocused={sticker.id === focusSticker?.id}
-            stickerFocusHandler={(focus) => setFocusSticker(focus)}
-            stickerSize={stickerSize}
-          />
-        ))}
+        {votedStickers.map((sticker) => {
+          if (sticker.voteItemId === index) {
+            return (
+              <VotedSticker
+                sticker={sticker}
+                isFocused={sticker.id === focusSticker?.id}
+                stickerFocusHandler={(focus) => setFocusSticker(focus)}
+                stickerSize={stickerSize}
+              />
+            );
+          }
+        })}
 
         <div
           className={`vote-list__item-description-background ${
