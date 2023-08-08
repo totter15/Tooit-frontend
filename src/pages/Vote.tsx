@@ -3,7 +3,7 @@ import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
 import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
-import VoteEditModal from '../components/VoteEditModal';
+import VoteEditModal from '../components/vote/VoteEditModal';
 import Wrapper from '../components/Wrapper';
 import useResponsive from '../hooks/useResponsive';
 import VoteList from '../components/vote/VoteList';
