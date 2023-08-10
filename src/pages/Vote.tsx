@@ -19,7 +19,7 @@ import VoteInfoHeader from '../components/vote/VoteInfoHeader';
 import VoteDescription from '../components/vote/VoteDescription';
 import DeadlineShare from '../components/vote/DeadlineShare';
 import { useQuery } from 'react-query';
-import { getVote } from '../apis/vote';
+// import { getVote } from '../apis/vote';
 
 function Vote() {
   // const { data: voteData } = useQuery('voteData', () => getVote(1));
