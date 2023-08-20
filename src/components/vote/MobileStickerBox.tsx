@@ -2,6 +2,7 @@ import useUploadSticker from '../../hooks/useUploadSticker';
 import { StickerBoxProps } from '../../interfaces/VoteInterface';
 import stickers from '../../statics/stickers.json';
 import { useEffect } from 'react';
+import Icon from '../common/Icon';
 
 function MobileStickerBox({
   stickerVoteHandler,
@@ -54,7 +55,7 @@ function MobileStickerBox({
             type="button"
             className="sticker-box-mobile__delete-button"
           >
-            <img alt="close" src="delete_sticker.png" />
+            <Icon alt="close" name="delete_sticker" />
           </button>
         </section>
       ) : (
@@ -72,7 +73,7 @@ function MobileStickerBox({
               accept="image/png"
               style={{ display: 'none' }}
             />
-            <img src="add_sticker_mobile.png" alt="add_sticker" />
+            <Icon name="add_sticker_mobile" alt="add_sticker" />
           </button>
           {stickers.map((sticker) => (
             <button

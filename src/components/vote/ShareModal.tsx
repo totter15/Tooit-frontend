@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import '../../styles/ShareModal.scss';
 import share from '../../utils/share';
+import Icon from '../common/Icon';
 
 function ShareModal({
   modalVisible,
@@ -19,20 +20,17 @@ function ShareModal({
   const shareList = [
     {
       name: '트위터',
-      icon: 'twitter_share.png',
-      alt: 'twitter_share',
+      icon: 'twitter_share',
       onClick: () => shareTwitter(title, url),
     },
     {
       name: '카카오톡',
-      icon: 'kakao_share.png',
-      alt: 'kakao_share',
+      icon: 'kakao_share',
       onClick: () => shareKakao(title, 10),
     },
     {
       name: 'URL복사',
-      icon: 'link_share.png',
-      alt: 'link_share',
+      icon: 'link_share',
       onClick: () => shareURL(url),
     },
   ];
@@ -45,7 +43,11 @@ function ShareModal({
           className="share-modal__button"
           onClick={item.onClick}
         >
-          <img alt={item.alt} src={item.icon} className="share-modal__icon" />
+          <Icon
+            name={item.icon}
+            alt={item.icon}
+            className="share-modal__icon"
+          />
           <span className="share-modal__text">{item.name}</span>
         </button>
       ))}

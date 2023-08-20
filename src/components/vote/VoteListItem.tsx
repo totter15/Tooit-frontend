@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import VotedSticker from './VotedSticker';
 import useResponsive from '../../hooks/useResponsive';
 import {
@@ -6,7 +6,7 @@ import {
   VoteListItemProps,
 } from '../../interfaces/VoteInterface';
 import html2canvas from 'html2canvas';
-import { url } from 'inspector';
+import Icon from '../common/Icon';
 
 function VoteListItem({
   index,
@@ -70,7 +70,7 @@ function VoteListItem({
           )}
         </div>
         <button type="button" onClick={saveHandler}>
-          <img src="save.png" alt="save" />
+          <Icon name="save" alt="save" />
         </button>
       </div>
 
@@ -113,7 +113,7 @@ function VoteListItem({
           type="button"
           className="vote-list__item-info-button"
         >
-          <img alt="info" src="vote_item_info.png" />
+          <Icon name="vote_item_info" alt="info" />
         </button>
       </div>
     </li>

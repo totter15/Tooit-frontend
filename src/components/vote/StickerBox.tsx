@@ -4,6 +4,7 @@ import ShareModal from './ShareModal';
 import stickers from '../../statics/stickers.json';
 import Sticker from './Sticker';
 import { useEffect } from 'react';
+import Icon from '../common/Icon';
 
 function StickerBox({
   stickerVoteHandler,
@@ -81,7 +82,7 @@ function StickerBox({
             className="sticker-box__delete-button"
             onClick={deleteUploadSticker}
           >
-            <img alt="delete_sicker" src="delete_sticker.png" />
+            <Icon name="delete_sticker" alt="delete_sticker" />
           </button>
         </div>
       ) : (
@@ -98,10 +99,10 @@ function StickerBox({
             accept="image/png"
             style={{ display: 'none' }}
           />
-          <img
-            className="sticker-box__button-icon"
-            src="add_plus.png"
+          <Icon
+            name="add_plus"
             alt="plus"
+            className="sticker-box__button-icon"
           />
           PNG 스티커 만들기
         </button>
