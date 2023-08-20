@@ -76,6 +76,7 @@ function MobileStickerBox({
           </button>
           {stickers.map((sticker) => (
             <button
+              key={sticker.id}
               onClick={() => stickerVoteHandler(sticker.id, sticker.src)}
               type="button"
               className={`sticker-box-mobile__sticker`}

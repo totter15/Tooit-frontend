@@ -49,6 +49,7 @@ function StickerBox({
         <div className="sticker-list">
           {stickers.map((item) => (
             <Sticker
+              key={item.id}
               sticker={item}
               size={stickerWidth}
               voteHandler={() => stickerVoteHandler(item.id, item.src)}

@@ -40,7 +40,11 @@ function ShareModal({
   return (
     <section className={`share-modal ${modalVisible && 'visible'}`}>
       {shareList.map((item) => (
-        <button className="share-modal__button" onClick={item.onClick}>
+        <button
+          key={item.name}
+          className="share-modal__button"
+          onClick={item.onClick}
+        >
           <img alt={item.alt} src={item.icon} className="share-modal__icon" />
           <span className="share-modal__text">{item.name}</span>
         </button>

@@ -74,12 +74,11 @@ function VoteListItem({
         </button>
       </div>
 
-      <button
+      <div
         ref={imgItemRef}
         style={{
           position: 'relative',
         }}
-        type="button"
         onClick={(e) => stickerLocateHandler(e, index)}
         className="vote-list__item-img"
       >
@@ -116,7 +115,7 @@ function VoteListItem({
         >
           <img alt="info" src="vote_item_info.png" />
         </button>
-      </button>
+      </div>
     </li>
   );
 }

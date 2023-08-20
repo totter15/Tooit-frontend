@@ -22,16 +22,17 @@ function VoteInfoHeader({
         onBlur={() => setMenuVisible(false)}
       >
         <img src="menu.png" alt="menu" />
-        <div className={`vote-header__menu-box ${menuVisible && 'visible'}`}>
-          <button type="button" onMouseDown={deleteModalHandler}>
-            삭제
-          </button>
-          <div />
-          <button type="button" onMouseDown={editModalHandler}>
-            수정
-          </button>
-        </div>
       </button>
+
+      <div className={`vote-header__menu-box ${menuVisible && 'visible'}`}>
+        <button type="button" onMouseDown={deleteModalHandler}>
+          삭제
+        </button>
+        <div />
+        <button type="button" onMouseDown={editModalHandler}>
+          수정
+        </button>
+      </div>
     </section>
   );
 }
