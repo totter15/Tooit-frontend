@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-
 export interface VoteListType {
   id: number;
   title: string;
