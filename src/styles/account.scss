@@ -102,9 +102,15 @@
   }
 
   &__save-message {
+    display: none;
     margin-right: 30px;
     font-size: 1rem;
-    opacity: 0.5;
+    opacity: 0;
+    transition: 1s;
+    &.show {
+      display: block;
+      opacity: 0.5;
+    }
   }
 
   &__my-button {
@@ -115,6 +121,7 @@
     padding: 15px 28px;
     background-color: $card-1;
     border-radius: 20px;
+    transition: 1s;
   }
 }
 
