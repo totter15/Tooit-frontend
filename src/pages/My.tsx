@@ -4,23 +4,22 @@ import Wrapper from '../components/Wrapper';
 import '../styles/my.scss';
 import MessageModal from '../components/MessageModal';
 import CommentModal from '../components/my/CommentModal';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getUserInfo } from '../apis/user';
 import useMyVote from '../hooks/useMyVote';
 import useMyVoting from '../hooks/useMyVoting';
 import VoteItem from '../components/my/VoteItem';
+import { deadlineVote, deleteVote, reviewVote } from '../apis/vote';
 
 const votes = [1, 2, 3, 4, 5];
 
 function My() {
+  const queryClient = useQueryClient();
   const { data } = useQuery(['userData'], getUserInfo);
   const { email, nickname } = data ?? {};
 
   const { voteList } = useMyVote();
   const { votingList } = useMyVoting();
-
-  console.log({ voteList, votingList });
-  console.log('reload');
 
   const [category, setCategory] = useState<'made' | 'vote'>('made');
   const [selected, setSelected] = useState<number[]>([]);
@@ -31,6 +30,7 @@ function My() {
   const [closeModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [commentModalVisible, setCommentModalVisible] =
     useState<boolean>(false);
+  const [reviewItem, setReviewItem] = useState<number | null>(null);
 
   function selectHandler(id: number) {
     const items = selected.includes(id)
@@ -39,20 +39,36 @@ function My() {
     setSelected(items);
   }
 
-  const deleteVoteHandler = useCallback(() => {
-    // TODO : 투표 삭제 기능
-    setDeleteModalVisible(false);
-  }, []);
+  const deleteVoteHandler = useCallback(async () => {
+    const data = await deleteVote(selected);
+    if (data) {
+      queryClient.invalidateQueries(['myVote']);
+      setDeleteModalVisible(false);
+      setSelected([]);
+    }
+  }, [selected]);
 
-  const closeVoteHandler = useCallback(() => {
-    // TODO : 투표 마감 기능
-    setCloseModalVisible(false);
-  }, []);
+  const closeVoteHandler = useCallback(async () => {
+    const data = await deadlineVote(selected);
+    if (data) {
+      queryClient.invalidateQueries(['myVote']);
+      setCloseModalVisible(false);
+      setSelected([]);
+    }
+  }, [selected]);
 
-  const submitCommentHandler = useCallback(() => {
-    // TODO : 코멘트 입력 기능
-    setCommentModalVisible(false);
-  }, []);
+  const submitCommentHandler = useCallback(
+    async (content: string) => {
+      if (reviewItem) {
+        const data = await reviewVote({ content, voteId: reviewItem });
+        if (data) {
+          setReviewItem(null);
+          setCommentModalVisible(false);
+        }
+      }
+    },
+    [reviewItem],
+  );
 
   return (
     <>
@@ -123,7 +139,10 @@ function My() {
                   item={item}
                   isSelected={selected.includes(item.id)}
                   selectHandler={selectHandler}
-                  commentModalVisible={() => setCommentModalVisible(true)}
+                  commentModalVisible={() => {
+                    setCommentModalVisible(true);
+                    setReviewItem(item.id);
+                  }}
                 />
               ))}
             </ul>
