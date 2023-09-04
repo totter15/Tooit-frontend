@@ -1,3 +1,5 @@
+import { VoteState, VoteStickerType } from '../slices/vote';
+
 export interface VoteListType {
   id: number;
   title: string;
@@ -28,33 +30,56 @@ export interface VotedStickerType {
   nickname?: string;
   comment?: string;
   voteItemId?: number;
+  voteItemName?: string;
 }
 
-export type VotedStickersType = VotedStickerType[] | [];
+export type VotedStickersType = VoteStickerType[] | [];
 
 export interface StickerBoxProps {
-  stickerVoteHandler: (id: number, url: string) => void;
   revoteHandler: () => void;
-  selectedSticker: { id: number; url: string } | null;
-  myVote: VotedStickerType | null;
+  myVote: VoteState | null;
 }
 
 export interface VoteListProps {
   items: VoteItemType[];
-  stickerLocateHandler: (e: any, id: number) => void;
+  stickerLocateHandler: ({
+    x,
+    y,
+    name,
+    id,
+    index,
+  }: {
+    x: number;
+    y: number;
+    name: string;
+    id: number;
+    index: number;
+  }) => void;
   votedStickers: VotedStickersType;
 }
 
 export interface VoteListItemProps {
   index: number;
-  stickerLocateHandler: (e: any, id: number) => void;
-  votedStickers: VotedStickerType[];
+  stickerLocateHandler: ({
+    x,
+    y,
+    name,
+    id,
+    index,
+  }: {
+    x: number;
+    y: number;
+    name: string;
+    id: number;
+    index: number;
+  }) => void;
+  votedStickers: VotedStickersType;
   item: VoteItemType;
 }
 
 export interface StickerProps {
-  sticker: VotedStickerType;
+  sticker: VoteStickerType;
   isFocused: boolean;
-  stickerFocusHandler: (sticker: VotedStickerType | null) => void;
+  stickerFocusHandler: (sticker: VoteStickerType | null) => void;
   stickerSize: string;
 }

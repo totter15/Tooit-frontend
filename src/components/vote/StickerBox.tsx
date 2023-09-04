@@ -1,24 +1,17 @@
 import useUploadSticker from '../../hooks/useUploadSticker';
 import { StickerBoxProps } from '../../interfaces/VoteInterface';
-import ShareModal from './ShareModal';
 import stickers from '../../statics/stickers.json';
 import Sticker from './Sticker';
 import { useEffect } from 'react';
 import Icon from '../common/Icon';
+import useVoteSticker from '../../hooks/useVoteSticker';
 
-function StickerBox({
-  stickerVoteHandler,
-  revoteHandler,
-  selectedSticker,
-  myVote,
-}: StickerBoxProps) {
-  //스티커만 선택
-  //투표했는지에 따라 다른 컴포넌트 보여줌
-  //재투표
-  //스티커 업로드
-
+function StickerBox({ revoteHandler, myVote }: StickerBoxProps) {
   const windowWidth: number = window.innerWidth;
   const stickerWidth: number = (55 / 1920) * windowWidth;
+
+  // TODO : myVote useQuery로 가져오기
+  const { selectStickerHandler } = useVoteSticker();
   const {
     fileRef,
     uploadSticker,
@@ -26,24 +19,36 @@ function StickerBox({
     handleChange,
     deleteUploadSticker,
   } = useUploadSticker();
-  const { voteItemId, img, comment } = myVote ?? {};
+  const { voteItem, sticker } = myVote ?? {};
+  const { sticker: selectedSticker } = useVoteSticker();
 
   useEffect(() => {
-    uploadSticker && stickerVoteHandler(11, uploadSticker.imagePreviewUrl);
+    uploadSticker &&
+      selectStickerHandler({
+        stickerId: 11,
+        src: uploadSticker.imagePreviewUrl,
+        file: uploadSticker.file,
+      });
   }, [uploadSticker]);
+
+  useEffect(() => {
+    if (!selectedSticker) {
+      deleteUploadSticker();
+    }
+  }, [selectedSticker]);
 
   return (
     <section className="sticker-box">
       <h3 className="sub-title">{!!myVote ? '내 투표' : '스티커'}</h3>
       {!!myVote ? (
         <section className="voted-sticker-info">
-          <img alt="voted-sticker" src={img} />
+          <img alt="voted-sticker" src={sticker?.src} />
           <div className="voted-sticker-info__info">
             <div className="voted-sticker-info__info-title">
-              <div>{voteItemId}</div>
+              <div>{voteItem?.index}</div>
               <span>투표한 아이템 이름</span>
             </div>
-            <p>{comment}</p>
+            <p>{sticker?.comment}</p>
           </div>
         </section>
       ) : (
@@ -53,8 +58,14 @@ function StickerBox({
               key={item.id}
               sticker={item}
               size={stickerWidth}
-              voteHandler={() => stickerVoteHandler(item.id, item.src)}
-              isSelected={selectedSticker?.id === item.id}
+              selectHandler={() =>
+                selectStickerHandler({
+                  stickerId: item.id,
+                  src: item.src,
+                  file: null,
+                })
+              }
+              isSelected={selectedSticker?.stickerId === item.id}
             />
           ))}
         </div>

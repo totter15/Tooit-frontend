@@ -3,13 +3,10 @@ import { StickerBoxProps } from '../../interfaces/VoteInterface';
 import stickers from '../../statics/stickers.json';
 import { useEffect } from 'react';
 import Icon from '../common/Icon';
+import useVoteSticker from '../../hooks/useVoteSticker';
 
-function MobileStickerBox({
-  stickerVoteHandler,
-  revoteHandler,
-  selectedSticker,
-  myVote,
-}: StickerBoxProps) {
+function MobileStickerBox({ revoteHandler, myVote }: StickerBoxProps) {
+  const { selectStickerHandler, sticker: selectedSticker } = useVoteSticker();
   const {
     fileRef,
     uploadSticker,
@@ -18,23 +15,34 @@ function MobileStickerBox({
     deleteUploadSticker,
   } = useUploadSticker();
 
+  function stickerVoteHandler(stickerId: number, src: string, file: any) {
+    selectStickerHandler({ stickerId, src, file });
+  }
+
   useEffect(() => {
-    uploadSticker && stickerVoteHandler(11, uploadSticker.imagePreviewUrl);
+    uploadSticker &&
+      stickerVoteHandler(11, uploadSticker.imagePreviewUrl, uploadSticker.file);
   }, [uploadSticker]);
 
-  const { comment, voteItemId, img } = myVote ?? {};
+  useEffect(() => {
+    if (!selectedSticker) {
+      deleteUploadSticker();
+    }
+  }, [selectedSticker]);
+
+  const { voteItem, sticker } = myVote ?? {};
 
   return (
     <section className="sticker-box-mobile">
       {!!myVote ? (
         <section className="voted-sticker-info">
-          <img alt="voted-sticker" src={img} />
+          <img alt="voted-sticker" src={sticker?.src} />
           <div className="voted-sticker-info__info">
             <div className="voted-sticker-info__info-title">
-              <div>{voteItemId}</div>
+              <div>{voteItem?.index}</div>
               <span>아이템 adsfadsf adsfadskfndksnadfkls</span>
             </div>
-            <p>{comment}</p>
+            <p>{sticker?.comment}</p>
           </div>
           <button type="button" onClick={revoteHandler}>
             다시 투표
@@ -78,11 +86,11 @@ function MobileStickerBox({
           {stickers.map((sticker) => (
             <button
               key={sticker.id}
-              onClick={() => stickerVoteHandler(sticker.id, sticker.src)}
+              onClick={() => stickerVoteHandler(sticker.id, sticker.src, null)}
               type="button"
               className={`sticker-box-mobile__sticker`}
             >
-              {selectedSticker?.id === sticker.id && (
+              {selectedSticker?.stickerId === sticker.id && (
                 <div className="sticker-box-mobile__sticker-select" />
               )}
               <img

@@ -27,9 +27,9 @@ export async function putsticker({
   content,
   voteItemId,
   voteId,
-  src,
   ip = null,
   file,
+  image,
 }: any) {
   const formData = new FormData();
   const sticker = {
@@ -39,6 +39,7 @@ export async function putsticker({
     content,
     voteItemId,
     voteId,
+    ...(!file ? { image } : {}),
   };
 
   const stickerData = new Blob(
@@ -47,11 +48,12 @@ export async function putsticker({
   );
 
   formData.append('sticker', stickerData);
-  formData.append('image', file);
+  file && formData.append('image', file);
 
   const { data } = await client.post('sticker', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
+  console.log(data);
   return data;
 }
 
