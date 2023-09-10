@@ -8,8 +8,9 @@ function VoteList({
 }: VoteListProps) {
   return (
     <ul className="vote-list">
-      {items.map((item, i) => (
+      {items?.map((item, i) => (
         <VoteListItem
+          key={item.id}
           index={i + 1}
           item={item}
           stickerLocateHandler={stickerLocateHandler}

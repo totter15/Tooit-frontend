@@ -1,12 +1,12 @@
 function Sticker({
   sticker,
   size,
-  voteHandler,
+  selectHandler,
   isSelected,
 }: {
   sticker: { id: number; src: string };
   size: number;
-  voteHandler: () => void;
+  selectHandler: () => void;
   isSelected: boolean;
 }) {
   return (
@@ -15,7 +15,7 @@ function Sticker({
         width: size,
         height: size,
       }}
-      onClick={voteHandler}
+      onClick={selectHandler}
       type="button"
       className={`sticker-list__sticker`}
     >

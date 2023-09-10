@@ -1,19 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/start.scss';
 
 function Start() {
-  const snsBtn1Handler = () => {
-    // TODO : 카카오톡 연동
-  };
-
-  const snsBtn2Handler = () => {
-    // TODO : 구글 연동
-  };
-
-  const snsBtn3Handler = () => {
-    // TODO : 페이스북?
-  };
-
   return (
     <div className="start_container">
       <div className="start_elements">
@@ -23,9 +11,36 @@ function Start() {
           아래 SNS연동을 통해 회원가입을 진행해주세요
         </div>
         <div className="start_snsBtns">
-          <button onClick={snsBtn1Handler}>1</button>
-          <button onClick={snsBtn2Handler}>1</button>
-          <button onClick={snsBtn3Handler}>1</button>
+          <button
+            onClick={() =>
+              window.open('http://localhost:8080/oauth2/authorization/naver')
+            }
+          >
+            <img
+              alt="twitter"
+              src="https://tooit-icon.s3.ap-northeast-2.amazonaws.com/twitter.png"
+            />
+          </button>
+          <button
+            onClick={() =>
+              window.open('http://localhost:8080/oauth2/authorization/kakao')
+            }
+          >
+            <img
+              alt="kakaotalk"
+              src="https://tooit-icon.s3.ap-northeast-2.amazonaws.com/kakao.png"
+            />
+          </button>
+          <button
+            onClick={() =>
+              window.open('http://localhost:8080/oauth2/authorization/google')
+            }
+          >
+            <img
+              alt="google"
+              src="https://tooit-icon.s3.ap-northeast-2.amazonaws.com/google.png"
+            />
+          </button>
         </div>
       </div>
     </div>
