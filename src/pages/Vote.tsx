@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom';
 import useVoteSticker from '../hooks/useVoteSticker';
 import { VoteState, VoteStickerType, cancelVote } from '../slices/vote';
 
+
 function Vote() {
   const { voteId } = useParams();
   const { data: voteData } = useQuery(

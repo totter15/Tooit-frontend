@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { store } from './slices';
 import { CookiesProvider } from 'react-cookie';
 
+
 window.Kakao.init('eb0efa26dc3318fbc4fc44e031dd095c');
 
 const root = ReactDOM.createRoot(
