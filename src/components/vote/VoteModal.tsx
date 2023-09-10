@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../../styles/voteModal.scss';
+import Icon from '../common/Icon';
 
 interface ModalProps {
   visible: boolean;
@@ -61,7 +62,7 @@ function VoteModal({
             type="button"
             onClick={modalBackHandler}
           >
-            <img alt="back" src="arrow_back.png" />
+            <Icon name="arrow_back" alt="back" />
           </button>
           <div className="vote-input-box__title-box">
             <div className="vote-input-box__number">1</div>

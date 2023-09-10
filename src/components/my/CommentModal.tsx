@@ -4,7 +4,7 @@ import '../../styles/commentModal.scss';
 interface CommentModalProps {
   visible: boolean;
   cancelHandler: () => void;
-  submitHandler: () => void;
+  submitHandler: (comment: string) => void;
 }
 
 function CommentModal({
@@ -16,6 +16,11 @@ function CommentModal({
 
   function onChangeHandler(e: any) {
     setComment(e.target.value);
+  }
+
+  function sumbitComment() {
+    submitHandler(comment);
+    setComment('');
   }
 
   return (
@@ -42,7 +47,7 @@ function CommentModal({
           <button type="button" onClick={cancelHandler}>
             취소
           </button>
-          <button type="button" onClick={submitHandler}>
+          <button type="button" onClick={sumbitComment}>
             작성
           </button>
         </div>

@@ -1,12 +1,10 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import VotedSticker from './VotedSticker';
 import useResponsive from '../../hooks/useResponsive';
-import {
-  VotedStickerType,
-  VoteListItemProps,
-} from '../../interfaces/VoteInterface';
+import { VoteListItemProps } from '../../interfaces/VoteInterface';
 import html2canvas from 'html2canvas';
-import { url } from 'inspector';
+import Icon from '../common/Icon';
+import { VoteStickerType } from '../../slices/vote';
 
 function VoteListItem({
   index,
@@ -16,12 +14,18 @@ function VoteListItem({
 }: VoteListItemProps) {
   const imgItemRef = useRef<any>(null);
   const { isTablet } = useResponsive();
+  const windowWidth: number = window.innerWidth;
+  const windowHeight: number = window.innerHeight;
+  const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
+
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [focusSticker, setFocusSticker] = useState<VotedStickerType | null>(
+  const [focusSticker, setFocusSticker] = useState<VoteStickerType | null>(
     null,
   );
   const [stickerSize, setStickerSize] = useState<string>('10.4vh');
-  const { image, stickerCount, name, content } = item;
+  const { image, stickerCount, name, content, id } = item;
+
+  // console.log(item);
 
   function saveHandler() {
     //  TODO : CORS 에러 해결
@@ -70,17 +74,20 @@ function VoteListItem({
           )}
         </div>
         <button type="button" onClick={saveHandler}>
-          <img src="save.png" alt="save" />
+          <Icon name="save" alt="save" />
         </button>
       </div>
 
-      <button
+      <div
         ref={imgItemRef}
         style={{
           position: 'relative',
         }}
-        type="button"
-        onClick={(e) => stickerLocateHandler(e, index)}
+        onClick={(e: any) => {
+          const x = (e.nativeEvent.offsetX / voteItemWidth) * 100;
+          const y = (e.nativeEvent.offsetY / voteItemWidth) * 100;
+          stickerLocateHandler({ x, y, index, name, id });
+        }}
         className="vote-list__item-img"
       >
         <img
@@ -89,11 +96,11 @@ function VoteListItem({
           className="vote-list__item-img__img"
         />
         {votedStickers.map((sticker) => {
-          if (sticker.voteItemId === index) {
+          if (sticker.itemId === index) {
             return (
               <VotedSticker
                 sticker={sticker}
-                isFocused={sticker.id === focusSticker?.id}
+                isFocused={sticker.stickerId === focusSticker?.stickerId}
                 stickerFocusHandler={(focus) => setFocusSticker(focus)}
                 stickerSize={stickerSize}
               />
@@ -114,9 +121,9 @@ function VoteListItem({
           type="button"
           className="vote-list__item-info-button"
         >
-          <img alt="info" src="vote_item_info.png" />
+          <Icon name="vote_item_info" alt="info" />
         </button>
-      </button>
+      </div>
     </li>
   );
 }

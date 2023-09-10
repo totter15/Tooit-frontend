@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Icon from '../common/Icon';
 
 function VoteInfoHeader({
   editModalHandler,
@@ -13,25 +14,27 @@ function VoteInfoHeader({
   return (
     <section className="vote-header">
       <Link to={'/home'} className="vote-header__back">
-        <img src="arrow_back.png" alt="back" />
+        <Icon name="arrow_back" alt="back" />
       </Link>
+
       <button
         type="button"
         className="vote-header__more"
         onClick={() => setMenuVisible(true)}
         onBlur={() => setMenuVisible(false)}
       >
-        <img src="menu.png" alt="menu" />
-        <div className={`vote-header__menu-box ${menuVisible && 'visible'}`}>
-          <button type="button" onMouseDown={deleteModalHandler}>
-            삭제
-          </button>
-          <div />
-          <button type="button" onMouseDown={editModalHandler}>
-            수정
-          </button>
-        </div>
+        <Icon name="menu" alt="menu" />
       </button>
+
+      <div className={`vote-header__menu-box ${menuVisible && 'visible'}`}>
+        <button type="button" onMouseDown={deleteModalHandler}>
+          삭제
+        </button>
+        <div />
+        <button type="button" onMouseDown={editModalHandler}>
+          수정
+        </button>
+      </div>
     </section>
   );
 }

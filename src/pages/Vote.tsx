@@ -5,12 +5,7 @@ import ReVoteModal from '../components/vote/ReVoteModal';
 import VoteDeleteModal from '../components/vote/VoteDeleteModal';
 import VoteEditModal from '../components/vote/VoteEditModal';
 import Wrapper from '../components/Wrapper';
-import useResponsive from '../hooks/useResponsive';
 import VoteList from '../components/vote/VoteList';
-import {
-  VotedStickerType,
-  VotedStickersType,
-} from '../interfaces/VoteInterface';
 import VoteGraph from '../components/vote/VoteGraph';
 import MobileVoteGraph from '../components/vote/MobileVoteGraph';
 import StickerBox from '../components/vote/StickerBox';
@@ -19,120 +14,114 @@ import VoteInfoHeader from '../components/vote/VoteInfoHeader';
 import VoteDescription from '../components/vote/VoteDescription';
 import DeadlineShare from '../components/vote/DeadlineShare';
 import { useQuery } from 'react-query';
-// import { getVote } from '../apis/vote';
+import { getVote, putsticker } from '../apis/vote';
+import { useParams } from 'react-router-dom';
+import useVoteSticker from '../hooks/useVoteSticker';
+import { VoteState, VoteStickerType, cancelVote } from '../slices/vote';
+
 
 function Vote() {
-  // const { data: voteData } = useQuery('voteData', () => getVote(1));
+  const { voteId } = useParams();
+  const { data: voteData } = useQuery(
+    ['voteData', voteId],
+    () => voteId && getVote(+voteId),
+  );
 
-  const { isTablet } = useResponsive();
-  const windowWidth: number = window.innerWidth;
-  const windowHeight: number = window.innerHeight;
-  const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
+  const {
+    locateStickerHandler,
+    inputStickerDataHandler,
+    sticker: voteSticker,
+    voteItem,
+  } = useVoteSticker();
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
 
-  const [myVote, setMyVote] = useState<VotedStickerType | null>(null);
+  const [myVote, setMyVote] = useState<VoteState | null>(null);
+  const [votedStickers, setVotedStickers] = useState<VoteStickerType[] | []>(
+    [],
+  );
+  const { items } = voteData ?? {};
 
-  const [selectedSticker, setSelectedSticker] = useState<{
-    id: number;
-    url: string;
-  } | null>(null);
-  const [votedStickers, setVotedStickers] = useState<VotedStickersType>([]);
+  // TODO : 모달을 전역으로 관리하게 되면 VoteListItem으로 옮겨주기
+  const stickerLocateHandler = useCallback(
+    ({
+      x,
+      y,
+      name,
+      id,
+      index,
+    }: {
+      x: number;
+      y: number;
+      name: string;
+      id: number;
+      index: number;
+    }) => {
+      if (voteSticker) {
+        const nickname = '익명';
+        const comment = '';
+        locateStickerHandler({
+          selectItem: { name, id, index },
+          x,
+          y,
+          nickname,
+          comment,
+        });
+      }
+      setVoteModalVisible(true);
+    },
+    [voteSticker],
+  );
 
-  const [uploadSticker, setUploadSticker] = useState<{
-    file: File;
-    imagePreviewUrl: string;
-  } | null>(null);
-
-  const mock = {
-    id: 16,
-    title: '제일 귀여운 춘식이 짤 투표',
-    content: '여기서 제일 귀여운 춘식이 골라줘 프사할거임',
-    startDate: '2023-07-17 10:22',
-    endDate: '2023-07-20 22:11',
-    createDate: '2023-07-17 10:55',
-    userId: 2,
-    nickname: 'aff3411b25',
-    items: [
-      {
-        id: 46,
-        image:
-          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/e7eecfd8-65ab-4226-b564-8d403049cc68_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A81.png',
-        stickerCount: 0,
-        name: 'itemNameTest',
-        content: '춘식1',
-        voteId: 16,
-      },
-      {
-        id: 47,
-        image:
-          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/f1d24f40-7ca5-44a9-8468-4e85b673d513_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A82.jpeg',
-        stickerCount: 0,
-        name: 'itemNameTest',
-        content: '춘식2',
-        voteId: 16,
-      },
-      {
-        id: 48,
-        image:
-          'https://tooit.s3.ap-northeast-2.amazonaws.com/voteImage/e3a603ad-0bfe-4dbf-9643-ab2ba2e74682_%E1%84%8E%E1%85%AE%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A83.jpeg',
-        stickerCount: 0,
-        name: 'itemNameTest',
-        content: '춘식3',
-        voteId: 16,
-      },
-    ],
-    dday: 3,
+  const inputStickerData = (nickname: string, comment: string) => {
+    inputStickerDataHandler({ nickname, comment });
+    voteHandler({ nickname, comment });
   };
 
-  const { items } = mock;
+  const voteHandler = async (input?: { nickname: string; comment: string }) => {
+    // TODO : 로컬스토리지에 토큰이 없을경우 getIp한 값을 넣어준다.
+    try {
+      const { x, y, src, itemId, nickname, comment, file } = voteSticker ?? {};
+      const data = await putsticker({
+        x,
+        y,
+        content: input ? input.comment : comment,
+        nickname: input ? input.nickname : nickname,
+        voteItemId: itemId,
+        voteId,
+        image: src,
+        file,
+      });
 
-  function stickerVoteHandler(id: number, url: string) {
-    setSelectedSticker({ id, url });
+      if (data) {
+        setMyVote({ sticker: voteSticker, voteItem });
+        voteSticker && setVotedStickers([...votedStickers, voteSticker]);
+        setVoteModalVisible(false);
+        cancelVote();
+        // TODO : 내 정보 업데이트
+      }
+    } catch (e: any) {
+      if (e.toJSON().status === 400) {
+        setVoteModalVisible(false);
+        cancelVote();
+        alert('이미 투표를 했습니다.');
+      }
+    }
+  };
+
+  async function getIp() {
+    const ipData = await fetch('https://geolocation-db.com/json/');
+    const locationIp = await ipData.json();
+    return locationIp.IPv4;
   }
 
-  const stickerLocateHandler = useCallback(
-    (e: any, voteItemId: number) => {
-      if (selectedSticker) {
-        setMyVote({
-          voteItemId,
-          id: selectedSticker.id,
-          x: `${(e.nativeEvent.offsetX / voteItemWidth) * 100}%`,
-          y: `${(e.nativeEvent.offsetY / voteItemWidth) * 100}%`,
-          img: selectedSticker.url,
-          nickname: '익명',
-        });
-        setVoteModalVisible(true);
-        setUploadSticker(null);
-      }
-    },
-    [votedStickers, selectedSticker, uploadSticker],
-  );
-
-  const stickerMessageHandler = useCallback(
-    (nickname: string, comment: string) => {
-      if (myVote) {
-        const votedSticker = { ...myVote, nickname, comment };
-        setMyVote(votedSticker);
-
-        setVotedStickers([...votedStickers, votedSticker]);
-      }
-
-      setVoteModalVisible(false);
-      setSelectedSticker(null);
-      setUploadSticker(null);
-    },
-    [myVote],
-  );
-
-  const stickerHandler = useCallback(() => {
+  const voteCancelHandler = useCallback(() => {
+    cancelVote();
     setVoteModalVisible(false);
-    setSelectedSticker(null);
-    myVote && setVotedStickers([...votedStickers, myVote]);
-  }, [myVote]);
+  }, []);
 
   const revoteCancelHandler = useCallback(() => {
     setRevoteModalVisible(false);
@@ -161,23 +150,18 @@ function Vote() {
     setEditModalVisible(false);
   }, []);
 
-  const voteCancelHandler = useCallback(() => {
-    setVoteModalVisible(false);
-    setVotedStickers(
-      votedStickers.filter((sticker) => sticker.id === selectedSticker?.id),
-    );
-    setSelectedSticker(null);
-  }, []);
-
   const otherOneTouch = () => {
     (document.activeElement as HTMLElement).blur(); // 현재 활성화된 element의 blur 이벤트 호출
   };
+
+  if (!voteData) {
+    return <div>loading...</div>;
+  }
 
   return (
     <>
       <Wrapper>
         <main className="vote">
-          {/* VOTE INFO */}
           <section className="vote-info">
             <VoteInfoHeader
               editModalHandler={() => setEditModalVisible(true)}
@@ -186,15 +170,12 @@ function Vote() {
             <VoteDescription />
             <DeadlineShare />
             <StickerBox
-              stickerVoteHandler={stickerVoteHandler}
-              selectedSticker={selectedSticker}
               revoteHandler={() => setRevoteModalVisible(true)}
               myVote={myVote}
             />
             <VoteGraph />
           </section>
 
-          {/* VOTE LIST */}
           <VoteList
             items={items}
             stickerLocateHandler={stickerLocateHandler}
@@ -204,8 +185,6 @@ function Vote() {
           {/* MOBILE */}
           <MobileVoteGraph />
           <MobileStickerBox
-            stickerVoteHandler={stickerVoteHandler}
-            selectedSticker={selectedSticker}
             revoteHandler={() => setRevoteModalVisible(true)}
             myVote={myVote}
           />
@@ -214,8 +193,8 @@ function Vote() {
 
       <VoteModal
         visible={voteModalVisible}
-        stickerMessageHandler={stickerMessageHandler}
-        stickerHandler={stickerHandler}
+        stickerMessageHandler={inputStickerData}
+        stickerHandler={voteHandler}
         backHandler={voteCancelHandler}
       />
       <ReVoteModal

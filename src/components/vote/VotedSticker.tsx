@@ -9,7 +9,7 @@ function VotedSticker({
   stickerSize,
 }: StickerProps) {
   const { isTablet } = useResponsive();
-  const { x, y, nickname, comment, img } = sticker;
+  const { x, y, nickname, comment, src } = sticker;
 
   const [descriptionHeight, setDescriptionHeight] = useState<
     number | undefined
@@ -22,8 +22,8 @@ function VotedSticker({
   const DESCRIPTION_WIDTH = isTablet ? WIDTH * 0.8 : 300; //  설명창 길이(px)
   const MIN_DISTANCE = 4; //  아이템 벽에서 설명창이 떨어져야할 최소한의 거리(vh)
   const STICKER_SIZE = parseInt(stickerSize, 10); // 스티커 사이즈(vh)
-  const STICKER_X = parseInt(x, 10); //  스티커 x좌표(%)
-  const STICKER_Y = parseInt(y, 10); //  스티커 y좌표(%)
+  const STICKER_X = x || 1; //  스티커 x좌표(%)
+  const STICKER_Y = y || 1; //  스티커 y좌표(%)
   const STICKER_X_WIDTH = (STICKER_X * ITEM_SIZE) / 100; //  스티커 x좌표를 vh로 환산(vh)
   const STICKER_Y_WIDTH = (STICKER_Y * ITEM_SIZE) / 100; //  스티커 y좌표를 vh로 환산(vh)
 
@@ -77,7 +77,7 @@ function VotedSticker({
           stickerFocusHandler(sticker);
         }}
       >
-        <img alt="sticker" src={img} />
+        <img alt="sticker" src={src} />
       </button>
 
       {isFocused && (
