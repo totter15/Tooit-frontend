@@ -20,6 +20,7 @@ export interface VoteItemType {
   name: string;
   content: string;
   voteId: number;
+  stickerList: any[];
 }
 
 export interface VotedStickerType {
@@ -32,8 +33,6 @@ export interface VotedStickerType {
   voteItemId?: number;
   voteItemName?: string;
 }
-
-export type VotedStickersType = VoteStickerType[] | [];
 
 export interface StickerBoxProps {
   revoteHandler: () => void;
@@ -55,7 +54,6 @@ export interface VoteListProps {
     id: number;
     index: number;
   }) => void;
-  votedStickers: VotedStickersType;
 }
 
 export interface VoteListItemProps {
@@ -73,7 +71,6 @@ export interface VoteListItemProps {
     id: number;
     index: number;
   }) => void;
-  votedStickers: VotedStickersType;
   item: VoteItemType;
 }
 

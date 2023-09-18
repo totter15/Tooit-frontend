@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function VoteItem({
   item,
   isSelected,
@@ -10,6 +12,7 @@ function VoteItem({
   commentModalVisible: () => void;
 }) {
   const {
+    id,
     title,
     content,
     dday,
@@ -34,9 +37,9 @@ function VoteItem({
         <img alt="vote-thumbnail" src={thumbnail} />
       </button>
       <div className="item-detail">
-        <button type="button">
+        <Link to={`/vote/${id}`}>
           <h2 className="item-detail__title">{title}</h2>
-        </button>
+        </Link>
 
         <p className="item-detail__description">{content}</p>
         <div className="item-detail__result">
