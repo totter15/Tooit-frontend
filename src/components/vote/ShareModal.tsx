@@ -6,9 +6,15 @@ import Icon from '../common/Icon';
 function ShareModal({
   modalVisible,
   title,
+  content,
+  id,
+  thumbnail,
 }: {
   modalVisible: boolean;
   title: string;
+  content: string;
+  id: number;
+  thumbnail: string;
 }) {
   const location = useLocation();
   const baseUrl = 'http://localhost:3000';
@@ -26,7 +32,7 @@ function ShareModal({
     {
       name: '카카오톡',
       icon: 'kakao_share',
-      onClick: () => shareKakao(title, 10),
+      onClick: () => shareKakao(title, content, id, thumbnail),
     },
     {
       name: 'URL복사',
