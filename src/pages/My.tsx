@@ -101,36 +101,38 @@ function My() {
               </button>
             </div>
 
-            <div className="vote-control-box__vote-control">
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  e.target.checked ? setSelected(votes) : setSelected([])
-                }
-              />
-              <div
-                className={`vote-control-box__control-button ${
-                  selected.length > 0 && 'active'
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    selected.length > 0 && setCloseModalVisible(true)
+            {category === 'made' && (
+              <div className="vote-control-box__vote-control">
+                <input
+                  type="checkbox"
+                  onChange={(e) =>
+                    e.target.checked ? setSelected(votes) : setSelected([])
                   }
+                />
+                <div
+                  className={`vote-control-box__control-button ${
+                    selected.length > 0 && 'active'
+                  }`}
                 >
-                  투표 마감
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    selected.length > 0 && setDeleteModalVisible(true)
-                  }
-                >
-                  투표 삭제
-                </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selected.length > 0 && setCloseModalVisible(true)
+                    }
+                  >
+                    투표 마감
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selected.length > 0 && setDeleteModalVisible(true)
+                    }
+                  >
+                    투표 삭제
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             <ul className="vote-control-box__list">
               {listData?.map((item: any) => (
@@ -143,6 +145,7 @@ function My() {
                     setCommentModalVisible(true);
                     setReviewItem(item.id);
                   }}
+                  type={category}
                 />
               ))}
             </ul>

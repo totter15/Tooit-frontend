@@ -5,11 +5,13 @@ function VoteItem({
   isSelected,
   selectHandler,
   commentModalVisible,
+  type,
 }: {
   item: any;
   isSelected: boolean;
   selectHandler: (id: number) => void;
   commentModalVisible: () => void;
+  type: 'made' | 'vote';
 }) {
   const {
     id,
@@ -27,12 +29,18 @@ function VoteItem({
   const not_review = is_end && !reviewFlag;
 
   return (
-    <div className={`vote-control-box__list-item ${isSelected && 'select'}`}>
-      <input
-        type="checkbox"
-        onChange={() => selectHandler(item.id)}
-        checked={isSelected}
-      />
+    <div
+      className={`vote-control-box__list-item ${
+        type === 'made' && isSelected && 'select'
+      }`}
+    >
+      {type === 'made' && (
+        <input
+          type="checkbox"
+          onChange={() => selectHandler(item.id)}
+          checked={isSelected}
+        />
+      )}
       <button type="button" className="item-detail__thumbnail">
         <img alt="vote-thumbnail" src={thumbnail} />
       </button>
