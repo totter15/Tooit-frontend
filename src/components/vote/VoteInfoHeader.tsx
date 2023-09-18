@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import Icon from '../common/Icon';
 
 function VoteInfoHeader({
+  myVote,
   editModalHandler,
   deleteModalHandler,
 }: {
+  myVote: boolean;
   editModalHandler: () => void;
   deleteModalHandler: () => void;
 }) {
@@ -17,14 +19,16 @@ function VoteInfoHeader({
         <Icon name="arrow_back" alt="back" />
       </Link>
 
-      <button
-        type="button"
-        className="vote-header__more"
-        onClick={() => setMenuVisible(true)}
-        onBlur={() => setMenuVisible(false)}
-      >
-        <Icon name="menu" alt="menu" />
-      </button>
+      {myVote && (
+        <button
+          type="button"
+          className="vote-header__more"
+          onClick={() => setMenuVisible(true)}
+          onBlur={() => setMenuVisible(false)}
+        >
+          <Icon name="menu" alt="menu" />
+        </button>
+      )}
 
       <div className={`vote-header__menu-box ${menuVisible && 'visible'}`}>
         <button type="button" onMouseDown={deleteModalHandler}>

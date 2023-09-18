@@ -14,19 +14,23 @@ import VoteInfoHeader from '../components/vote/VoteInfoHeader';
 import VoteDescription from '../components/vote/VoteDescription';
 import DeadlineShare from '../components/vote/DeadlineShare';
 import { useQuery, useQueryClient } from 'react-query';
-import { getVote, putsticker } from '../apis/vote';
-import { useParams } from 'react-router-dom';
+import { getVote, putsticker, deleteVote } from '../apis/vote';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useVoteSticker from '../hooks/useVoteSticker';
 import { cancelVote } from '../slices/vote';
 import { getUserInfo } from '../apis/user';
 
 function Vote() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { voteId } = useParams();
   const { data: voteData } = useQuery(
     ['voteData', voteId],
     () => voteId && getVote(+voteId),
   );
+
+  console.log(voteData);
 
   const {
     locateStickerHandler,
@@ -133,8 +137,13 @@ function Vote() {
     setRevoteModalVisible(false);
   }, []);
 
-  const deleteHandler = useCallback(() => {
-    // TODO : delete vote
+  const deleteHandler = useCallback(async () => {
+    const data = await deleteVote([Number(voteId)]);
+    if (data) {
+      navigate(-1);
+      queryClient.invalidateQueries(['myVote']);
+    }
+
     setDeleteModalVisible(false);
   }, []);
 
@@ -164,6 +173,7 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <VoteInfoHeader
+              myVote={data.id === voteData.userId}
               editModalHandler={() => setEditModalVisible(true)}
               deleteModalHandler={() => setDeleteModalVisible(true)}
             />
