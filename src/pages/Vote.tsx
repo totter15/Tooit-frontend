@@ -30,14 +30,12 @@ function Vote() {
     () => voteId && getVote(+voteId),
   );
 
-  console.log(voteData);
-
   const {
     locateStickerHandler,
     inputStickerDataHandler,
     sticker: voteSticker,
   } = useVoteSticker();
-  const { data } = useQuery(['userData'], getUserInfo);
+  const { data: userData } = useQuery(['userData'], getUserInfo);
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
@@ -47,7 +45,7 @@ function Vote() {
   const { items } = voteData ?? {};
   const stickerList = items?.flatMap((item: any) => item.stickerList);
   const mySticker = stickerList?.find(
-    (sticker: any) => sticker.userId === data?.id,
+    (sticker: any) => sticker.userId === userData?.id,
   );
 
   // TODO : 모달을 전역으로 관리하게 되면 VoteListItem으로 옮겨주기
@@ -67,7 +65,7 @@ function Vote() {
     }) => {
       if (mySticker) return;
       if (voteSticker) {
-        const nickname = '익명';
+        const nickname = userData?.nickname || '익명';
         const comment = '';
         locateStickerHandler({
           selectItem: { name, id, index },
@@ -173,7 +171,7 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <VoteInfoHeader
-              myVote={data.id === voteData.userId}
+              myVote={userData.id === voteData.userId}
               editModalHandler={() => setEditModalVisible(true)}
               deleteModalHandler={() => setDeleteModalVisible(true)}
             />
