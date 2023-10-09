@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
 import ReVoteModal from '../components/vote/ReVoteModal';
@@ -41,12 +41,27 @@ function Vote() {
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [ip, setIp] = useState(null);
 
   const { items } = voteData ?? {};
   const stickerList = items?.flatMap((item: any) => item.stickerList);
-  const mySticker = stickerList?.find(
-    (sticker: any) => sticker.userId === userData?.id,
-  );
+
+  useEffect(() => {
+    if (!userData) {
+      getIp();
+    }
+  }, [userData]);
+
+  const getMySticker = () => {
+    if (userData) {
+      return stickerList?.find(
+        (sticker: any) => sticker.userId === userData?.id,
+      );
+    } else {
+      return stickerList?.find((sticker: any) => sticker.ip === ip);
+    }
+  };
+  const mySticker = getMySticker();
 
   // TODO : 모달을 전역으로 관리하게 되면 VoteListItem으로 옮겨주기
   const stickerLocateHandler = useCallback(
@@ -86,7 +101,6 @@ function Vote() {
   };
 
   const voteHandler = async (input?: { nickname: string; comment: string }) => {
-    // TODO : 로컬스토리지에 토큰이 없을경우 getIp한 값을 넣어준다.
     try {
       const { x, y, src, itemId, nickname, comment, file } = voteSticker ?? {};
       const data = await putsticker({
@@ -98,6 +112,7 @@ function Vote() {
         voteId,
         image: src,
         file,
+        ip: userData ? null : ip,
       });
 
       if (data) {
@@ -118,7 +133,7 @@ function Vote() {
   async function getIp() {
     const ipData = await fetch('https://geolocation-db.com/json/');
     const locationIp = await ipData.json();
-    return locationIp.IPv4;
+    setIp(locationIp.IPv4);
   }
 
   const voteCancelHandler = useCallback(() => {
@@ -131,8 +146,9 @@ function Vote() {
   }, []);
 
   const revoteHandler = useCallback(() => {
-    // TODO : revote
+    // TODO : deleteVote
     setRevoteModalVisible(false);
+    queryClient.invalidateQueries(['voteData', voteId]);
   }, []);
 
   const deleteHandler = useCallback(async () => {
@@ -171,7 +187,7 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <VoteInfoHeader
-              myVote={userData.id === voteData.userId}
+              myVote={userData?.id === voteData.userId}
               editModalHandler={() => setEditModalVisible(true)}
               deleteModalHandler={() => setDeleteModalVisible(true)}
             />
