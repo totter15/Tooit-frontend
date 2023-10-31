@@ -5,17 +5,13 @@ import share from '../../utils/share';
 import useResponsive from '../../hooks/useResponsive';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
-import { VoteListType } from '../../interfaces/VoteInterface';
 import Icon from '../common/Icon';
 
 function DeadlineShare() {
   const { voteId } = useParams();
   const queryClient = useQueryClient();
-  const voteData: VoteListType | undefined = queryClient.getQueryData([
-    'voteData',
-    voteId,
-  ]);
-  const { title, content, endDate, dday } = voteData ?? {};
+  const voteData: any = queryClient.getQueryData(['voteData', voteId]);
+  const { title, content, endDate, dday, id, thumbnail } = voteData ?? {};
   const endDateFormat = endDate && dateFormat(endDate);
 
   const [shareModalVisible, setShareModalVisible] = useState<boolean>(false);
@@ -49,7 +45,13 @@ function DeadlineShare() {
           <Icon name="share" alt="share" />
         </button>
       </div>
-      <ShareModal modalVisible={shareModalVisible} title={title || ''} />
+      <ShareModal
+        modalVisible={shareModalVisible}
+        title={title || ''}
+        content={content || ''}
+        id={id}
+        thumbnail={thumbnail}
+      />
     </>
   );
 }

@@ -4,12 +4,10 @@ import useResponsive from '../../hooks/useResponsive';
 import { VoteListItemProps } from '../../interfaces/VoteInterface';
 import html2canvas from 'html2canvas';
 import Icon from '../common/Icon';
-import { VoteStickerType } from '../../slices/vote';
 
 function VoteListItem({
   index,
   stickerLocateHandler,
-  votedStickers,
   item,
 }: VoteListItemProps) {
   const imgItemRef = useRef<any>(null);
@@ -19,13 +17,9 @@ function VoteListItem({
   const voteItemWidth: number = isTablet ? windowWidth : windowHeight * 0.7;
 
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [focusSticker, setFocusSticker] = useState<VoteStickerType | null>(
-    null,
-  );
+  const [focusSticker, setFocusSticker] = useState<any>(null);
   const [stickerSize, setStickerSize] = useState<string>('10.4vh');
-  const { image, stickerCount, name, content, id } = item;
-
-  // console.log(item);
+  const { image, stickerCount, name, content, id, stickerList } = item;
 
   function saveHandler() {
     //  TODO : CORS 에러 해결
@@ -49,7 +43,7 @@ function VoteListItem({
   function getStickerSize() {
     if (isTablet) return '16vw';
 
-    const number = votedStickers.length;
+    const number = stickerList.length;
     if (number < 20) return '10.4vh';
     if (number >= 20 && number < 50) return '8.8vh';
     if (number >= 50 && number < 100) return '7.2vh';
@@ -59,7 +53,7 @@ function VoteListItem({
 
   useEffect(() => {
     setStickerSize(getStickerSize());
-  }, [votedStickers, isTablet]);
+  }, [stickerList, isTablet]);
 
   return (
     <li className="vote-list__item">
@@ -90,22 +84,24 @@ function VoteListItem({
         }}
         className="vote-list__item-img"
       >
-        <img
-          src={image}
-          alt="votedImage"
-          className="vote-list__item-img__img"
-        />
-        {votedStickers.map((sticker) => {
-          if (sticker.itemId === index) {
-            return (
-              <VotedSticker
-                sticker={sticker}
-                isFocused={sticker.stickerId === focusSticker?.stickerId}
-                stickerFocusHandler={(focus) => setFocusSticker(focus)}
-                stickerSize={stickerSize}
-              />
-            );
-          }
+        {!!image ? (
+          <img
+            src={image}
+            alt="votedImage"
+            className="vote-list__item-img__img"
+          />
+        ) : (
+          <h1 className="vote-list__item-img__name">{name}</h1>
+        )}
+        {stickerList.map((sticker: any) => {
+          return (
+            <VotedSticker
+              sticker={sticker}
+              isFocused={sticker.id === focusSticker?.id}
+              stickerFocusHandler={(focus: any) => setFocusSticker(focus)}
+              stickerSize={stickerSize}
+            />
+          );
         })}
 
         <div

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import '../styles/vote.scss';
 import VoteModal from '../components/vote/VoteModal';
 import ReVoteModal from '../components/vote/ReVoteModal';
@@ -13,14 +13,18 @@ import MobileStickerBox from '../components/vote/MobileStickerBox';
 import VoteInfoHeader from '../components/vote/VoteInfoHeader';
 import VoteDescription from '../components/vote/VoteDescription';
 import DeadlineShare from '../components/vote/DeadlineShare';
-import { useQuery } from 'react-query';
-import { getVote, putsticker } from '../apis/vote';
-import { useParams } from 'react-router-dom';
+import { useQuery, useQueryClient } from 'react-query';
+import { getVote, putsticker, deleteVote } from '../apis/vote';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useVoteSticker from '../hooks/useVoteSticker';
-import { VoteState, VoteStickerType, cancelVote } from '../slices/vote';
+import { cancelVote } from '../slices/vote';
+import { getUserInfo } from '../apis/user';
 
 
 function Vote() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { voteId } = useParams();
   const { data: voteData } = useQuery(
     ['voteData', voteId],
@@ -31,19 +35,40 @@ function Vote() {
     locateStickerHandler,
     inputStickerDataHandler,
     sticker: voteSticker,
-    voteItem,
   } = useVoteSticker();
+  const { data: userData } = useQuery(['userData'], getUserInfo);
 
   const [voteModalVisible, setVoteModalVisible] = useState<boolean>(false);
   const [revoteModalVisible, setRevoteModalVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [ip, setIp] = useState(null);
 
-  const [myVote, setMyVote] = useState<VoteState | null>(null);
-  const [votedStickers, setVotedStickers] = useState<VoteStickerType[] | []>(
-    [],
-  );
   const { items } = voteData ?? {};
+  const stickerList = items?.flatMap((item: any, index: number) =>
+    item.stickerList.map((sticker: any) => ({
+      ...sticker,
+      name: item.name,
+      index: index + 1,
+    })),
+  );
+
+  useEffect(() => {
+    if (!userData) {
+      getIp();
+    }
+  }, [userData]);
+
+  const getMySticker = () => {
+    if (userData) {
+      return stickerList?.find(
+        (sticker: any) => sticker.userId === userData?.id,
+      );
+    } else {
+      return stickerList?.find((sticker: any) => sticker.ip === ip);
+    }
+  };
+  const mySticker = getMySticker();
 
   // TODO : 모달을 전역으로 관리하게 되면 VoteListItem으로 옮겨주기
   const stickerLocateHandler = useCallback(
@@ -60,8 +85,9 @@ function Vote() {
       id: number;
       index: number;
     }) => {
+      if (mySticker) return;
       if (voteSticker) {
-        const nickname = '익명';
+        const nickname = userData?.nickname || '익명';
         const comment = '';
         locateStickerHandler({
           selectItem: { name, id, index },
@@ -70,8 +96,8 @@ function Vote() {
           nickname,
           comment,
         });
+        setVoteModalVisible(true);
       }
-      setVoteModalVisible(true);
     },
     [voteSticker],
   );
@@ -82,7 +108,6 @@ function Vote() {
   };
 
   const voteHandler = async (input?: { nickname: string; comment: string }) => {
-    // TODO : 로컬스토리지에 토큰이 없을경우 getIp한 값을 넣어준다.
     try {
       const { x, y, src, itemId, nickname, comment, file } = voteSticker ?? {};
       const data = await putsticker({
@@ -94,14 +119,14 @@ function Vote() {
         voteId,
         image: src,
         file,
+        ip: userData ? null : ip,
       });
 
       if (data) {
-        setMyVote({ sticker: voteSticker, voteItem });
-        voteSticker && setVotedStickers([...votedStickers, voteSticker]);
         setVoteModalVisible(false);
         cancelVote();
-        // TODO : 내 정보 업데이트
+        // votePage update
+        queryClient.invalidateQueries(['voteData', voteId]);
       }
     } catch (e: any) {
       if (e.toJSON().status === 400) {
@@ -115,7 +140,7 @@ function Vote() {
   async function getIp() {
     const ipData = await fetch('https://geolocation-db.com/json/');
     const locationIp = await ipData.json();
-    return locationIp.IPv4;
+    setIp(locationIp.IPv4);
   }
 
   const voteCancelHandler = useCallback(() => {
@@ -128,13 +153,18 @@ function Vote() {
   }, []);
 
   const revoteHandler = useCallback(() => {
-    // TODO : revote
-    setMyVote(null);
+    // TODO : deleteVote
     setRevoteModalVisible(false);
+    queryClient.invalidateQueries(['voteData', voteId]);
   }, []);
 
-  const deleteHandler = useCallback(() => {
-    // TODO : delete vote
+  const deleteHandler = useCallback(async () => {
+    const data = await deleteVote([Number(voteId)]);
+    if (data) {
+      navigate(-1);
+      queryClient.invalidateQueries(['myVote']);
+    }
+
     setDeleteModalVisible(false);
   }, []);
 
@@ -164,6 +194,7 @@ function Vote() {
         <main className="vote">
           <section className="vote-info">
             <VoteInfoHeader
+              myVote={userData?.id === voteData.userId}
               editModalHandler={() => setEditModalVisible(true)}
               deleteModalHandler={() => setDeleteModalVisible(true)}
             />
@@ -171,22 +202,18 @@ function Vote() {
             <DeadlineShare />
             <StickerBox
               revoteHandler={() => setRevoteModalVisible(true)}
-              myVote={myVote}
+              myVote={mySticker}
             />
             <VoteGraph />
           </section>
 
-          <VoteList
-            items={items}
-            stickerLocateHandler={stickerLocateHandler}
-            votedStickers={votedStickers}
-          />
+          <VoteList items={items} stickerLocateHandler={stickerLocateHandler} />
 
           {/* MOBILE */}
           <MobileVoteGraph />
           <MobileStickerBox
             revoteHandler={() => setRevoteModalVisible(true)}
-            myVote={myVote}
+            myVote={mySticker}
           />
         </main>
       </Wrapper>

@@ -1,11 +1,18 @@
 function share() {
-  function shareKakao(title: string, id: number) {
+  function shareKakao(
+    title: string,
+    content: string,
+    id: number,
+    thumbnail: string,
+  ) {
     window.Kakao.Share.sendCustom({
       templateId: 94915,
       templateArgs: {
         send_user: 'TOOIT',
         vote_title: title,
+        vote_content: content,
         vote_id: id,
+        thumbnail: thumbnail,
       },
     });
   }

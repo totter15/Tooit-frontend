@@ -1,15 +1,20 @@
+import { Link } from 'react-router-dom';
+
 function VoteItem({
   item,
   isSelected,
   selectHandler,
   commentModalVisible,
+  type,
 }: {
   item: any;
   isSelected: boolean;
   selectHandler: (id: number) => void;
   commentModalVisible: () => void;
+  type: 'made' | 'vote';
 }) {
   const {
+    id,
     title,
     content,
     dday,
@@ -24,19 +29,25 @@ function VoteItem({
   const not_review = is_end && !reviewFlag;
 
   return (
-    <div className={`vote-control-box__list-item ${isSelected && 'select'}`}>
-      <input
-        type="checkbox"
-        onChange={() => selectHandler(item.id)}
-        checked={isSelected}
-      />
+    <div
+      className={`vote-control-box__list-item ${
+        type === 'made' && isSelected && 'select'
+      }`}
+    >
+      {type === 'made' && (
+        <input
+          type="checkbox"
+          onChange={() => selectHandler(item.id)}
+          checked={isSelected}
+        />
+      )}
       <button type="button" className="item-detail__thumbnail">
         <img alt="vote-thumbnail" src={thumbnail} />
       </button>
       <div className="item-detail">
-        <button type="button">
+        <Link to={`/vote/${id}`}>
           <h2 className="item-detail__title">{title}</h2>
-        </button>
+        </Link>
 
         <p className="item-detail__description">{content}</p>
         <div className="item-detail__result">
