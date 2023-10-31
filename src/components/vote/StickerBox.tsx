@@ -19,7 +19,7 @@ function StickerBox({ revoteHandler, myVote }: any) {
     handleChange,
     deleteUploadSticker,
   } = useUploadSticker();
-  const { voteItem, sticker } = myVote ?? {};
+  const { index, name, content } = myVote ?? {};
   const { sticker: selectedSticker } = useVoteSticker();
 
   useEffect(() => {
@@ -45,10 +45,10 @@ function StickerBox({ revoteHandler, myVote }: any) {
           <img alt="voted-sticker" src={myVote?.image} />
           <div className="voted-sticker-info__info">
             <div className="voted-sticker-info__info-title">
-              <div>{voteItem?.index}</div>
-              <span>투표한 아이템 이름</span>
+              <div>{index}</div>
+              <span>{name}</span>
             </div>
-            <p>{sticker?.comment}</p>
+            <p>{content}</p>
           </div>
         </section>
       ) : (

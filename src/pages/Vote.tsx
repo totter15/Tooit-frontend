@@ -44,7 +44,13 @@ function Vote() {
   const [ip, setIp] = useState(null);
 
   const { items } = voteData ?? {};
-  const stickerList = items?.flatMap((item: any) => item.stickerList);
+  const stickerList = items?.flatMap((item: any, index: number) =>
+    item.stickerList.map((sticker: any) => ({
+      ...sticker,
+      name: item.name,
+      index: index + 1,
+    })),
+  );
 
   useEffect(() => {
     if (!userData) {
