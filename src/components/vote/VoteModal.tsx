@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/voteModal.scss';
 import Icon from '../common/Icon';
+import { useQuery } from 'react-query';
+import { getUserInfo } from '../../apis/user';
 
 interface ModalProps {
   visible: boolean;
@@ -22,6 +24,13 @@ function VoteModal({
 }: ModalProps) {
   const [input, setInput] = useState<InputProps>({ nickname: '', comment: '' });
   const [isAnonymous, setIsAnonymouse] = useState<boolean>(false);
+  const { data: userData } = useQuery(['userData'], getUserInfo);
+
+  useEffect(() => {
+    userData &&
+      !isAnonymous &&
+      setInput({ ...input, nickname: userData.nickname });
+  }, [userData, isAnonymous]);
 
   function voteHandler() {
     stickerHandler();
