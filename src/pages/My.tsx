@@ -4,17 +4,33 @@ import Wrapper from '../components/Wrapper';
 import '../styles/my.scss';
 import MessageModal from '../components/MessageModal';
 import CommentModal from '../components/my/CommentModal';
+import { useQuery, useQueryClient } from 'react-query';
+import { getUserInfo } from '../apis/user';
+import useMyVote from '../hooks/useMyVote';
+import useMyVoting from '../hooks/useMyVoting';
+import VoteItem from '../components/my/VoteItem';
+import { deadlineVote, deleteVote, reviewVote } from '../apis/vote';
 
 const votes = [1, 2, 3, 4, 5];
 
 function My() {
+  const queryClient = useQueryClient();
+  const { data } = useQuery(['userData'], getUserInfo);
+  const { email, nickname } = data ?? {};
+
+  const { voteList } = useMyVote();
+  const { votingList } = useMyVoting();
+
   const [category, setCategory] = useState<'made' | 'vote'>('made');
   const [selected, setSelected] = useState<number[]>([]);
+
+  const listData = category === 'made' ? voteList : votingList;
 
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [closeModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [commentModalVisible, setCommentModalVisible] =
     useState<boolean>(false);
+  const [reviewItem, setReviewItem] = useState<number | null>(null);
 
   function selectHandler(id: number) {
     const items = selected.includes(id)
@@ -23,20 +39,36 @@ function My() {
     setSelected(items);
   }
 
-  const deleteVoteHandler = useCallback(() => {
-    // TODO : 투표 삭제 기능
-    setDeleteModalVisible(false);
-  }, []);
+  const deleteVoteHandler = useCallback(async () => {
+    const data = await deleteVote(selected);
+    if (data) {
+      queryClient.invalidateQueries(['myVote']);
+      setDeleteModalVisible(false);
+      setSelected([]);
+    }
+  }, [selected]);
 
-  const closeVoteHandler = useCallback(() => {
-    // TODO : 투표 마감 기능
-    setCloseModalVisible(false);
-  }, []);
+  const closeVoteHandler = useCallback(async () => {
+    const data = await deadlineVote(selected);
+    if (data) {
+      queryClient.invalidateQueries(['myVote']);
+      setCloseModalVisible(false);
+      setSelected([]);
+    }
+  }, [selected]);
 
-  const submitCommentHandler = useCallback(() => {
-    // TODO : 코멘트 입력 기능
-    setCommentModalVisible(false);
-  }, []);
+  const submitCommentHandler = useCallback(
+    async (content: string) => {
+      if (reviewItem) {
+        const data = await reviewVote({ content, voteId: reviewItem });
+        if (data) {
+          setReviewItem(null);
+          setCommentModalVisible(false);
+        }
+      }
+    },
+    [reviewItem],
+  );
 
   return (
     <>
@@ -44,8 +76,8 @@ function My() {
         <main className="my">
           <section className="my__profile-box">
             <div>
-              <div className="my__profile-email">akdsjfh</div>
-              <div className="my__profile-name">일이삼사오육칠팔구십 님</div>
+              <div className="my__profile-email">{email}</div>
+              <div className="my__profile-name">{nickname} 님</div>
             </div>
             <Link to="/account" className="my__profile-button">
               내 정보 관리
@@ -69,80 +101,52 @@ function My() {
               </button>
             </div>
 
-            <div className="vote-control-box__vote-control">
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  e.target.checked ? setSelected(votes) : setSelected([])
-                }
-              />
-              <div
-                className={`vote-control-box__control-button ${
-                  selected.length > 0 && 'active'
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    selected.length > 0 && setCloseModalVisible(true)
+            {category === 'made' && (
+              <div className="vote-control-box__vote-control">
+                <input
+                  type="checkbox"
+                  onChange={(e) =>
+                    e.target.checked ? setSelected(votes) : setSelected([])
                   }
-                >
-                  투표 마감
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    selected.length > 0 && setDeleteModalVisible(true)
-                  }
-                >
-                  투표 삭제
-                </button>
-              </div>
-            </div>
-
-            <ul className="vote-control-box__list">
-              {votes.map((item) => (
-                // TODO : voteItem 컴포넌트 분리
+                />
                 <div
-                  key={item}
-                  className={`vote-control-box__list-item ${
-                    selected.includes(item) && 'select'
+                  className={`vote-control-box__control-button ${
+                    selected.length > 0 && 'active'
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    onChange={() => selectHandler(item)}
-                    checked={selected.includes(item)}
-                  />
-                  <button type="button" className="item-detail__thumbnail">
-                    <img alt="vote-thumbnail" />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selected.length > 0 && setCloseModalVisible(true)
+                    }
+                  >
+                    투표 마감
                   </button>
-                  <div className="item-detail">
-                    <button type="button">
-                      <h2 className="item-detail__title">저녁 메뉴를 골라줘</h2>
-                    </button>
-
-                    <p className="item-detail__description">
-                      일주일 동안 고생한 나, 저녁 메뉴를 골라줘!
-                    </p>
-                    <div className="item-detail__result">
-                      <div>000명 참여</div>
-                      <div>최다 득표 선택자: 마라탕</div>
-                    </div>
-                  </div>
-                  <div className="item-detail__type-box">
-                    {/* <div className="d-day">D-30</div> */}
-                    {/* <div className="review-done">소감 작성 완료</div> */}
-                    <button
-                      type="button"
-                      className="review"
-                      onClick={() => setCommentModalVisible(true)}
-                    >
-                      소감 작성
-                    </button>
-                  </div>
-                  <div className="item-detail__line" />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selected.length > 0 && setDeleteModalVisible(true)
+                    }
+                  >
+                    투표 삭제
+                  </button>
                 </div>
+              </div>
+            )}
+
+            <ul className="vote-control-box__list">
+              {listData?.map((item: any) => (
+                <VoteItem
+                  key={item.id}
+                  item={item}
+                  isSelected={selected.includes(item.id)}
+                  selectHandler={selectHandler}
+                  commentModalVisible={() => {
+                    setCommentModalVisible(true);
+                    setReviewItem(item.id);
+                  }}
+                  type={category}
+                />
               ))}
             </ul>
           </section>

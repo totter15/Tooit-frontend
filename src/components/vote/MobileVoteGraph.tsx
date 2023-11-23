@@ -8,6 +8,7 @@ function MobileVoteGraph() {
       <ul className="vote-result__graph">
         {graph.map((item) => (
           <li
+            key={item}
             style={{ width: `${(item / graphTotal) * 100}%` }}
             className="vote-result__graph-item"
           >

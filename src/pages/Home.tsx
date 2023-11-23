@@ -40,7 +40,7 @@ function Home() {
         <div className="vote_rows">
           <div className="cards_row">
             <div className="vote_card">
-              <Link to="/vote">
+              <Link to="/vote/1">
                 <div className="vote_header">
                   <div className="vote_image">
                     <img src="img\sampleImage1.png" />

@@ -25,7 +25,7 @@ function App() {
       element: <MakeVote />,
     },
     {
-      path: '/vote',
+      path: '/vote/:voteId',
       element: <Vote />,
     },
     {
